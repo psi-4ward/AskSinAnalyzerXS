@@ -18,6 +18,9 @@ Die Daten des AskSinSniffer328P werden über den USB-UART Adapter an den AskSinA
 
 ## Installation
 
+* [Latest release](https://github.com/psi-4ward/AskSinAnalyzerXS/releases/latest)
+* [Develop release](https://github.com/psi-4ward/AskSinAnalyzerXS/releases/tag/untagged-dd93ed541a30cbade0aa) v0.0.0
+
 ### AVR Sketch
 
 Auf dem ATmega328P wird der [AskSinSniffer328P-Sketch](https://github.com/jp112sdl/AskSinAnalyzer/tree/master/AskSinSniffer328P) geflasht. Grundlegends ist auf [asksinpp.de](https://asksinpp.de/Grundlagen/) erläutert.

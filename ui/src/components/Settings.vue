@@ -53,7 +53,7 @@
         hint="Maximale Anzahl an Telegrammen die vorgehalten werden."
       />
       <div class="q-mt-lg">
-        <q-btn label="speichern" type="submit" color="primary" icon="save"/>
+        <q-btn label="speichern und verbinden" type="submit" color="primary" icon="save"/>
         <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm"/>
       </div>
     </q-form>

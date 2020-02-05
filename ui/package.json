@@ -1,6 +1,8 @@
 {
-  "name": "asksin-analyzer",
-  "version": "0.1.0",
+  "name": "asksin-analyzer-ui",
+  "description": "AskSinAnalyzerXS VueJS WebUI",
+  "version": "0.0.0",
+  "license": "CC BY-NC-SA 4.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

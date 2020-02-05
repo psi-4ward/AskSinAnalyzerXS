@@ -13,7 +13,7 @@
         <q-card>
           <q-card-section>
             <h2>Version</h2>
-            develop
+            develop v0.0.0
           </q-card-section>
         </q-card>
       </div>

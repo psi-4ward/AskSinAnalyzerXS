@@ -21,8 +21,7 @@
     "artifactName": "${name}-${version}-${os}.${ext}",
     "publish": [
       {
-        "provider": "github",
-        "releaseType": "prerelease"
+        "provider": "github"
       }
     ],
     "directories": {
