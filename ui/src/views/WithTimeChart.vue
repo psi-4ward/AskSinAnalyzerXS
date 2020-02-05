@@ -1,0 +1,23 @@
+<template>
+  <div class="page">
+    <q-card class="q-mb-lg">
+      <time-chart :data="$root.data.telegrams" :rssiLog="$root.data.rssiLog"/>
+    </q-card>
+    <transition name="route" mode="out-in" :appear="true">
+      <router-view/>
+    </transition>
+  </div>
+</template>
+
+
+<script>
+  import TimeChart from '@/components/TimeChart.vue'
+
+  export default {
+    name: "WithTimeChart",
+    components: {
+      TimeChart
+    },
+  };
+</script>
+

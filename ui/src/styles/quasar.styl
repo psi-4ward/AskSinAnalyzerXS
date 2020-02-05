@@ -1,0 +1,75 @@
+@import './quasar.variables'
+@import '~quasar-styl'
+@import "~highlightjs/styles/github.css"
+
+.route-enter-active, .route-leave-active
+  transition: all 0.35s
+
+.route-enter, .route-leave-to
+  opacity: 0
+  transform: translate(-20%, 0);
+
+body
+  background-color #FAFAFA
+
+a
+  color $primary
+  text-decoration none
+
+header
+  background linear-gradient(145deg, #027be3 11%, #014a88 75%) !important
+
+.page
+  padding 1.5rem 2rem
+
+h1, h2, h3, h4, h5
+  margin 0 0 1rem 0
+  padding-bottom 0.4rem
+  border-bottom 1px solid #8f8f8f
+
+h1
+  font-size 2.5rem
+  line-height 3rem
+
+h2
+  font-size 2rem
+  line-height 2.5rem
+
+h3
+  font-size 1.5rem
+  line-height 2rem
+
+h4
+  font-size 1.1rem
+  line-height 1.5rem
+
+form
+  max-width none !important
+
+.q-loading.fullscreen
+  font-size 1.2rem
+  font-weight bold
+  background rgba(0, 0, 0, 0.4)
+
+  div
+    max-width none
+
+.bg-amber
+  color: black !important
+
+.q-btn
+  &.q-btn__rotate-icon
+    padding-right: 45px
+
+    i
+      position absolute
+      right: 0
+      animation: 4s spin infinite steps(3600)
+      @keyframes spin
+        0%
+          transform: rotateZ(0deg)
+        100%
+          transform: rotateZ(360deg)
+
+body .main-loading
+  background rgba(0, 0, 0, 0.5);
