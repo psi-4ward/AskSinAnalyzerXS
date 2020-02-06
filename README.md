@@ -6,12 +6,15 @@ Der AskSin Analyzer XS ist eine alternative Implementierung des [AskSinAnalyzer]
 
 ![AskSinAnalyzerXS-TelegramList](./docs/AskSinAnalyzerXS-TelegramList.png)
 
-Benötigte Hardware für den AskSinSniffer328P:
+## AskSinSniffer328P Hardware
+
 * Arduino Pro Mini 8Mhz 3.3V
 * CC1101 Funkmodul
 * USB-UART Adapter (FTDI, CP2102, etc)
 
-Die Daten des AskSinSniffer328P werden über den USB-UART Adapter an den AskSinAnalyzerXS übertragen und dort ausgewertet und visualisiert.
+Der Aufbau folgt der [allgemeingültige Verdrahtung des Pro Mini mit dem CC1101 Funkmodul](https://asksinpp.de/Grundlagen/01_hardware.html#verdrahtung). Der Config-Taster findet keine Verwendung und die Status-LED ist optional. 
+
+Die Daten des AskSinSniffer328P werden über einen USB-UART Adapter an den AskSinAnalyzerXS übertragen und dort ausgewertet und visualisiert.
 
 ![AskSinAnalyzerXS-Settings](./docs/AskSinAnalyzerXS-Settings.png)
 
@@ -23,7 +26,7 @@ Die Daten des AskSinSniffer328P werden über den USB-UART Adapter an den AskSinA
 
 ### AVR Sketch
 
-Auf dem ATmega328P wird der [AskSinSniffer328P-Sketch](https://github.com/jp112sdl/AskSinAnalyzer/tree/master/AskSinSniffer328P) geflasht. Grundlegends ist auf [asksinpp.de](https://asksinpp.de/Grundlagen/) erläutert.
+Auf dem ATmega328P wird der [AskSinSniffer328P-Sketch](https://github.com/jp112sdl/AskSinAnalyzer/tree/master/AskSinSniffer328P) geflasht. Das Vorgehen ist auf [asksinpp.de](https://asksinpp.de/Grundlagen/) erläutert.
 
 ### Electron-App
 
@@ -37,6 +40,32 @@ Der AskSinAnalyzerXS kann auch als Node.js Anwendung betrieben werden was z.B. a
 
 Hierzu ist ein eigener Build geplant aber aktuell noch nicht umgesetzt.
 
+
+## Konfiguration
+
+### Auflösung von Gerätenamen
+
+Der AskSinSniffer328P sieht nur die _Device-Addresses_, nicht aber deren Seriennummern oder Namen. Damit die Adressen in Klartextnamen aufgelöst werden können muss eine DeviceListe von der CCU geladen werden wofür ein Script auf der CCU nötig ist. Siehe [AskSinAnalyzer CCU Untersützung](https://github.com/jp112sdl/AskSinAnalyzer/wiki/CCU_Unterst%C3%BCtzung).
+
+Soll die Geräteliste von FHEM abgerufen werden ist in der `99_myUtils.pm` folgende Funktion einzufügen:
+
+```ruby
+sub printHMDevs {
+  my @data;
+  foreach my $device (devspec2array("TYPE=CUL_HM")) {
+    my $snr = AttrVal($device,'serialNr','');
+	$snr = "<Zentrale>" if AttrVal($device,'model','') eq 'CCU-FHEM';
+	if( $snr ne '' ) {
+	  my $name = AttrVal($device,'alias',$device);
+	  my $addr = InternalVal($device,'DEF','0');
+	  push @data, { name => $name, serial => $snr, address => hex($addr) };
+	}
+  }
+  return JSON->new->encode( { created => time, devices => \@data } );
+}
+```
+
+Im AskSinAnalyzerXS ist bei Verwendung vom FHEM die Option `Device-List Backend ist eine CCU` zu deaktivieren und als `Device-List URL` wird der Wert `http://fhem.local:8083/fhem?cmd={printHMDevs()}&XHR=1` eingetragen.
 
 ## Lizenz
 
