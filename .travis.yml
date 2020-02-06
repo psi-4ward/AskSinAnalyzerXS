@@ -1,3 +1,6 @@
+before_script:
+  - export COMMIT_HASH=$(git log --pretty=format:'%h' -n 1)
+
 jobs:
   include:
     - os: osx
@@ -24,7 +27,7 @@ jobs:
       script:
         - |
           docker run --rm \
-          --env GH_TOKEN=$GH_TOKEN \
+          --env GH_TOKEN=$GH_TOKEN --env COMMIT_HASH=$COMMIT_HASH \
           -v ${PWD}:/project \
           -v ~/.cache/electron:/root/.cache/electron \
           -v ~/.cache/electron-builder:/root/.cache/electron-builder \
@@ -38,6 +41,11 @@ jobs:
             npm run tsc && \
             npm run electron:build -- -lw --publish onTagOrDraft \
           "
+
+    - os: linux
+      language: node_js
+      node_js: "10"
+
 
 cache:
   directories:

@@ -12,6 +12,7 @@ class Store {
   };
 
   appPath: string = path.resolve(__dirname, '..');
+  persistData: boolean = true;
 
   constructor() {
     if (fs.existsSync(this.appPath + '/userdata.json')) {
@@ -41,6 +42,7 @@ class Store {
   }
 
   private persist() {
+    if(!this.persistData) return;
     const cfg = {...this.config};
     delete cfg.availableSerialPorts;
     fs.writeFileSync(this.appPath + '/userdata.json', JSON.stringify(cfg, null, 2), {encoding: 'utf-8'});

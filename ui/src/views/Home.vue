@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="row q-col-gutter-md items-stretch">
-      <div class="col-12 col-md-5 col-xl-6">
+    <div class="row q-col-gutter-md items-stretch justify-center">
+      <div class="col-12 col-md-8 col-xl-7">
         <q-card>
           <pie-chart :data="sentByDevice"/>
         </q-card>

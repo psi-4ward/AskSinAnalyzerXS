@@ -9,14 +9,7 @@
           </q-card-section>
         </q-card>
       </div>
-      <div class="col-12 col-md-6">
-        <q-card>
-          <q-card-section>
-            <h2>Version</h2>
-            develop <small>v0.0.0</small>
-          </q-card-section>
-        </q-card>
-      </div>
+
     </div>
   </div>
 </template>

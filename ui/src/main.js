@@ -4,6 +4,8 @@ import lang from 'quasar/lang/de.js'
 import './styles/quasar.styl'
 import '@quasar/extras/material-icons/material-icons.css'
 
+import {version} from '../../app/package.json';
+
 import App from './App.vue'
 import './filter';
 import router from './router'
@@ -41,8 +43,8 @@ const vm = new Vue({
   router,
   data() {
     return {
-      COMMIT: process.env.VUE_APP_COMMIT_HASH || 'dev',
-      LATEST_COMMIT: null,
+      version,
+      COMMIT_HASH: process.env.COMMIT_HASH || 'dev',
       data: service.data,
       settings,
       errors: [],

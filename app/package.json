@@ -9,7 +9,7 @@
   "scripts": {
     "tsc": "tsc --build tsconfig.json",
     "tsc:watch": "tsc --build tsconfig.json -w",
-    "server:watch": "PORT=3000 nodemon -w dist dist/server.js",
+    "server:watch": "HTDOCS_PATH=$(realpath ..)/htdocs PORT=3000 nodemon -w dist -i dist/userdata.json dist/server.js",
     "dev": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold\" npm:tsc:watch npm:server:watch",
     "electron": "electron dist/electron.js",
     "electron:build": "electron-builder",
@@ -63,6 +63,7 @@
     "url": "https://github.com/psi-4ward/AskSinAnalyzerXS"
   },
   "dependencies": {
+    "commander": "^4.1.1",
     "express": "^4.17.1",
     "serialport": "^8.0.7",
     "ws": "^7.2.1"

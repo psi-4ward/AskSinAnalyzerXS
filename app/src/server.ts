@@ -3,8 +3,18 @@ import path from 'path';
 import express from 'express';
 import WebSocket from 'ws';
 
-let htdocsPath = path.resolve(__dirname, '../../../htdocs');
-console.log(htdocsPath);
+
+
+let htdocsPath;
+if(process.env.HTDOCS_PATH) {
+  htdocsPath = process.env.HTDOCS_PATH;
+} else if (process.versions.electron) {
+  htdocsPath = path.resolve(__dirname, '../../../htdocs');
+} else {
+  htdocsPath = path.resolve(__dirname, '../htdocs');
+}
+
+console.log('Serving UI from', htdocsPath);
 
 const app = express();
 app.use(express.static(htdocsPath));
