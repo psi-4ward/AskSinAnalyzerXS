@@ -11,13 +11,20 @@ jobs:
         - ELECTRON_CACHE=$HOME/.cache/electron
         - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
       script:
-        - cd ui
-        - npm ci
-        - npm run build
-        - cd ../app
-        - npm ci
-        - npm run tsc
-        - npm run electron:build -- -m --publish onTagOrDraft
+        # Use 0.0.0 as TRAVIS_TAG if no tag was pushed; used in deploy section
+        - >
+          [ -n "$TRAVIS_TAG" ] && (cd app && npm version $TRAVIS_TAG) || export TRAVIS_TAG=0.0.0 IS_DEV=yes
+        - echo Current Tag is $TRAVIS_TAG
+        # Update DevTag
+        - >
+          [ "$IS_DEV" == "yes" ]
+          && git pull --tags
+          && git tag -f $TRAVIS_TAG
+          && git push -f https://$GH_TOKEN@github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_TAG
+          || true
+        # Build
+        - (cd ui && npm ci && npm run build)
+        - (cd app && npm ci && npm run tsc && npm run electron:build -- -m)
 
     - os: linux
       services: docker
@@ -25,27 +32,32 @@ jobs:
       before_cache:
         - rm -rf $HOME/.cache/electron-builder/wine
       script:
-        - |
-          docker run --rm \
-          --env GH_TOKEN=$GH_TOKEN --env COMMIT_HASH=$COMMIT_HASH \
-          -v ${PWD}:/project \
-          -v ~/.cache/electron:/root/.cache/electron \
-          -v ~/.cache/electron-builder:/root/.cache/electron-builder \
-          electronuserland/builder:wine \
-          /bin/bash -c " \
-            cd ui && \
-            npm ci && \
-            npm run build && \
-            cd ../app && \
-            npm ci && \
-            npm run tsc && \
-            npm run electron:build -- -lw --publish onTagOrDraft \
+        - >
+          docker run --rm
+          --env GH_TOKEN=$GH_TOKEN --env COMMIT_HASH=$COMMIT_HASH --env TRAVIS_TAG=$TRAVIS_TAG
+          -v ${PWD}:/project
+          -v ~/.cache/electron:/root/.cache/electron
+          -v ~/.cache/electron-builder:/root/.cache/electron-builder
+          electronuserland/builder:wine
+          /bin/bash -c "
+            [ -n "$TRAVIS_TAG" ] && (cd app && npm version $TRAVIS_TAG) || export TRAVIS_TAG=0.0.0 ;
+            echo Current Tag is $TRAVIS_TAG ;
+            (cd ui && npm ci && npm run build) ;
+            (cd app && npm ci && npm run tsc && npm run electron:build -- -lw) ;
+            (cd app && node scripts/make-node-pkg.js) ;
+            chown -R $UID /root/.cache/electron*
           "
 
-    - os: linux
-      language: node_js
-      node_js: "10"
-
+deploy:
+  provider: releases
+  token: $GH_TOKEN
+  overwrite: true
+  file_glob: true
+  file: builds/asksin-analyzer-xs-*
+  skip_cleanup: true
+  on:
+    all_branches: true
+#  prerelease: true
 
 cache:
   directories:
@@ -54,6 +66,7 @@ cache:
     - $HOME/.cache/electron
     - $HOME/.cache/electron-builder
 
+# Prevent build loop when re-tagging 0.0.0
 branches:
   except:
-    - "/^v\\d+\\.\\d+\\.\\d+$/"
+    - "0.0.0"

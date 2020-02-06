@@ -1,10 +1,18 @@
+import {existsSync} from 'fs';
+import {resolve} from 'path';
 import commander from 'commander';
-const {version} = require('../package.json');
 import {init} from './src/init';
 import store from "./src/store";
 import serialIn from "./src/serialIn";
 
-commander
+let version = '0.0.0';
+if(existsSync(resolve(__dirname, './package.json'))) {
+  ({version} = require('./package.json'));
+} else if(existsSync(resolve(__dirname, '../package.json'))) {
+  ({version} = require('../package.json'));
+}
+
+  commander
   .description(`AskSin Analyzer XS v${version}\nhttps://github.com/psi-4ward/AskSinAnalyzerXS`)
   .version(version, '-v, --version', 'output the current version')
   .option('-l, --list-ports', 'List available serial ports')
@@ -19,20 +27,11 @@ const opts = commander.opts();
 
 store.persistData = false;
 
-// if (!process.argv.slice(2).length) {
-//   commander.help();
-// }
-
 (async function f() {
   if (opts.listPorts) {
     await serialIn.listPorts();
     return;
   }
-
-  // if (!opts.serialPort) {
-  //   console.error('error: required option \'-p, --serial-port <serialPort>\' not specified');
-  //   process.exit(1);
-  // }
 
   store.setConfig('serialPort', opts.serialPort);
   store.setConfig('serialBaudRate', opts.baud);

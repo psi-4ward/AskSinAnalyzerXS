@@ -3,9 +3,7 @@ import path from 'path';
 import express from 'express';
 import WebSocket from 'ws';
 
-
-
-let htdocsPath;
+export let htdocsPath: string;
 if(process.env.HTDOCS_PATH) {
   htdocsPath = process.env.HTDOCS_PATH;
 } else if (process.versions.electron) {
@@ -13,8 +11,6 @@ if(process.env.HTDOCS_PATH) {
 } else {
   htdocsPath = path.resolve(__dirname, '../htdocs');
 }
-
-console.log('Serving UI from', htdocsPath);
 
 const app = express();
 app.use(express.static(htdocsPath));

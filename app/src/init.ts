@@ -1,15 +1,15 @@
-import {httpServer} from './server';
+import {httpServer, htdocsPath} from './server';
 import {AddressInfo} from 'net';
 import {begin} from './websocket-rpc';
 import serialIn from "./serialIn";
 import store from "./store";
-import {fetchDevList} from "./deviceList";
 
 async function listen(): Promise<number> {
   return new Promise((resolve) => {
     httpServer.listen(process.env.PORT || 0, () => {
       const {port} = httpServer.address() as AddressInfo;
       console.log(`Server started on port ${port}`);
+      console.log('Serving UI from', htdocsPath);
       resolve(port);
     });
   });

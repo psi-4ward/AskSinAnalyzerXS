@@ -22,7 +22,7 @@ Die Daten des AskSinSniffer328P werden über einen USB-UART Adapter an den AskSi
 ## Installation
 
 * [Latest release](https://github.com/psi-4ward/AskSinAnalyzerXS/releases/latest)
-* [Develop release](https://github.com/psi-4ward/AskSinAnalyzerXS/releases/tag/untagged-dd93ed541a30cbade0aa) v0.0.0
+* [Develop release](https://github.com/psi-4ward/AskSinAnalyzerXS/releases/tag/0.0.0) 0.0.0
 
 ### AVR Sketch
 

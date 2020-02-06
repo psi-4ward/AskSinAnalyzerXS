@@ -19,13 +19,9 @@
     "productName": "AskSinAnalyerXS",
     "appId": "com.AskSinAnalyzerXS",
     "artifactName": "${name}-${version}-${os}.${ext}",
-    "publish": [
-      {
-        "provider": "github"
-      }
-    ],
+    "publish": false,
     "directories": {
-      "output": "../electron-builds"
+      "output": "../builds"
     },
     "files": [
       "dist/electron.js",
