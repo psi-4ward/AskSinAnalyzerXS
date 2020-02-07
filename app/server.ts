@@ -27,6 +27,10 @@ const opts = commander.opts();
 
 store.persistData = false;
 
+if(!process.env.PORT) {
+  process.env.PORT = "8081";
+}
+
 (async function f() {
   if (opts.listPorts) {
     await serialIn.listPorts();
