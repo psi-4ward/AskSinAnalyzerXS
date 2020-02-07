@@ -12,6 +12,7 @@ execSync(`rm -rf ${target}`);
 execSync(`mkdir -p ${target}`);
 execSync(`cp -a ${ appDist }/* ${target}`);
 execSync(`cp -a ${ uiDist } ${target}/`);
+execSync(`cp ${ path.resolve(__dirname, '../../README.md') } ${target}/`);
 
 delete pkg.build;
 delete pkg.scripts;
@@ -24,6 +25,5 @@ pkg.bin = {
 fs.writeFileSync(target + '/package.json', JSON.stringify(pkg, null, 2));
 
 execSync(`cd ${path.resolve(target, '..')} && tar czf ${dirName}.tar.gz ${dirName}`);
-// execSync(`rm -rf ${target}`);
 
 console.log(`${ dirName }.tar.gz created.`);
