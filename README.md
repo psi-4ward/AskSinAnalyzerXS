@@ -38,8 +38,16 @@ Tipp: Der AskSinAnalyzerXS gibt einige Debug-Informationen auf der Commando-Zeil
 
 Der AskSinAnalyzerXS kann auch als Node.js Anwendung betrieben werden was z.B. auf einem Server sinnvoll sein kann.
 
-Hierzu ist ein eigener Build geplant aber aktuell noch nicht umgesetzt.
+```bash
+$ npm i -g asksin-analyzer-xs
+$ asksin-analyzer-xs
+Detected SerialPort: /dev/ttyUSB0 (FTDI)
+Server started on port 8081
+```
 
+Die WebUI kann über den Browser auf [http://localhost:8081](http://localhost:8081) aufgerufen werden.
+
+* Der develop-build des master-Branch ist **nicht** als npm-Paket verfügbar.
 
 ## Konfiguration
 

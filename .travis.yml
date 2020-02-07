@@ -26,15 +26,14 @@ jobs:
         - (cd app && npm ci && npm run tsc && npm run electron:build -- -m)
         - (cd app && node scripts/make-node-pkg.js) ;
       before_deploy:
-        - >
-          [ -n "$TRAVIS_TAG" ] && export TRAVIS_TAG=0.0.0 || true ;
-          cd builds/asksin-analyzer-xs-$TRAVIS_TAG-node ;
-          [ "$TRAVIS_TAG" == "0.0.0" ] && export NPM_TAG=next || export NPM_TAG=$TRAVIS_TAG ;
+        - cd builds/asksin-analyzer-xs-*-node
+        - echo TravisTag=x${TRAVIS_TAG}x
       deploy:
         provider: npm
         api_token: $NPM_API_TOKEN
-        tag: $NPM_TAG
         edge: true
+        on:
+          condition: '"$TRAVIS_TAG" != "0.0.0"'
 
     - os: linux
       services: docker
@@ -59,7 +58,6 @@ jobs:
             (cd app && npm ci && npm run tsc && npm run electron:build -- -lw) ;
             chown -R $UID /root/.cache/electron*
           "
-        # TODO: npm publish
 
 before_script:
   - export VUE_APP_COMMIT_HASH=$(git log --pretty=format:'%h' -n 1)
