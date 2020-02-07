@@ -1,7 +1,5 @@
-before_script:
-  - export COMMIT_HASH=$(git log --pretty=format:'%h' -n 1)
-
 jobs:
+  # Build in parallel
   include:
     - os: osx
       osx_image: xcode10.2
@@ -12,12 +10,13 @@ jobs:
         - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
       script:
         # Use 0.0.0 as TRAVIS_TAG if no tag was pushed; used in deploy section
+        # Update version in package.json
         - >
-          [ -n "$TRAVIS_TAG" ] && (cd app && npm version $TRAVIS_TAG) || export TRAVIS_TAG=0.0.0 IS_DEV=yes
+          [ -n "$TRAVIS_TAG" ] && (cd app && npm version $TRAVIS_TAG) || export TRAVIS_TAG=0.0.0
         - echo Current Tag is $TRAVIS_TAG
-        # Update DevTag
+        # Update DevTag 0.0.0 to current master branch
         - >
-          [ "$IS_DEV" == "yes" ]
+          [ "$TRAVIS_TAG" == "0.0.0" ]
           && git pull --tags
           && git tag -f $TRAVIS_TAG
           && git push -f https://$GH_TOKEN@github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_TAG
@@ -25,6 +24,17 @@ jobs:
         # Build
         - (cd ui && npm ci && npm run build)
         - (cd app && npm ci && npm run tsc && npm run electron:build -- -m)
+        - (cd app && node scripts/make-node-pkg.js) ;
+      before_deploy:
+        - >
+          [ -n "$TRAVIS_TAG" ] && export TRAVIS_TAG=0.0.0 || true ;
+          cd builds/asksin-analyzer-xs-$TRAVIS_TAG-node ;
+          [ "$TRAVIS_TAG" == "0.0.0" ] && export NPM_TAG=next || export NPM_TAG=$TRAVIS_TAG ;
+      deploy:
+        provider: npm
+        api_token: $NPM_API_TOKEN
+        tag: $NPM_TAG
+        edge: true
 
     - os: linux
       services: docker
@@ -33,31 +43,37 @@ jobs:
         - rm -rf $HOME/.cache/electron-builder/wine
       script:
         - >
+          [ -n "$TRAVIS_TAG" ] && (cd app && npm version $TRAVIS_TAG) || export TRAVIS_TAG=0.0.0
+        - >
           docker run --rm
-          --env GH_TOKEN=$GH_TOKEN --env COMMIT_HASH=$COMMIT_HASH --env TRAVIS_TAG=$TRAVIS_TAG
+          --env GH_TOKEN=$GH_TOKEN --env VUE_APP_COMMIT_HASH=$VUE_APP_COMMIT_HASH --env TRAVIS_TAG=$TRAVIS_TAG
           -v ${PWD}:/project
           -v ~/.cache/electron:/root/.cache/electron
           -v ~/.cache/electron-builder:/root/.cache/electron-builder
           electronuserland/builder:wine
           /bin/bash -c "
-            [ -n "$TRAVIS_TAG" ] && (cd app && npm version $TRAVIS_TAG) || export TRAVIS_TAG=0.0.0 ;
             echo Current Tag is $TRAVIS_TAG ;
+            [ $TRAVIS_TAG != 0.0.0 ] && (cd app && npm version $TRAVIS_TAG) || true ;
+            echo Current Tag is $TRAVIS_TAG Commit Hash is $VUE_APP_COMMIT_HASH ;
             (cd ui && npm ci && npm run build) ;
             (cd app && npm ci && npm run tsc && npm run electron:build -- -lw) ;
-            (cd app && node scripts/make-node-pkg.js) ;
             chown -R $UID /root/.cache/electron*
           "
+        # TODO: npm publish
 
+before_script:
+  - export VUE_APP_COMMIT_HASH=$(git log --pretty=format:'%h' -n 1)
+
+# Create Github Release / Update Assets for existing releases
 deploy:
   provider: releases
   token: $GH_TOKEN
   overwrite: true
   file_glob: true
-  file: builds/asksin-analyzer-xs-*
+  file: builds/asksin-analyzer-xs-*.*
   skip_cleanup: true
   on:
     all_branches: true
-#  prerelease: true
 
 cache:
   directories:

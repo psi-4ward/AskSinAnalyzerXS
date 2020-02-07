@@ -19,6 +19,7 @@
   "include": [
     "interfaces/**/*",
     "src/**/*",
+    "cli.ts",
     "server.ts",
     "electron.ts"
   ]

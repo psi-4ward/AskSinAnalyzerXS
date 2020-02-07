@@ -24,7 +24,7 @@
             <strong>Version: </strong>
             {{ $root.version }}
             <br/>
-            <small>{{ $root.COMMIT_HASH }}</small>
+            <small>Commit: {{ $root.COMMIT_HASH }}</small>
           </q-card-section>
         </q-card>
       </div>

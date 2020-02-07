@@ -44,7 +44,7 @@ const vm = new Vue({
   data() {
     return {
       version,
-      COMMIT_HASH: process.env.COMMIT_HASH || 'dev',
+      COMMIT_HASH: process.env.VUE_APP_COMMIT_HASH || 'master',
       data: service.data,
       settings,
       errors: [],
