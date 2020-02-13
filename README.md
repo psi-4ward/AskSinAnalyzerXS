@@ -19,6 +19,8 @@ Der AskSin Analyzer XS ist eine alternative Implementierung des [AskSinAnalyzer]
 
 Der Aufbau folgt der [allgemeingültige Verdrahtung des Pro Mini mit dem CC1101 Funkmodul](https://asksinpp.de/Grundlagen/01_hardware.html#verdrahtung). Der Config-Taster findet keine Verwendung und die Status-LED ist optional. 
 
+Alternativ funktioniert auch der [nanoCUL CC1101](https://www.nanocul.de/) mit [angepasstem GPIO Mapping](https://homematic-forum.de/forum/viewtopic.php?f=76&t=56395&start=10#p562580).
+
 Die Daten des AskSinSniffer328P werden über einen USB-UART Adapter an den AskSinAnalyzerXS übertragen und dort ausgewertet und visualisiert.
 
 ![AskSinAnalyzerXS-Settings](./docs/AskSinAnalyzerXS-Settings.png)
