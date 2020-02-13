@@ -25,16 +25,13 @@ jobs:
         - (cd ui && npm ci && npm run build)
         - (cd app && npm ci && npm run tsc && npm run electron:build -- -m)
         - (cd app && node scripts/make-node-pkg.js) ;
-      before_deploy:
-        - cd builds/asksin-analyzer-xs-*-node
-        - echo TravisTag=x${TRAVIS_TAG}x
-      deploy:
-        provider: npm
-        api_token: $NPM_API_TOKEN
-        edge: true
-        on:
-          condition: '"$TRAVIS_TAG" != "0.0.0"'
-          all_branches: true
+        # npm deploy (not using travis deploy cause of different conditions)
+        - >
+          if [ "$TRAVIS_TAG" != "0.0.0" ] ; then
+            cd builds/asksin-analyzer-xs-*-node ;
+            npm set //registry.npmjs.org/:_authToken $NPM_API_TOKEN ;
+            npm publish ;
+          fi
 
     - os: linux
       services: docker
@@ -59,6 +56,7 @@ jobs:
             (cd app && npm ci && npm run tsc && npm run electron:build -- -lw) ;
             chown -R $UID /root/.cache/electron*
           "
+        # TODO: npm publish
 
 before_script:
   - export VUE_APP_COMMIT_HASH=$(git log --pretty=format:'%h' -n 1)

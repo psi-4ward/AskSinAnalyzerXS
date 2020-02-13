@@ -2,7 +2,7 @@
 
 Funktelegramm-Dekodierer für den Einsatz in HomeMatic Umgebungen als Desktop-App.
 
-Der AskSin Analyzer XS ist eine alternative Implementierung des [AskSinAnalyzer](https://github.com/jp112sdl/AskSinAnalyzer) ohne ESP32 und Display was die Umsetzung vereinfacht.
+Der AskSin Analyzer XS ist eine alternative Implementierung des [AskSinAnalyzer](https://github.com/jp112sdl/AskSinAnalyzer) ohne ESP32 und Display was die Umsetzung der Hardware vereinfacht.
 
 ![AskSinAnalyzerXS-TelegramList](./docs/AskSinAnalyzerXS-TelegramList.png)
 
@@ -27,6 +27,8 @@ Die Daten des AskSinSniffer328P werden über einen USB-UART Adapter an den AskSi
 ### AVR Sketch
 
 Auf dem ATmega328P wird der [AskSinSniffer328P-Sketch](https://github.com/jp112sdl/AskSinAnalyzer/tree/master/AskSinSniffer328P) geflasht. Das Vorgehen ist auf [asksinpp.de](https://asksinpp.de/Grundlagen/) erläutert.
+
+:point_up: **Achtung:** Die AskSinPP-Library 4.1.2 enthält noch nicht alle nötigen Funktionen für den Sniffer. Es ist der aktuelle [Master](https://github.com/pa-pa/AskSinPP/archive/master.zip) zu verwenden.
 
 ### Electron-App
 
