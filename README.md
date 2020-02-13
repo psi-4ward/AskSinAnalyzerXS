@@ -1,5 +1,10 @@
 # AskSin Analyzer XS
 
+[![latest release](https://img.shields.io/github/v/release/psi-4ward/AskSinAnalyzerXS)](https://github.com/psi-4ward/AskSinAnalyzerXS/releases/latest)
+[![github downloads](https://img.shields.io/github/downloads/psi-4ward/asksinanalyzerxs/total.svg?color=%23a7a71f&label=github%20downloads)](https://github.com/psi-4ward/AskSinAnalyzerXS/releases/latest) 
+[![npm downloads](https://img.shields.io/npm/dt/asksin-analyzer-xs?color=%23a7a71f&label=npm%20downloads)](https://www.npmjs.com/package/asksin-analyzer-xs)
+![build](https://api.travis-ci.org/psi-4ward/AskSinAnalyzerXS.svg?branch=master)
+
 Funktelegramm-Dekodierer für den Einsatz in HomeMatic Umgebungen als Desktop-App.
 
 Der AskSin Analyzer XS ist eine alternative Implementierung des [AskSinAnalyzer](https://github.com/jp112sdl/AskSinAnalyzer) ohne ESP32 und Display was die Umsetzung der Hardware vereinfacht.
