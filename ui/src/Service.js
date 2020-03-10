@@ -1,4 +1,3 @@
-
 export default class Service {
 
   data = {
@@ -15,8 +14,8 @@ export default class Service {
     currentVersion: null,
     latestVersion: null,
     devlistCreated: null,
-    rssiLog: [],
   };
+  rssiLog = [];
   ws = null;
   maxTelegrams = 100;
 
@@ -81,18 +80,18 @@ export default class Service {
   }
 
   addRssiNoise(mtstamp, value) {
-    const lastIndex = this.data.rssiLog.length - 1;
+    const lastIndex = this.rssiLog.length - 1;
     // round milliseconds
     mtstamp = Math.round(mtstamp / 1000) * 1000;
-    if(lastIndex > 0 && this.data.rssiLog[lastIndex][0] === mtstamp) {
-      this.data.rssiLog[lastIndex][1] = Math.round((this.data.rssiLog[lastIndex][1] + value) / 2);
+    if(lastIndex > 0 && this.rssiLog[lastIndex][0] === mtstamp) {
+      this.rssiLog[lastIndex][1] = Math.round((this.rssiLog[lastIndex][1] + value) / 2);
     } else {
-      this.data.rssiLog.push([mtstamp, value]);
+      this.rssiLog.push([mtstamp, value]);
     }
 
     // Cap collection
-    if (this.data.rssiLog.length > this.maxTelegrams) {
-      this.data.rssiLog.splice(0, this.data.rssiLog.length - this.maxTelegrams);
+    if (this.rssiLog.length > this.maxTelegrams) {
+      this.rssiLog.splice(0, this.rssiLog.length - this.maxTelegrams);
     }
   }
 

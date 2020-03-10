@@ -14,10 +14,6 @@
         type: Array,
         required: true
       },
-      rssiLog: {
-        type: Array,
-        required: true
-      },
     },
 
     updateInterval: null,
@@ -126,8 +122,9 @@
           cnt++;
           m.set(t.tstamp * 1000, cnt);
         });
+        // Highstock seems to be buggy with zoom-vals causing duplicated data
         this.hightchart.series[0].setData(Array.from(m), false);
-        this.hightchart.series[1].setData(this.rssiLog, false);
+        this.hightchart.series[1].setData([...this.$service.rssiLog], false);
         this.hightchart.redraw();
       },
     }
