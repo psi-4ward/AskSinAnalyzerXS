@@ -25,7 +25,7 @@ if(existsSync(resolve(__dirname, './package.json'))) {
 
 const opts = commander.opts();
 
-store.persistData = false;
+// store.persistData = false;
 
 if(!process.env.PORT) {
   process.env.PORT = "8081";
@@ -37,10 +37,10 @@ if(!process.env.PORT) {
     return;
   }
 
-  store.setConfig('serialPort', opts.serialPort);
-  store.setConfig('serialBaudRate', opts.baud);
-  store.setConfig('isCCU', opts.ccu);
-  store.setConfig('deviceListUrl', opts.url);
+  opts.serialPort && store.setConfig('serialPort', opts.serialPort);
+  opts.baud && store.setConfig('serialBaudRate', opts.baud);
+  opts.ccu && store.setConfig('isCCU', opts.ccu);
+  opts.url && store.setConfig('deviceListUrl', opts.url);
 
   await init();
 })();
