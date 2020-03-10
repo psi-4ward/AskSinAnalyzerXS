@@ -69,7 +69,7 @@
         </td>
         <td class="text-right">{{ v.len }}</td>
         <td class="text-right">{{ v.cnt }}</td>
-        <td class="text-left">{{ v.typ }}</td>
+        <td class="text-left">{{ v.type }}</td>
         <td class="text-left">
           <flag-chip v-for="flag in v.flags" :key="flag" :value="flag"/>
         </td>
