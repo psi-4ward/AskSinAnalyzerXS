@@ -1,5 +1,10 @@
 # AskSin Analyzer XS
 
+[![latest release](https://img.shields.io/github/v/release/psi-4ward/AskSinAnalyzerXS)](https://github.com/psi-4ward/AskSinAnalyzerXS/releases/latest)
+[![github downloads](https://img.shields.io/github/downloads/psi-4ward/asksinanalyzerxs/total.svg?color=%23a7a71f&label=github%20downloads)](https://github.com/psi-4ward/AskSinAnalyzerXS/releases/latest) 
+[![npm downloads](https://img.shields.io/npm/dt/asksin-analyzer-xs?color=%23a7a71f&label=npm%20downloads)](https://www.npmjs.com/package/asksin-analyzer-xs)
+![build](https://api.travis-ci.org/psi-4ward/AskSinAnalyzerXS.svg?branch=master)
+
 Funktelegramm-Dekodierer für den Einsatz in HomeMatic Umgebungen als Desktop-App.
 
 Der AskSin Analyzer XS ist eine alternative Implementierung des [AskSinAnalyzer](https://github.com/jp112sdl/AskSinAnalyzer) ohne ESP32 und Display was die Umsetzung der Hardware vereinfacht.
@@ -13,6 +18,8 @@ Der AskSin Analyzer XS ist eine alternative Implementierung des [AskSinAnalyzer]
 * USB-UART Adapter (FTDI, CP2102, etc)
 
 Der Aufbau folgt der [allgemeingültige Verdrahtung des Pro Mini mit dem CC1101 Funkmodul](https://asksinpp.de/Grundlagen/01_hardware.html#verdrahtung). Der Config-Taster findet keine Verwendung und die Status-LED ist optional. 
+
+Alternativ funktioniert auch der [nanoCUL CC1101](https://www.nanocul.de/) mit [angepasstem GPIO Mapping](https://homematic-forum.de/forum/viewtopic.php?f=76&t=56395&start=10#p562580).
 
 Die Daten des AskSinSniffer328P werden über einen USB-UART Adapter an den AskSinAnalyzerXS übertragen und dort ausgewertet und visualisiert.
 
