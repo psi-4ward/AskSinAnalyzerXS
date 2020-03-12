@@ -4,7 +4,6 @@ import {init} from './src/init';
 import * as path from "path";
 
 store.init(app.getPath('userData'));
-console.log('UserData-Path:', app.getPath('userData'));
 
 function createWindow(url: string) {
   const {width, height} = screen.getPrimaryDisplay().workAreaSize;

@@ -20,7 +20,8 @@ class Store {
   persistData: boolean = true;
 
   init(appPath: string | null) {
-    if(appPath) this.appPath = appPath;
+    if(appPath) this.appPath = path.resolve(appPath);
+    console.log('Data-Path:', this.appPath);
     if (fs.existsSync(this.appPath + '/userdata.json')) {
       const userConf = JSON.parse(fs.readFileSync(this.appPath + '/userdata.json', 'utf-8'));
       this.config = {

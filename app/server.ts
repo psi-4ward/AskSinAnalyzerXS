@@ -21,6 +21,7 @@ commander
   .option('-u, --url <deviceListUrl>', 'Host or IP of the CCU or URL to fetch the device-list')
   .option('-c, --ccu <bool>', 'Fetch the device-list from a CCU',
     arg => !(arg === 'false' || arg === 'no' || arg === '0'), true)
+  .option('-d, --data <string>', 'Directory to store persistent data')
   .parse(process.argv);
 
 const opts = commander.opts();
@@ -35,6 +36,7 @@ if (!process.env.PORT) {
     return;
   }
 
+  opts.data && store.init(opts.data);
   opts.serialPort && store.setConfig('serialPort', opts.serialPort);
   opts.baud && store.setConfig('serialBaudRate', opts.baud);
   opts.ccu && store.setConfig('isCCU', opts.ccu);
