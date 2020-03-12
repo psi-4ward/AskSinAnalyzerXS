@@ -25,7 +25,8 @@
     },
     "files": [
       "dist/electron.js",
-      "dist/**/*"
+      "dist/**/*",
+      "app/logo.jpg"
     ],
     "extraResources": [
       {
@@ -49,7 +50,8 @@
     },
     "win": {
       "target": [
-        "portable"
+        "portable",
+        "zip"
       ]
     }
   },
@@ -69,7 +71,7 @@
     "@types/ws": "^7.2.2",
     "@types/serialport": "^8.0.0",
     "concurrently": "^5.1.0",
-    "electron": "^8.1.1",
+    "electron": "^7.1.14",
     "electron-builder": "^22.4.0",
     "electron-rebuild": "^1.10.0",
     "typescript": "^3.8.3"

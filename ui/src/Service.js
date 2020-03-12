@@ -1,3 +1,12 @@
+function createUuid() {
+  let dt = new Date().getTime();
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    let r = (dt + Math.random() * 16) % 16 | 0;
+    dt = Math.floor(dt / 16);
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+
 export default class Service {
 
   data = {
@@ -8,20 +17,23 @@ export default class Service {
       deviceListUrl: null,
       serialPort: null,
       serialBaudRate: 57600,
-      availableSerialPorts: []
+      availableSerialPorts: [],
+      maxTelegrams: 20000,
+      persistentStorage: {
+        enabled: false,
+        keepDays: 0
+      }
     },
-    errors: [],
+    beErrors: [],
+    feErrors: [],
     currentVersion: null,
     latestVersion: null,
     devlistCreated: null,
+    liveData: true,
   };
   rssiLog = [];
   ws = null;
-  maxTelegrams = 100;
-
-  constructor(maxTelegrams = 20000) {
-    this.maxTelegrams = maxTelegrams;
-  }
+  rpc = new Map();
 
   async openWebsocket() {
     return new Promise((resolve, reject) => {
@@ -30,7 +42,7 @@ export default class Service {
       this.ws = new WebSocket(`ws://${ document.location.host }/ws`);
 
       this.ws.onopen = () => {
-        this.data.errors = [];
+        this.data.beErrors = [];
         resolved = true;
         resolve(this.ws);
       };
@@ -38,33 +50,40 @@ export default class Service {
       this.ws.onerror = (err) => {
         const msg = 'Verbindung zum Analyzer wurde unterbrochen.';
         console.error(err);
-        if(!resolved) {
+        if (!resolved) {
           resolved = true;
           reject(new Error(msg));
         } else {
-          this.data.errors.unshift(msg);
+          this.data.feErrors.unshift(msg);
         }
       };
 
       this.ws.onclose = (err) => {
-        this.data.errors.unshift('Verbindung zum Analyzer wurde getrennt.');
+        this.data.feErrors.unshift('Verbindung zum Analyzer wurde getrennt.');
       };
 
       this.ws.onmessage = msg => {
         let data = JSON.parse(msg.data);
         // console.log('WS-Msg:', data);
         if (!Array.isArray(data)) data = [data];
-        data.forEach(({ type, payload }) => {
-          // console.info(type, payload);
+        data.forEach(({ type, payload, uuid }) => {
+          if (uuid && this.rpc.has(uuid)) {
+            const { resolve, reject } = this.rpc.get(uuid);
+            resolve(payload);
+            this.rpc.delete(uuid);
+            return;
+          }
           switch (type) {
             case 'telegram':
+              if (!this.data.liveData) return;
               this.addTelegram(payload);
               break;
             case 'rssiNoise':
+              if (!this.data.liveData) return;
               this.addRssiNoise(...payload);
               break;
             case 'error':
-              this.data.errors = [payload, ...this.data.errors];
+              this.data.beErrors = payload;
               break;
             case 'config':
               this.data.config = payload;
@@ -75,15 +94,24 @@ export default class Service {
     });
   }
 
-  send(type, payload=null) {
-    this.ws.send(JSON.stringify({type, payload}));
+  send(type, payload = null) {
+    this.ws.send(JSON.stringify({ type, payload }));
+  }
+
+  async req(type, payload = null) {
+    const uuid = createUuid();
+    const promise = new Promise((resolve, reject) => {
+      this.rpc.set(uuid, { resolve, reject });
+    });
+    this.ws.send(JSON.stringify({ type, payload, uuid }));
+    return promise
   }
 
   addRssiNoise(mtstamp, value) {
     const lastIndex = this.rssiLog.length - 1;
     // round milliseconds
     mtstamp = Math.round(mtstamp / 1000) * 1000;
-    if(lastIndex > 0 && this.rssiLog[lastIndex][0] === mtstamp) {
+    if (lastIndex > 0 && this.rssiLog[lastIndex][0] === mtstamp) {
       this.rssiLog[lastIndex][1] = Math.round((this.rssiLog[lastIndex][1] + value) / 2);
     } else {
       this.rssiLog.push([mtstamp, value]);
@@ -111,8 +139,48 @@ export default class Service {
       if (fromName && !devices.has(fromName)) devices.add(fromName);
       if (toName && !devices.has(toName)) devices.add(toName);
     });
-    devices = [...devices].sort((a,b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+    devices = [...devices].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
     this.data.devices.splice(0, this.data.devices.length, ...devices);
+  }
+
+  async loadCsvData(data) {
+    this.data.liveData = false;
+    this.data.devices = [];
+    this.data.telegrams = [];
+    this.rssiLog = [];
+    const lines = data.split(/\n\r?/);
+    const header = lines.shift().split(';');
+    lines.forEach(line => {
+      if (line.length < 10) return;
+      const rows = line.split(';');
+      const res = {};
+      rows.forEach((row, i) => {
+        const fld = header[i];
+        switch (fld) {
+          case 'flags':
+            row = row.split(',');
+            break;
+          case 'cnt':
+          case 'len':
+          case 'rssi':
+            row = parseInt(row, 10);
+            break;
+          case 'fromIsIp':
+          case 'toIsIp':
+            row = row === "true";
+            break;
+        }
+        res[fld] = row
+      });
+      this.addTelegram(res);
+    });
+  }
+
+  enableLiveData() {
+    this.data.devices = [];
+    this.data.telegrams = [];
+    this.rssiLog = [];
+    this.data.liveData = true;
   }
 
   isUpdateAvailable() {

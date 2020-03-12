@@ -63,7 +63,7 @@ export default class SnifferParser extends Transform {
   _transform(line: string, encoding: string, callback: Function) {
     // Messages have to start with ":"
     if (!line.startsWith(':') || !line.endsWith(';')) {
-      console.error('I:', line);
+      console.log('I:', line);
       return callback();
     }
 

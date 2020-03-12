@@ -5,13 +5,11 @@ import {SocketMessage, SocketMessageType} from "../interfaces/SocketMessage";
 import serialIn from "./serialIn";
 import store from './store';
 import {fetchDevList} from "./deviceList";
+import persistentStorage from './persistentStorage';
+import errors from "./errors";
 
-// const dataHistory: SocketMessage<Telegram>[] = [];
-// const rssiHistory: SocketMessage<RssiNoise>[] = [];
-const errors: string[] = [];
-
-export function send(ws: WebSocket, type: SocketMessageType, payload: any = null) {
-  ws.send(JSON.stringify({type: type.toString(), payload}));
+export function send(ws: WebSocket, type: SocketMessageType, payload: any = null, uuid: string = null) {
+  ws.send(JSON.stringify({type: type.toString(), payload, uuid}));
 }
 
 export function broadcast(type: SocketMessageType, payload: any = null) {
@@ -21,46 +19,52 @@ export function broadcast(type: SocketMessageType, payload: any = null) {
   });
 }
 
-export function addError(err: Error) {
-  console.error(err);
-  errors.unshift(err.message);
-  broadcast(SocketMessageType.error, err.message);
-}
+errors.on('change', () => {
+  broadcast(SocketMessageType.error, errors.getErrors());
+});
 
 function serialCloseHandler() {
-  addError(new Error('Serial connection closed.'));
+  errors.add('serialClosed', 'Serial connection closed.');
 }
 
 export async function begin(): Promise<void> {
-  try {
-    errors.splice(0, errors.length);
+  errors.clear();
+  broadcast(SocketMessageType.config, store.getConfigData());
 
-    await fetchDevList().catch(addError);
+  await fetchDevList().catch((err) => {
+    errors.add('devListFetch', `Error fetching device list: ${err.toString()}`)
+  });
 
-    const port = store.getConfig('serialPort');
-    const serialBaudRate = store.getConfig('serialBaudRate');
-    if (!port) throw new Error("No SerialPort configured.");
-    if(serialIn.con) serialIn.con.off('close', serialCloseHandler);
-    const stream = await serialIn.open(port, serialBaudRate);
-    stream.on('data', (data: SocketMessage<any>) => {
-      broadcast(data.type, data.payload);
-      // if(data.type === 'telegram') {
-      //   dataHistory.push(data);
-      //   if (dataHistory.length > 5000) {
-      //     dataHistory.splice(0, dataHistory.length - 5000);
-      //   }
-      // } else if(data.type === 'rssiNoise') {
-      //   rssiHistory.push(data);
-      //   if (rssiHistory.length > 5000) {
-      //     rssiHistory.splice(0, rssiHistory.length - 5000);
-      //   }
-      // }
-    });
-    serialIn.con.on('close', serialCloseHandler);
-    stream.on('error', addError);
-  } catch(e) {
-    addError(e);
+  const port = store.getConfig('serialPort');
+  const serialBaudRate = store.getConfig('serialBaudRate');
+  if (!port) {
+    errors.add('noSerialPortConfigured', "No SerialPort configured.");
+    return;
   }
+
+  let stream;
+  try {
+    if (serialIn.con) serialIn.con.off('close', serialCloseHandler);
+    stream = await serialIn.open(port, serialBaudRate);
+  } catch(e) {
+    errors.add('serialOpen', `Could not open serial port: ${e.toString()}`);
+    return;
+  }
+
+  stream.on('data', (data: SocketMessage<any>) => {
+    broadcast(data.type, data.payload);
+  });
+
+  if(store.getConfig('persistentStorage').enabled) {
+    persistentStorage.enable(stream); // does not reject
+  } else {
+    persistentStorage.disable();
+  }
+
+  serialIn.con.on('close', serialCloseHandler);
+  stream.on('error', (err) => {
+    errors.add('snInStream', `Serial stream error: ${err.toString()}`);
+  });
 }
 
 wsServer.on('connection', (ws: WebSocket) => {
@@ -68,32 +72,43 @@ wsServer.on('connection', (ws: WebSocket) => {
   broadcast(SocketMessageType.config, store.getConfigData());
 
   // Propagate errors
-  errors.forEach(err => send(ws,SocketMessageType.error, err));
+  send(ws,SocketMessageType.error, errors.getErrors());
 
-  ws.on('message', (data: string) => {
-    let type, payload;
+  ws.on('message', async (data: string) => {
+    let type, payload, uuid: string;
     try {
-      ({type, payload} = JSON.parse(data));
+      ({type, payload, uuid} = JSON.parse(data));
     } catch (e) {
       console.error('Could not parse WebSocket message:', data);
       return;
     }
     // RPC
     switch (type) {
-      // case 'history':
-      //   dataHistory.forEach(ws.send.bind(ws));
-      //   rssiHistory.forEach(ws.send.bind(ws));
-      //   break;
-      case 'config':
+      case 'get csv-files':
+        const files = await persistentStorage.getFiles();
+        send(ws, SocketMessageType.csvFiles, files, uuid);
+        break;
+      case 'get config':
         serialIn.listPorts()
           .then(ports => {
             store.setConfig("availableSerialPorts", ports);
-            send(ws, SocketMessageType.config, store.getConfigData());
+            send(ws, SocketMessageType.config, store.getConfigData(), uuid);
           });
         break;
       case 'set config':
         store.setConfigData(payload);
         begin();
+        break;
+      case 'delete error':
+        errors.delete(payload);
+        break;
+      case 'delete csv-file':
+        await persistentStorage.deleteFile(payload);
+        send(ws, SocketMessageType.confirm, true, uuid);
+        break;
+      case 'get csv-content':
+        const content = await persistentStorage.getFileContent(payload);
+        send(ws, SocketMessageType.confirm, content, uuid);
         break;
     }
   });

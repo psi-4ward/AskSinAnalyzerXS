@@ -11,16 +11,8 @@ import './filter';
 import router from './router'
 import Service from './Service';
 
-
-// Load Settings from localStorage
-const defaultSettings = {
-  maxTelegrams: 100000,
-};
-const storedSettings = JSON.parse(localStorage.getItem('AskSinAnalyzer_Settings'));
-const settings = { ...defaultSettings, ...storedSettings };
-
 // Init Service
-const service = new Service(settings.maxTelegrams);
+const service = new Service();
 Vue.prototype.$service = service;
 
 Vue.prototype.$debounce = function(fn, delay) {
@@ -46,8 +38,6 @@ const vm = new Vue({
       version,
       COMMIT_HASH: process.env.VUE_APP_COMMIT_HASH || 'master',
       data: service.data,
-      settings,
-      errors: [],
       timefilter: {
         start: null,
         stop: null
@@ -66,31 +56,11 @@ const vm = new Vue({
 (async function() {
   try {
     await service.openWebsocket();
-    // await espService.fetchVersion();
-    // if(vm.espConfig.updateAvailable) {
-    //   vm.errors.common.push('ESP Update verfügbar.');
-    // }
-    // try {
-    //   const res = await fetch((vm.CDN || 'https://raw.githubusercontent.com/jp112sdl/AskSinAnalyzer/gh-pages/master') + '/commit-hash.txt', { cache: "no-store" });
-    //   if (res.ok) {
-    //     vm.LATEST_COMMIT = (await res.text()).trim();
-    //     if(vm.LATEST_COMMIT !== vm.COMMIT) {
-    //       vm.errors.common.push('WebUI Update verfügbar.');
-    //     }
-    //   } else {
-    //     console.error(new Error(`${ res.status }: ${ res.statusText }`));
-    //   }
-    // }
-    // catch (e) {
-    //   e.message = `Network error while fetching latest commit from Github; ${ e.message }`;
-    //   console.error(e);
-    // }
-
+    // TODO: Update notifier
   } catch (e) {
     console.error(e);
-    vm.errors.unshift(e.toString());
+    vm.data.feErrors.unshift(e.toString());
   }
-
   setTimeout(() => {
     vm.$mount('#app');
   },500);

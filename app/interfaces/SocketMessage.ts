@@ -3,6 +3,8 @@ export enum SocketMessageType {
   rssiNoise = 'rssiNoise',
   config = 'config',
   error = 'error',
+  csvFiles = 'csvFiles',
+  confirm = 'confirm'
 }
 
 export interface SocketMessage<T> {

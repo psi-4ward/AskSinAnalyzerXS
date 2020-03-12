@@ -1,16 +1,6 @@
 <template>
   <div class="page">
-    <div class="row q-col-gutter-md">
-      <div class="col-12 col-md-6">
-        <q-card>
-          <q-card-section>
-            <h2>Einstellungen</h2>
-            <settings/>
-          </q-card-section>
-        </q-card>
-      </div>
-
-    </div>
+    <settings />
   </div>
 </template>
 

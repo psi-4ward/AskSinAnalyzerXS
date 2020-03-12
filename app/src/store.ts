@@ -8,7 +8,12 @@ class Store {
     deviceListUrl: null,
     serialPort: null,
     serialBaudRate: 57600,
-    availableSerialPorts: []
+    availableSerialPorts: [],
+    maxTelegrams: 20000,
+    persistentStorage: {
+      enabled: false,
+      keepFiles: 180
+    }
   };
 
   appPath: string = path.resolve(__dirname, '..');

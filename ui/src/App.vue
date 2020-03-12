@@ -4,7 +4,12 @@
       <q-toolbar>
         <q-toolbar-title class="q-mx-lg q-my-sm gt-xs" style="overflow: visible">
           <router-link to="/">
-            AskSin Analyzer XS
+            <q-avatar rounded class="q-mr-md">
+              <img src="favicon-96x96.png">
+            </q-avatar>
+            <span class="logo-text">
+              AskSin Analyzer XS
+            </span>
           </router-link>
         </q-toolbar-title>
 
@@ -13,6 +18,7 @@
         <q-tabs>
           <q-route-tab icon="dashboard" to="/home" />
           <q-route-tab icon="list" to="/list" />
+          <q-route-tab icon="history" to="/history" />
           <q-route-tab icon="settings" to="/settings" />
           <q-route-tab icon="info" to="/info" />
         </q-tabs>
@@ -24,17 +30,7 @@
     </q-header>
 
     <q-page-container>
-      <div class="page" style="padding-bottom: 0" v-for="err in errors">
-        <q-banner class="text-white bg-red" inline-actions>
-          <template v-slot:avatar>
-            <q-icon name="warning" color="white"/>
-          </template>
-          <span class="text-bold">
-            {{ err }}
-          </span>
-        </q-banner>
-      </div>
-
+      <errors/>
       <transition name="route" mode="out-in" :appear="true">
         <router-view/>
       </transition>
@@ -43,8 +39,10 @@
 </template>
 
 <script>
+  import Errors from './components/Errors';
   export default {
     name: 'App',
+    components: { Errors },
 
     computed: {
       errors() {
@@ -54,11 +52,18 @@
   }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
   .q-toolbar a
     line-height 1;
 
   .q-toolbar__title a
     text-decoration none
     color white
+
+  .logo-text
+    @media (max-width 950px)
+      display none
+
+  .q-tabs__arrow
+    display none !important
 </style>

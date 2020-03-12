@@ -28,6 +28,7 @@ module.exports = {
   chainWebpack: config => {
     config.resolve.alias
       .set('@components', path.join(__dirname, 'src/components'));
+    config.devServer.disableHostCheck = true;
   }
 
   // Variables that start with VUE_APP_ will be statically embedded into the client bundle with webpack.DefinePlugin
