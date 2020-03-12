@@ -75,7 +75,7 @@
             label="Persistente Datenspeicherung verwenden"
           />
           <q-input
-            v-model="cfg.persistentStorage.keepDays"
+            v-model="cfg.persistentStorage.keepFiles"
             outlined
             filled
             type="number"

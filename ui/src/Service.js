@@ -21,7 +21,7 @@ export default class Service {
       maxTelegrams: 20000,
       persistentStorage: {
         enabled: false,
-        keepDays: 0
+        keepFiles: 0
       }
     },
     beErrors: [],
