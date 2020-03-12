@@ -56,7 +56,6 @@ jobs:
             (cd app && npm ci && npm run tsc && npm run electron:build -- -lw) ;
             chown -R $UID /root/.cache/electron*
           "
-        # TODO: npm publish
 
 before_script:
   - export VUE_APP_COMMIT_HASH=$(git log --pretty=format:'%h' -n 1)

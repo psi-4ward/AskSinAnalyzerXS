@@ -4,6 +4,7 @@ import commander from 'commander';
 import {init} from './src/init';
 import store from "./src/store";
 import serialIn from "./src/serialIn";
+import persistentStorage from './src/persistentStorage';
 
 let version = '0.0.0';
 if (existsSync(resolve(__dirname, './package.json'))) {
@@ -44,3 +45,12 @@ if (!process.env.PORT) {
 
   await init();
 })();
+
+// graceful shutdown
+async function shutdown() {
+  console.log('PsiTransfer shutting down');
+  await persistentStorage.closeFD();
+  process.exit(0)
+}
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
