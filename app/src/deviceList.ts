@@ -46,15 +46,14 @@ const exp: DeviceList = {
 
 export async function fetchDevList() {
 
-// TODO: use settings from config
   const deviceListUrl = store.getConfig('deviceListUrl');
   const isCCU = store.getConfig('isCCU');
+
+  if (!deviceListUrl) return;
 
   const url = isCCU
     ? `http://${deviceListUrl}:8181/a.exe?ret=dom.GetObject(ID_SYSTEM_VARIABLES).Get(%22AskSinAnalyzerDevList%22).Value()`
     : deviceListUrl;
-
-  if(!deviceListUrl) return;
 
   return new Promise((resolve, reject) => {
     httpGet(url, (res: IncomingMessage) => {
