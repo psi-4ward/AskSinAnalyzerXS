@@ -12,7 +12,6 @@ class PersistentStorage {
   fd: number | null = null;
   enabled: boolean;
   nextDayTstamp: number | null;
-  storePath: string = store.appPath;
 
   async enable(stream: Stream) {
     this.enabled = true;
@@ -53,7 +52,7 @@ class PersistentStorage {
     if (this.fd) await this.closeFD();
     const d = new Date();
     this.nextDayTstamp = d.setHours(24, 0, 0, 0);
-    const file = path.resolve(this.storePath, this.getCurrentFilename());
+    const file = path.resolve(store.appPath, this.getCurrentFilename());
     console.log('Opening', file, 'for persistent storage.');
     return new Promise(async (resolve) => {
       try {
@@ -78,7 +77,7 @@ class PersistentStorage {
 
   async getFiles() {
     try {
-      let files = await promisify(fs.readdir)(this.storePath);
+      let files = await promisify(fs.readdir)(store.appPath);
       files = files.filter(file => file.match(/^TelegramsXS_.+\.csv$/));
       files.sort();
       return files.reverse();
@@ -89,11 +88,11 @@ class PersistentStorage {
   }
 
   async getFileContent(file: string) {
-    return promisify(fs.readFile)(path.resolve(this.storePath, file), 'utf8');
+    return promisify(fs.readFile)(path.resolve(store.appPath, file), 'utf8');
   }
 
   async deleteFile(fileToDelete: string) {
-    const file = path.resolve(this.storePath, fileToDelete);
+    const file = path.resolve(store.appPath, fileToDelete);
     try {
       await promisify(fs.unlink)(file);
     } catch(err) {

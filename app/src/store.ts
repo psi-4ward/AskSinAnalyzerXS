@@ -19,11 +19,13 @@ class Store {
   appPath: string = path.resolve(__dirname, '..');
   persistData: boolean = true;
 
-  constructor() {
+  init(appPath: string | null) {
+    if(appPath) this.appPath = appPath;
     if (fs.existsSync(this.appPath + '/userdata.json')) {
+      const userConf = JSON.parse(fs.readFileSync(this.appPath + '/userdata.json', 'utf-8'));
       this.config = {
         ...this.config,
-        ...JSON.parse(fs.readFileSync(this.appPath + '/userdata.json', 'utf-8'))
+        ...userConf
       };
     }
   }

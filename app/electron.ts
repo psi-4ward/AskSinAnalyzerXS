@@ -3,7 +3,7 @@ import store from "./src/store";
 import {init} from './src/init';
 import * as path from "path";
 
-store.appPath = app.getPath('userData');
+store.init(app.getPath('userData'));
 console.log('UserData-Path:', app.getPath('userData'));
 
 function createWindow(url: string) {
