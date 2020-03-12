@@ -56,7 +56,10 @@ Server started on port 8081
 
 Die WebUI kann über den Browser auf [http://localhost:8081](http://localhost:8081) aufgerufen werden.
 
-* Der develop-build des master-Branch ist **nicht** als npm-Paket verfügbar.
+* Der develop-build des master-Branch ist **nicht** als npm-Paket verfügbar, kann aber trotzdem direkt installiert werden:
+  ```bash
+  npm i -g https://github.com/psi-4ward/AskSinAnalyzerXS/releases/download/0.0.0/asksin-analyzer-xs-0.0.0-node.tar.gz
+  ```
 
 ## Konfiguration
 
@@ -83,6 +86,12 @@ sub printHMDevs {
 ```
 
 Im AskSinAnalyzerXS ist bei Verwendung vom FHEM die Option `Device-List Backend ist eine CCU` zu deaktivieren und als `Device-List URL` wird der Wert `http://fhem.local:8083/fhem?cmd={printHMDevs()}&XHR=1` eingetragen.
+
+## Debugging / Fehlersuche
+
+1. Der Analyzer gibt Debug-Informationen auf der Kommandozeile aus. Windows-User müssen den `asksin-analyzer-xs-...-win.zip` Build laden und beim Start den Parameter `--enable-logging` anhängen.
+
+2. Die Anwendung besitzt _DevTools_ die über das Menü `View -> Toggle Developer Tools` aufgerufen werden können.
 
 ## Lizenz
 
