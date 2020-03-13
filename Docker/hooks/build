@@ -1,2 +1,6 @@
 #!/bin/bash
+pwd
+ls -l
+echo Tag: $DOCKER_TAG
+echo Image: $IMAGE_NAME
 docker build --build-arg DOCKER_TAG=$DOCKER_TAG -f Docker/Dockerfile -t $IMAGE_NAME .
