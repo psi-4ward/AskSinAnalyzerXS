@@ -111,7 +111,7 @@ class PersistentStorage {
     (await this.getFiles())
       .slice(maxFiles)
       .forEach((file) => {
-        console.log('Delete expired file', file);
+        console.log('Delete expired file', file.name);
         this.deleteFile(file.name);
       });
   }
