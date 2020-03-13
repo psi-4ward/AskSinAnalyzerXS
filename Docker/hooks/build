@@ -1,5 +1,6 @@
 #!/bin/bash
 cd ..
+echo BUILD FOR TAG: $DOCKER_TAG
 if [ "$DOCKER_TAG" != "latest" ] ; then
   docker build --build-arg DOCKER_TAG=$DOCKER_TAG -f Docker/Dockerfile -t $IMAGE_NAME .
 else
