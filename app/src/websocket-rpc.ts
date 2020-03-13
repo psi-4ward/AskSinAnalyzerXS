@@ -19,6 +19,13 @@ export function broadcast(type: SocketMessageType, payload: any = null) {
   });
 }
 
+function broadcastConfig(uuid: string = null) {
+  broadcast(SocketMessageType.config, {
+    ...store.getConfigData(),
+    _appPath: store.appPath
+  });
+}
+
 errors.on('change', () => {
   broadcast(SocketMessageType.error, errors.getErrors());
 });
@@ -29,7 +36,7 @@ function serialCloseHandler() {
 
 export async function begin(): Promise<void> {
   errors.clear();
-  broadcast(SocketMessageType.config, store.getConfigData());
+  broadcastConfig();
 
   await fetchDevList().catch((err) => {
     errors.add('devListFetch', `Error fetching device list: ${err.toString()}`)
@@ -69,7 +76,7 @@ export async function begin(): Promise<void> {
 
 wsServer.on('connection', (ws: WebSocket) => {
   // Propagate config
-  broadcast(SocketMessageType.config, store.getConfigData());
+  broadcastConfig();
 
   // Propagate errors
   send(ws,SocketMessageType.error, errors.getErrors());
@@ -92,7 +99,10 @@ wsServer.on('connection', (ws: WebSocket) => {
         serialIn.listPorts()
           .then(ports => {
             store.setConfig("availableSerialPorts", ports);
-            send(ws, SocketMessageType.config, store.getConfigData(), uuid);
+            send(ws, SocketMessageType.config, {
+              ...store.getConfigData(),
+              _appPath: store.appPath
+            }, uuid);
           });
         break;
       case 'set config':

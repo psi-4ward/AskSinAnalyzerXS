@@ -9,7 +9,7 @@
   "scripts": {
     "tsc": "tsc --build tsconfig.json",
     "tsc:watch": "tsc --build tsconfig.json -w",
-    "server:watch": "HTDOCS_PATH=$(realpath ..)/htdocs PORT=3000 nodemon -w dist -i dist/userdata.json dist/server.js",
+    "server:watch": "HTDOCS_PATH=$(realpath ..)/htdocs PORT=3000 nodemon -w dist dist/server.js -- -d ../tmp",
     "dev": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold\" npm:tsc:watch npm:server:watch",
     "electron": "electron dist/electron.js",
     "electron:build": "electron-builder",

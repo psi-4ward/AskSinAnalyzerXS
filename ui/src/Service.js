@@ -22,7 +22,8 @@ export default class Service {
       persistentStorage: {
         enabled: false,
         keepFiles: 0
-      }
+      },
+      _appPath: null
     },
     beErrors: [],
     feErrors: [],
@@ -123,13 +124,13 @@ export default class Service {
     }
   }
 
-  addTelegram(telegram) {
+  addTelegram(telegram, nocap=false) {
     // round milliseconds
     telegram.tstamp = Math.round(telegram.tstamp / 1000);
     this.data.telegrams.push(telegram);
 
     // Cap collection
-    if (this.data.telegrams.length > this.maxTelegrams) {
+    if (!nocap && this.data.telegrams.length > this.maxTelegrams) {
       this.data.telegrams.splice(0, this.data.telegrams.length - this.maxTelegrams);
     }
 
@@ -152,25 +153,26 @@ export default class Service {
     const header = lines.shift().split(';');
     lines.forEach(line => {
       if (line.length < 10) return;
-      const rows = line.split(';');
+      const cells = line.split(';');
       const res = {};
-      rows.forEach((row, i) => {
+      cells.forEach((cell, i) => {
         const fld = header[i];
         switch (fld) {
           case 'flags':
-            row = row.split(',');
+            cell = cell.split(',');
             break;
+          case 'tstamp':
           case 'cnt':
           case 'len':
           case 'rssi':
-            row = parseInt(row, 10);
+            cell = parseInt(cell, 10);
             break;
           case 'fromIsIp':
           case 'toIsIp':
-            row = row === "true";
+            cell = cell === "true";
             break;
         }
-        res[fld] = row
+        res[fld] = cell;
       });
       this.addTelegram(res);
     });

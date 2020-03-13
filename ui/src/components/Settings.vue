@@ -122,6 +122,7 @@
       handleSubmit() {
         const cfg = { ...this.cfg };
         delete cfg.availableSerialPorts;
+        delete cfg._appPath;
         this.$service.send('set config', cfg);
         this.$router.push('/');
       },

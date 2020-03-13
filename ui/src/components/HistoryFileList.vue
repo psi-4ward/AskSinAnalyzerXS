@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <q-table
       :dense="$q.screen.lt.md"
       title="CSV-Dateien"
@@ -16,9 +16,10 @@
       <template v-slot:top>
         <q-btn color="primary"
           :disable="selected.length<1"
-          label="CSV laden"
-          @click="loadCSV"
-          :loading="loadCsvLoading"
+          label="importieren"
+          @click="importCSV"
+          :loading="importCsvLoading"
+          icon="input"
         />
         <q-btn class="q-ml-sm"
           color="red"
@@ -26,6 +27,7 @@
           label="löschen"
           @click="deleteFiles"
           :loading="deleteLoading"
+          icon="delete_forever"
         />
         <q-space/>
         <q-input dense debounce="300" color="primary" v-model="filter">
@@ -38,10 +40,15 @@
           :disable="$service.data.liveData"
           label="Livedaten streamen"
           @click="enableLiveData()"
+          icon="play_circle_outline"
         />
-
       </template>
     </q-table>
+    <p class="q-mt-md">
+      <q-icon name="info" class="text-primary"/>
+      Speicherort:
+      {{ $service.data.config._appPath }}
+    </p>
   </div>
 </template>
 
@@ -51,7 +58,7 @@
     data() {
       return {
         loading: true,
-        loadCsvLoading: false,
+        importCsvLoading: false,
         deleteLoading: false,
         selected: [],
         pagination: {
@@ -87,13 +94,13 @@
         this.loading = false;
       },
 
-      async loadCSV() {
-        this.loadCsvLoading = true;
+      async importCSV() {
+        this.importCsvLoading = true;
         this.selected.forEach(async ({ name }) => {
           const csvData = await this.$service.req('get csv-content', name);
           await this.$service.loadCsvData(csvData);
         });
-        this.loadCsvLoading = false;
+        this.importCsvLoading = false;
         this.$router.push('/list');
       },
 
