@@ -57,7 +57,7 @@
           />
           <q-toggle
             v-model="cfg.animations"
-            label="Animationen verwenden"
+            label="Chart-Animationen verwenden"
           />
           <div class="q-field__bottom" style="margin-top: 0; padding-top: 0">
             <div class="q-field__messages">
