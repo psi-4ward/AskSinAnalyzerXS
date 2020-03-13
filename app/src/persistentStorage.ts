@@ -80,7 +80,11 @@ class PersistentStorage {
       let files = await promisify(fs.readdir)(store.appPath);
       files = files.filter(file => file.match(/^TelegramsXS_.+\.csv$/));
       files.sort();
-      return files.reverse();
+      files.reverse();
+      return await Promise.all(files.map(async f => ({
+        name: f,
+        size: (await promisify(fs.stat)(path.resolve(store.appPath, f))).size
+      })));
     } catch(e) {
       errors.add('pstore', `Could not fetch file list: ${e.toString()}`);
       return [];
