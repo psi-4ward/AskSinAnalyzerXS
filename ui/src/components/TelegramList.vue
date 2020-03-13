@@ -61,9 +61,9 @@
       </thead>
       <tbody>
       <tr v-for="(v, i) in paginated" :key="i">
-        <td class="text-left">{{ v.tstamp | date }}</td>
-        <td class="text-left" :style="{ color: getDeviceColor(v, 'from') }">{{ v.fromName || v.fromAddr}}</td>
-        <td class="text-left" :style="{ color: getDeviceColor(v, 'to') }">{{ v.toName || v.toAddr }}</td>
+        <td class="text-left" :title="(new Date(v.tstamp*1000)).toLocaleString()">{{ v.tstamp | date }}</td>
+        <td class="text-left" :style="{ color: getDeviceColor(v, 'from') }" :title="v.fromSerial">{{ v.fromName || v.fromAddr}}</td>
+        <td class="text-left" :style="{ color: getDeviceColor(v, 'to') }" :title="v.toSerial">{{ v.toName || v.toAddr }}</td>
         <td class="text-right">
           <rssi-value :value="v.rssi"/>
         </td>
