@@ -124,13 +124,13 @@ export default class Service {
     }
   }
 
-  addTelegram(telegram, nocap=false) {
+  addTelegram(telegram, cap= true) {
     // round milliseconds
     telegram.tstamp = Math.round(telegram.tstamp / 1000);
     this.data.telegrams.push(telegram);
 
     // Cap collection
-    if (!nocap && this.data.telegrams.length > this.maxTelegrams) {
+    if (cap && this.data.telegrams.length > this.maxTelegrams) {
       this.data.telegrams.splice(0, this.data.telegrams.length - this.maxTelegrams);
     }
 
@@ -174,7 +174,7 @@ export default class Service {
         }
         res[fld] = cell;
       });
-      this.addTelegram(res);
+      this.addTelegram(res, false);
     });
   }
 

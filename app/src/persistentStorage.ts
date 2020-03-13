@@ -110,7 +110,7 @@ class PersistentStorage {
     if(maxFiles === 0) return;
     (await this.getFiles())
       .slice(maxFiles)
-      .forEach((file) => this.deleteFile(file));
+      .forEach((file) => this.deleteFile(file.name));
   }
 }
 
