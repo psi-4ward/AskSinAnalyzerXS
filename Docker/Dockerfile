@@ -1,4 +1,4 @@
-# docker run --rm --name analyzer -p 8081:8081 -v $PWD/data:/data --device=/dev/ttyUSB0 --cap-add SYS_PTRACE asksin-analyzer-xs
+# docker run --rm --name analyzer -p 8081:8081 -v $PWD/data:/data --device=/dev/ttyUSB0 psitrax/asksinanalyzer
 FROM node:12-alpine
 MAINTAINER Christoph Wiechert <wio@psitrax.de>
 

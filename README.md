@@ -61,6 +61,15 @@ Die WebUI kann über den Browser auf [http://localhost:8081](http://localhost:80
   npm i -g https://github.com/psi-4ward/AskSinAnalyzerXS/releases/download/0.0.0/asksin-analyzer-xs-0.0.0-node.tar.gz
   ```
 
+### Docker
+
+Der Analyzer XS ist auch als Docker-Image verfügbar. Der Device-Paramter ist entsprechend anzupassen.
+
+```bash
+docker run --rm --name analyzer -p 8081:8081 -v $PWD/data:/data --device=/dev/ttyUSB0 psitrax/asksinanalyzer
+```
+
+
 ## Konfiguration
 
 ### Auflösung von Gerätenamen
