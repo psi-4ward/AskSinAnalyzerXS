@@ -44,7 +44,7 @@
         <td class="text-right">Len</td>
         <td class="text-right">Cnt</td>
         <td class="text-left">
-          <q-btn label="Typ" unelevated no-caps :color="filter.types.length ? 'secondary' : 'grey-7'" title="RSSI Filter">
+          <q-btn label="Typ" unelevated no-caps :color="filter.types.length ? 'secondary' : 'grey-7'" title="Type Filter">
             <q-menu transition-show="jump-down" transition-hide="jump-up">
               <q-list dense>
                 <q-item tag="label" v-for="v in types" :key="v">
@@ -167,7 +167,7 @@
             return crit && v.rssi <= -110;
           });
         }
-        if (this.filter.types.length) result = result.filter(v => this.filter.types.includes(v.typ));
+        if (this.filter.types.length) result = result.filter(v => this.filter.types.includes(v.type));
         return result.reverse();
       },
       paginated() {
@@ -177,7 +177,7 @@
         return Math.ceil(this.filtered.length / this.perPage);
       },
       types() {
-        return [...new Set(this.value.map(v => v.typ))].sort()
+        return [...new Set(this.value.map(v => v.type))].sort()
       }
     },
 
