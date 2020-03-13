@@ -35,7 +35,7 @@ class PersistentStorage {
 
   getCurrentFilename() {
     const d = new Date();
-    return `TelegramsXS_${d.toISOString().slice(0, 10)}.csv`;
+    return `TelegramsXS_${d.getFullYear()}-${('0' + (d.getMonth() + 1)).slice(-2)}-${('0' + d.getDate()).slice(-2)}.csv`;
   }
 
   writeLn(data: string) {
@@ -62,7 +62,7 @@ class PersistentStorage {
           // Add header to new files
           this.writeLn(csvFields.join(';'));
         }
-      } catch(err) {
+      } catch (err) {
         errors.add('pstoreOpen', `Storage open error: ${err.toString()}`);
       }
       resolve();
@@ -85,7 +85,7 @@ class PersistentStorage {
         name: f,
         size: (await promisify(fs.stat)(path.resolve(store.appPath, f))).size
       })));
-    } catch(e) {
+    } catch (e) {
       errors.add('pstore', `Could not fetch file list: ${e.toString()}`);
       return [];
     }
@@ -99,7 +99,7 @@ class PersistentStorage {
     const file = path.resolve(store.appPath, fileToDelete);
     try {
       await promisify(fs.unlink)(file);
-    } catch(err) {
+    } catch (err) {
       console.error(err);
       errors.add('pstoreDelExp', `Storage expired file deletion error: ${err.toString()}`);
     }
@@ -107,7 +107,7 @@ class PersistentStorage {
 
   async deleteExpiredFiles() {
     const maxFiles = store.getConfig('persistentStorage').keepFiles;
-    if(maxFiles === 0) return;
+    if (maxFiles === 0) return;
     (await this.getFiles())
       .slice(maxFiles)
       .forEach((file) => {
@@ -128,7 +128,7 @@ setInterval(
 // garbage collection once 5m after start
 setTimeout(
   () => ps.deleteExpiredFiles(),
-  5*60*1000
+  5 * 60 * 1000
 );
 
 // Singleton

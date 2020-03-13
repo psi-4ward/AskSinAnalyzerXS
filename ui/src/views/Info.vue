@@ -69,7 +69,10 @@
     <q-card flat>
       <q-card-section>
         <div class="tech-logos">
-          <a href="http://vuejs.org" target="_blank" rel="noopener noreferrer">
+          <a href="https://nodejs.org" target="_blank" rel="noopener noreferrer">
+            <img src="/logos/NodeJS.svg"> Node.js
+          </a>
+          <a href="https://vuejs.org" target="_blank" rel="noopener noreferrer">
             <img src="/logos/Vue.js.svg"> Vue.js
           </a>
           <a href="https://quasar.dev" target="_blank" rel="noopener noreferrer">
@@ -77,6 +80,9 @@
           </a>
           <a href="https://www.highcharts.com" target="_blank" rel="noopener noreferrer">
             <img src="/logos/Highcharts.png"> Highcharts
+          </a>
+          <a href="https://www.electronjs.org" target="_blank" rel="noopener noreferrer">
+            <img src="/logos/Electron.png"> Electron
           </a>
         </div>
       </q-card-section>
