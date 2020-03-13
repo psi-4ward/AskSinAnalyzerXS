@@ -110,15 +110,25 @@ class PersistentStorage {
     if(maxFiles === 0) return;
     (await this.getFiles())
       .slice(maxFiles)
-      .forEach((file) => this.deleteFile(file.name));
+      .forEach((file) => {
+        console.log('Delete expired file', file);
+        this.deleteFile(file.name);
+      });
   }
 }
 
 const ps = new PersistentStorage();
 
+// garbage collection every 24h
 setInterval(
   () => ps.deleteExpiredFiles(),
-  3600 * 24 * 1000 // 24h
+  3600 * 24 * 1000
+);
+
+// garbage collection once 5m after start
+setTimeout(
+  () => ps.deleteExpiredFiles(),
+  5*60*1000
 );
 
 // Singleton
