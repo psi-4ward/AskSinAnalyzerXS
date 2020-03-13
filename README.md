@@ -5,11 +5,18 @@
 [![npm downloads](https://img.shields.io/npm/dt/asksin-analyzer-xs?color=%23a7a71f&label=npm%20downloads&)](https://www.npmjs.com/package/asksin-analyzer-xs)
 [![Docker Pulls](https://img.shields.io/docker/pulls/psitrax/asksinanalyzer.svg?color=%23a7a71f&label=docker%20pulls)](https://hub.docker.com/r/psitrax/asksinanalyzer/)
 ![build](https://api.travis-ci.org/psi-4ward/AskSinAnalyzerXS.svg?branch=master)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RTWDCH74TJN54&item_name=AskSinAnalyzer)
 
-Funktelegramm-Dekodierer für den Einsatz in HomeMatic Umgebungen als Desktop-App.
+Funktelegramm-Dekodierer für den Einsatz in HomeMatic Umgebungen.
 
-Der AskSin Analyzer XS ist eine alternative Implementierung des [AskSinAnalyzer](https://github.com/jp112sdl/AskSinAnalyzer) ohne ESP32 und Display was die Umsetzung der Hardware vereinfacht.
+Betrieb ist sowohl als Desktop-Anwendung unter Windows, Mac und Linux möglich sowie auf Servern als Node.js-App oder über Docker.
+
+Der AskSin Analyzer XS ist eine alternative Implementierung des [AskSinAnalyzer](https://github.com/jp112sdl/AskSinAnalyzer) ohne ESP32 und Display was die Umsetzung der Hardware vereinfacht. Es genügt ein AVR (ATMega 328P) mit CC1101 Funkmodul sowie ein USB-UART Adapter.
+
+**Features**:
+* Dekodieren von Homematic Telegrammen
+* Darstellen der RSSI-Noise
+* Langzeitsaufzeichnung der Telegramme
+* Auflösen von Device-Namen über eine CCU oder FHEM
 
 ![AskSinAnalyzerXS-TelegramList](https://raw.githubusercontent.com/psi-4ward/AskSinAnalyzerXS/master/docs/AskSinAnalyzerXS-TelegramList.png)
 
