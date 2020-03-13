@@ -31,6 +31,9 @@
           marginRight: 25,
           animation: true,
         },
+        tooltip: {
+          valueDecimals: 0
+        },
         time: { useUTC: false },
         rangeSelector: {
           inputEnabled: false,
@@ -90,8 +93,9 @@
         },
         series: [
           {
-            name: 'Telegramme pro Sekunde',
+            name: 'Telegramme',
             type: 'column',
+            maxPointWidth: 15,
           },
           {
             name: 'RSSI Noise',
