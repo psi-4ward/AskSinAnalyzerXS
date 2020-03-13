@@ -10,6 +10,7 @@ class Store {
     serialBaudRate: 57600,
     availableSerialPorts: [],
     maxTelegrams: 20000,
+    animations: false,
     persistentStorage: {
       enabled: false,
       keepFiles: 180

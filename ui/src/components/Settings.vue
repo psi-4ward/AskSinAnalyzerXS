@@ -55,6 +55,15 @@
             label="Max.-Telegramme"
             hint="Maximale Anzahl an Telegrammen die vorgehalten werden."
           />
+          <q-toggle
+            v-model="cfg.animations"
+            label="Animationen verwenden"
+          />
+          <div class="q-field__bottom" style="margin-top: 0; padding-top: 0">
+            <div class="q-field__messages">
+              Animationen benötigen zusätzliche Rechenleistung.
+            </div>
+          </div>
         </q-card-section>
       </q-card>
     </div>

@@ -29,7 +29,7 @@
         chart: {
           zoomType: 'x',
           marginRight: 25,
-          animation: true,
+          animation: this.$service.data.config.animations,
         },
         tooltip: {
           valueDecimals: 0

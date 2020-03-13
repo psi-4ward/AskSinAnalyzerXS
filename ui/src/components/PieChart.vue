@@ -44,7 +44,8 @@
           plotBackgroundColor: null,
           plotBorderWidth: null,
           plotShadow: false,
-          type: 'pie'
+          type: 'pie',
+          animation: this.$service.data.config.animations
         },
         title: { text: 'Telegramme pro Device' },
         tooltip: {pointFormat: '{series.name}: <b>{point.y}</b>' },
