@@ -142,6 +142,7 @@ export default class Service {
       if (toName && !devices.has(toName)) devices.add(toName);
     });
     devices = [...devices].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+    devices.unshift('==Unbekannt==');
     this.data.devices.splice(0, this.data.devices.length, ...devices);
   }
 
