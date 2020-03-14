@@ -22,15 +22,18 @@ Der AskSin Analyzer XS ist eine alternative Implementierung des [AskSinAnalyzer]
 
 ## AskSinSniffer328P Hardware
 
-* Arduino Pro Mini 8Mhz 3.3V
-* CC1101 Funkmodul
-* USB-UART Adapter (FTDI, CP2102, etc)
+Die Daten des AskSinSniffer328P werden über einen UART Schnittstelle an den AskSinAnalyzerXS übertragen und dort ausgewertet und visualisiert.
+
+* Sniffer
+  * Arduino Pro Mini 8Mhz 3.3V
+  * CC1101 Funkmodul
+* UART Schnittstelle
+  * USB-UART Adapter (FTDI, CP2102, etc)   
+  * Alternativ kann der Arduino auch [direkt an die UART GPIOs eines RaspberryPi](https://homematic-forum.de/forum/viewtopic.php?f=76&t=56395&start=70#p569429), Tinkerboard etc angeschlossen werden.
 
 Der Aufbau folgt der [allgemeingültige Verdrahtung des Pro Mini mit dem CC1101 Funkmodul](https://asksinpp.de/Grundlagen/01_hardware.html#verdrahtung). Der Config-Taster findet keine Verwendung und die Status-LED ist optional. 
 
 Alternativ funktioniert auch der [nanoCUL CC1101](https://www.nanocul.de/) mit [angepasstem GPIO Mapping](https://homematic-forum.de/forum/viewtopic.php?f=76&t=56395&start=10#p562580).
-
-Die Daten des AskSinSniffer328P werden über einen USB-UART Adapter an den AskSinAnalyzerXS übertragen und dort ausgewertet und visualisiert.
 
 ![AskSinAnalyzerXS-Settings](https://raw.githubusercontent.com/psi-4ward/AskSinAnalyzerXS/master/docs/AskSinAnalyzerXS-Settings.png)
 
@@ -52,7 +55,7 @@ Die Desktop-Anwendung steht für Windows, MacOS und Linux zum Download unter [Re
 
 Tipp: Der AskSinAnalyzerXS gibt einige Debug-Informationen auf der Commando-Zeile aus. Bei Problemen empfiehlt sich also ein Start über ein Terminal. (Bash, cmd).
 
-### Node-App
+### Node-App (npm)
 
 Der AskSinAnalyzerXS kann auch als Node.js Anwendung betrieben werden was z.B. auf einem Server sinnvoll sein kann.
 
