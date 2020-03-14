@@ -70,8 +70,8 @@
               setTimeFilterDebounced(ev.min, ev.max);
             },
             type: 'datetime',
-            ordinal: false,
-          }
+          },
+          ordinal: false,
         },
         yAxis: [
           {
