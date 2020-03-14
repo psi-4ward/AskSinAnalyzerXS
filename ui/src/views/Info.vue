@@ -116,6 +116,29 @@
         </ul>
       </q-card-section>
     </q-card>
+
+    <h2 class="q-mt-xl">Credits</h2>
+    <q-card flat>
+      <q-card-section>
+        <ul style="margin: 0;">
+          <li>
+            <a href="https://github.com/pa-pa" target="_blank" rel="noopener noreferrer">
+              pa-pa:
+            </a>
+            Implementing AskSin++ Library
+          </li>
+          <li>
+            <a href="https://github.com/der-pw" target="_blank" rel="noopener noreferrer">
+             Patrick Wulfert:
+            </a>
+            Testing, Ideas and Hardware contribution
+          </li>
+          <li>
+            HMSteve: Testing
+          </li>
+        </ul>
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 
