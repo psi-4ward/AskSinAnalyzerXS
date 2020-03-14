@@ -6,7 +6,11 @@ import store from "./store";
 import {SocketMessage} from "../interfaces/SocketMessage";
 import errors from "./errors";
 
-const csvFields = ['tstamp', 'rssi', 'len', 'cnt', 'flags', 'type', 'fromAddr', 'toAddr', 'fromName', 'toName', 'fromSerial', 'toSerial', 'toIsIp', 'fromIsIp', 'payload'];
+const csvFields = ['tstamp', 'date', 'rssi', 'len', 'cnt', 'flags', 'type', 'fromAddr', 'toAddr', 'fromName', 'toName', 'fromSerial', 'toSerial', 'toIsIp', 'fromIsIp', 'payload'];
+
+function p(v: string | number) {
+  return ('0' + v).slice(-2);
+}
 
 class PersistentStorage {
   fd: number | null = null;
@@ -23,6 +27,8 @@ class PersistentStorage {
       if (data.payload.tstamp >= this.nextDayTstamp) {
         await this.openFD();
       }
+      const d = new Date(data.payload.tstamp);
+      data.payload.date = `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${(p(d.getHours()))}:${p(d.getMinutes())}:${p(d.getSeconds())}.${('00' + d.getMilliseconds()).slice(-3)}`;
       const res = csvFields.map(fld => data.payload[fld]);
       this.writeLn(res.join(';'));
     });
@@ -35,7 +41,7 @@ class PersistentStorage {
 
   getCurrentFilename() {
     const d = new Date();
-    return `TelegramsXS_${d.getFullYear()}-${('0' + (d.getMonth() + 1)).slice(-2)}-${('0' + d.getDate()).slice(-2)}.csv`;
+    return `TelegramsXS_${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}.csv`;
   }
 
   writeLn(data: string) {

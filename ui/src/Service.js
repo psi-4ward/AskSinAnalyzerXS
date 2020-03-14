@@ -159,6 +159,7 @@ export default class Service {
       const res = {};
       cells.forEach((cell, i) => {
         const fld = header[i];
+        if(fld === 'date') return; // not needed, tstamp is used
         switch (fld) {
           case 'flags':
             cell = cell.split(',');
