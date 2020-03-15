@@ -23,7 +23,7 @@ const htmlEntities = {
 };
 
 function unescapeHTML(str: string): string {
-  return str.replace(/&([^;]+);/g, function(entity, entityCode) {
+  return str.replace(/&([^;]+);/g, function (entity, entityCode) {
     let match;
 
     if (entityCode in htmlEntities) {
@@ -46,28 +46,44 @@ const exp: DeviceList = {
 
 export async function fetchDevList() {
 
-  const deviceListUrl = store.getConfig('deviceListUrl');
+  let deviceListUrl = store.getConfig('deviceListUrl');
   const isCCU = store.getConfig('isCCU');
 
   if (!deviceListUrl) return;
 
-  const url = isCCU
+  let url = isCCU
     ? `http://${deviceListUrl}:8181/a.exe?ret=dom.GetObject(ID_SYSTEM_VARIABLES).Get(%22AskSinAnalyzerDevList%22).Value()`
     : deviceListUrl;
 
   const authMatch = url.match(/(?:https?:\/\/)?([^:]+:[^@]+)@/);
-  const auth = authMatch ? authMatch[1] : null;
+  let auth: string|null = null;
+  if(authMatch) {
+    auth = authMatch[1];
+    deviceListUrl = deviceListUrl.replace(auth+'@', '');
+  }
 
   return new Promise((resolve, reject) => {
     httpGet(url, {auth}, (res: IncomingMessage) => {
+      if(res.statusCode !== 200) {
+        return reject(`${res.statusCode} ${res.statusMessage}`);
+      }
       res.setEncoding(isCCU ? "latin1" : 'utf-8');
       let body = "";
       res.on("data", data => {
         body += data;
       });
       res.on("end", () => {
-        body = unescapeHTML(body.match(/<ret>(.+?)<\/ret>/)[1]);
-        const deviceList = JSON.parse(body) as DeviceListResponse;
+        const bodyJson = body.match(/<ret>(.+?)<\/ret>/);
+        if (!bodyJson) {
+          return reject('Invalid XML');
+        }
+        body = unescapeHTML(bodyJson[1]);
+        let deviceList = null;
+        try {
+          deviceList = JSON.parse(body) as DeviceListResponse;
+        } catch (e) {
+          return reject(e)
+        }
         exp.devices = deviceList.devices;
         exp.createdAt = deviceList.created_at * 1000;
         console.log('Fetched Device List from', deviceListUrl);
