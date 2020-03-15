@@ -4,7 +4,7 @@ export interface Config {
   deviceListUrl: string | null,
   isCCU: boolean,
   serialPort: string | null,
-  serialBaudRate: number,
+  serialBaudRate: number | string,
   availableSerialPorts: PortInfo[],
   maxTelegrams: number,
   animations: boolean,

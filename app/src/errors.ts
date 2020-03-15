@@ -1,4 +1,4 @@
-import EventEmitter from 'events';
+import {EventEmitter} from 'events';
 
 class Errors extends EventEmitter {
   errors = new Map<string, string>();

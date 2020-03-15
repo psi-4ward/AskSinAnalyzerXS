@@ -18,10 +18,10 @@ commander
   .version(version, '-v, --version', 'output the current version')
   .option('-l, --list-ports', 'List available serial ports')
   .option('-p, --serial-port <serialPort>', 'SerialPort')
-  .option('-b, --baud <baudRate>', 'BaudRate of SerialPort', 57600)
+  .option('-b, --baud <baudRate>', 'BaudRate of SerialPort', '57600')
   .option('-u, --url <deviceListUrl>', 'Host or IP of the CCU or URL to fetch the device-list')
   .option('-c, --ccu <bool>', 'Fetch the device-list from a CCU',
-    arg => !(arg === 'false' || arg === 'no' || arg === '0'), true)
+      (arg: string) => !(arg === 'false' || arg === 'no' || arg === '0'), true)
   .option('-d, --data <string>', 'Directory to store persistent data')
   .parse(process.argv);
 

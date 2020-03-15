@@ -43,7 +43,8 @@ export async function begin(): Promise<void> {
   });
 
   const port = store.getConfig('serialPort');
-  const serialBaudRate = store.getConfig('serialBaudRate');
+  // @ts-ignore
+  const serialBaudRate = parseInt(store.getConfig('serialBaudRate'), 10);
   if (!port) {
     errors.add('noSerialPortConfigured', "No SerialPort configured.");
     return;
