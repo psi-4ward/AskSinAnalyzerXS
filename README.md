@@ -81,6 +81,10 @@ Der Analyzer XS ist auch als Docker-Image verfügbar. Der Device-Paramter ist en
 docker run --rm --name analyzer -p 8081:8081 -v $PWD/data:/data --device=/dev/ttyUSB0 psitrax/asksinanalyzer
 ```
 
+### Installation als Debian Service
+
+Unter [Installation als Debian Service](https://github.com/psi-4ward/AskSinAnalyzerXS/docs/Install_as_Debian_Service.md) findet sich eine Anleitung, wie sich die Node-App als Service installieren lässt.
+
 
 ## Konfiguration
 
