@@ -33,7 +33,6 @@ jobs:
             npm publish ;
             cd ../.. ;
           fi
-        - pwd ; ls -l ; ls -l builds
 
     - os: linux
       services: docker
