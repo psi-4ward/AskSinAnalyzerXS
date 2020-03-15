@@ -73,6 +73,8 @@ Die WebUI kann über den Browser auf [http://localhost:8081](http://localhost:80
   npm i -g https://github.com/psi-4ward/AskSinAnalyzerXS/releases/download/0.0.0/asksin-analyzer-xs-0.0.0-node.tar.gz
   ```
 
+* [Anleitung zur Installation als Debian-Service (z.B auf einem Raspberry Pi)](https://github.com/psi-4ward/AskSinAnalyzerXS/blob/master/docs/Install_as_Debian_Service.md)
+
 ### Docker
 
 Der Analyzer XS ist auch als Docker-Image verfügbar. Der Device-Paramter ist entsprechend anzupassen.
