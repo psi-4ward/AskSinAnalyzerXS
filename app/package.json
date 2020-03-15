@@ -61,7 +61,7 @@
     "url": "https://github.com/psi-4ward/AskSinAnalyzerXS"
   },
   "dependencies": {
-    "commander": "^4.1.1",
+    "commander": "^5.0.0",
     "express": "^4.17.1",
     "serialport": "^8.0.7",
     "ws": "^7.2.3"
@@ -72,8 +72,8 @@
     "@types/serialport": "^8.0.0",
     "concurrently": "^5.1.0",
     "electron": "^7.1.14",
-    "electron-builder": "^22.4.0",
-    "electron-rebuild": "^1.10.0",
+    "electron-builder": "^22.4.1",
+    "electron-rebuild": "^1.10.1",
     "typescript": "^3.8.3"
   }
 }
