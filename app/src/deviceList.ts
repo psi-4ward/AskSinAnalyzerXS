@@ -55,9 +55,12 @@ export async function fetchDevList() {
     ? `http://${deviceListUrl}:8181/a.exe?ret=dom.GetObject(ID_SYSTEM_VARIABLES).Get(%22AskSinAnalyzerDevList%22).Value()`
     : deviceListUrl;
 
+  const authMatch = url.match(/(?:https?:\/\/)?([^:]+:[^@]+)@/);
+  const auth = authMatch ? authMatch[1] : null;
+
   return new Promise((resolve, reject) => {
-    httpGet(url, (res: IncomingMessage) => {
-      res.setEncoding(isCCU ? "latin1": 'utf-8');
+    httpGet(url, {auth}, (res: IncomingMessage) => {
+      res.setEncoding(isCCU ? "latin1" : 'utf-8');
       let body = "";
       res.on("data", data => {
         body += data;
