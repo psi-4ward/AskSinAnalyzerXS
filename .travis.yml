@@ -31,7 +31,9 @@ jobs:
             cd builds/asksin-analyzer-xs-*-node ;
             npm set //registry.npmjs.org/:_authToken $NPM_API_TOKEN ;
             npm publish ;
+            cd ../.. ;
           fi
+        - pwd ; ls -l ; ls -l builds
 
     - os: linux
       services: docker
@@ -66,7 +68,7 @@ deploy:
   token: $GH_TOKEN
   overwrite: true
   file_glob: true
-  file: builds/asksin-analyzer-xs-*.*
+  file: $TRAVIS_BUILD_DIR/builds/asksin-analyzer-xs-*.*
   skip_cleanup: true
   on:
     all_branches: true
