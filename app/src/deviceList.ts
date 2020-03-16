@@ -55,7 +55,7 @@ export async function fetchDevList() {
     ? `http://${deviceListUrl}:8181/a.exe?ret=dom.GetObject(ID_SYSTEM_VARIABLES).Get(%22AskSinAnalyzerDevList%22).Value()`
     : deviceListUrl;
 
-  const authMatch = url.match(/(?:https?:\/\/)?([^:]+:[^@]+)@/);
+  const authMatch = deviceListUrl.match(/(?:https?:\/\/)?([^:]+:[^@]+)@/);
   let auth: string|null = null;
   if(authMatch) {
     auth = authMatch[1];
