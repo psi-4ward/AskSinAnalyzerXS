@@ -127,8 +127,6 @@ export default class Service {
   }
 
   addTelegram(telegram, cap= true) {
-    // round milliseconds
-    telegram.tstamp = Math.round(telegram.tstamp / 1000);
     this.data.telegrams.push(telegram);
 
     // Cap collection

@@ -21,8 +21,8 @@
     mounted() {
       const $vm = this;
       const setTimeFilterDebounced = $vm.$debounce((min, max) => {
-        $vm.$root.timefilter.start = Math.floor(min / 1000);
-        $vm.$root.timefilter.stop = Math.ceil(max / 1000);
+        $vm.$root.timefilter.start = min;
+        $vm.$root.timefilter.stop = max;
       }, 500);
 
       this.hightchart = Highcharts.stockChart(this.$refs.chart, {
@@ -122,9 +122,10 @@
       updateData() {
         let m = new Map();
         this.data.forEach(t => {
-          let cnt = m.get(t.tstamp * 1000) || 0;
+          const tstamp = Math.round(t.tstamp / 1000) * 1000;
+          let cnt = m.get(tstamp) || 0;
           cnt++;
-          m.set(t.tstamp * 1000, cnt);
+          m.set(tstamp, cnt);
         });
         // Highstock seems to be buggy with zoom-vals causing duplicated data
         this.hightchart.series[0].setData(Array.from(m), false);

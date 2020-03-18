@@ -46,7 +46,7 @@
         immediate: true,
         handler(tstamp) {
           if (!tstamp) return this.internalValue = '';
-          const d = new Date(tstamp * 1000);
+          const d = new Date(tstamp);
           if (isNaN(d)) return this.internalValue = '';
           this.internalValue = `${ pad(d.getHours()) }:${ pad(d.getMinutes()) }:${ pad(d.getSeconds()) }`
         },
@@ -62,7 +62,7 @@
         const pieces = strTime.split(':').map(v => parseInt(v, 10));
         const d = new Date();
         d.setHours(pieces[0], pieces[1], pieces[2], 0);
-        this.$emit('input', Math.floor(d.getTime() / 1000));
+        this.$emit('input', Math.floor(d.getTime()));
       }
     },
 

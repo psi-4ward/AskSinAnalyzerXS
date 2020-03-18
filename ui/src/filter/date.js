@@ -5,6 +5,6 @@ function pad(v) {
 }
 
 Vue.filter('date', v => {
-  const d = new Date(v * 1000);
+  const d = new Date(v);
   return `${ pad(d.getHours()) }:${ pad(d.getMinutes()) }:${ pad(d.getSeconds()) }`;
 });

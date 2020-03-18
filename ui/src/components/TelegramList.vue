@@ -66,7 +66,7 @@
       </thead>
       <tbody>
       <tr v-for="(v, i) in paginated" :key="i">
-        <td class="text-left" :title="(new Date(v.tstamp*1000)).toLocaleString()">{{ v.tstamp | date }}</td>
+        <td class="text-left" :title="(new Date(v.tstamp)).toLocaleString()">{{ v.tstamp | date }}</td>
         <td class="text-left" :style="{ color: getDeviceColor(v, 'from') }" :title="v.fromSerial">{{ v.fromName || v.fromAddr}}</td>
         <td class="text-left" :style="{ color: getDeviceColor(v, 'to') }" :title="v.toSerial">{{ v.toName || v.toAddr }}</td>
         <td class="text-right">
@@ -196,7 +196,7 @@
           });
         }
         if (this.filter.types.length) result = result.filter(v => this.filter.types.includes(v.type));
-        return result.reverse();
+        return [...result].reverse();
       },
       paginated() {
         return this.filtered.slice((this.currPage - 1) * this.perPage, this.currPage * this.perPage - 1);
