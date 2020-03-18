@@ -50,11 +50,11 @@ jobs:
           -v ~/.cache/electron-builder:/root/.cache/electron-builder
           electronuserland/builder:wine
           /bin/bash -c "
-            echo Current Tag is $TRAVIS_TAG ;
-            [ $TRAVIS_TAG != 0.0.0 ] && (cd app && npm version $TRAVIS_TAG) || true ;
-            echo Current Tag is $TRAVIS_TAG Commit Hash is $VUE_APP_COMMIT_HASH ;
-            (cd ui && npm ci && npm run build) ;
-            (cd app && npm ci && npm run tsc && npm run electron:build -- -lw) ;
+            echo Current Tag is $TRAVIS_TAG &&
+            [ $TRAVIS_TAG != 0.0.0 ] && (cd app && npm version $TRAVIS_TAG) || true &&
+            echo Current Tag is $TRAVIS_TAG Commit Hash is $VUE_APP_COMMIT_HASH &&
+            (cd ui && npm ci && npm run build) &&
+            (cd app && npm ci && npm run tsc && npm run electron:build -- -lw) &&
             chown -R $UID /root/.cache/electron*
           "
 
