@@ -7,7 +7,7 @@ export interface DeviceListResponse {
   devices: Device[]
 }
 
-const htmlEntities = {
+const htmlEntities: {[key: string]: string} = {
   nbsp: ' ',
   cent: '¢',
   pound: '£',
@@ -27,7 +27,6 @@ function unescapeHTML(str: string): string {
     let match;
 
     if (entityCode in htmlEntities) {
-      // @ts-ignore
       return htmlEntities[entityCode];
     } else if (match = entityCode.match(/^#x([\da-fA-F]+)$/)) {
       return String.fromCharCode(parseInt(match[1], 16));

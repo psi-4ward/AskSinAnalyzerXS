@@ -23,7 +23,7 @@ httpServer.on('error', e => {
 export async function init(): Promise<number> {
   const uartPorts = await serialIn.listPorts();
   const storedPort = store.getConfig('serialPort');
-  store.setConfig("availableSerialPorts", uartPorts);
+  store.setConfig("_availableSerialPorts", uartPorts);
   if(storedPort && uartPorts.some((p) => p.path === storedPort)){
     begin();
   }

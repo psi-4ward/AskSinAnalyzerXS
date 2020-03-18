@@ -8,13 +8,14 @@ class Store {
     deviceListUrl: null,
     serialPort: null,
     serialBaudRate: 57600,
-    availableSerialPorts: [],
+    _availableSerialPorts: [],
     maxTelegrams: 20000,
     animations: false,
     persistentStorage: {
       enabled: false,
       keepFiles: 180
-    }
+    },
+    _began: null
   };
 
   appPath: string = path.resolve(__dirname, '..');
@@ -52,8 +53,11 @@ class Store {
 
   private persist() {
     if(!this.persistData) return;
-    const cfg = {...this.config};
-    delete cfg.availableSerialPorts;
+    const cfg  = {...this.config};
+    Object.keys(cfg)
+      .filter(key => key.startsWith('_'))
+      // @ts-ignore
+      .forEach(key => delete cfg[key]);
     fs.writeFileSync(this.appPath + '/userdata.json', JSON.stringify(cfg, null, 2), {encoding: 'utf-8'});
   }
 }

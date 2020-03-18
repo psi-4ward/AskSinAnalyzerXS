@@ -61,6 +61,13 @@
             <span class="flag-chip"><flag-chip value="RPTEN"/></span>
             <span class="flag-desc">Telegram is allowed to be repeated by a repeater.</span>
           </div>
+          <div class="text-bold">DutyCycle</div>
+          <div class="q-mb-md">Der DutyCycle gibt die verbrauchte Sendezeit in Prozent an.
+            Jedes Gerät (für sich) darf 1% einer Stunde den Funk belegen.
+            <br>
+            <q-icon name="warning"/>
+            Der Analyzer muss demnach mindestens eine Stunde laufen um korrekte DC-Werte zu errechnen.
+          </div>
         </div>
       </q-card-section>
     </q-card>

@@ -36,15 +36,13 @@ function serialCloseHandler() {
 
 export async function begin(): Promise<void> {
   errors.clear();
-  broadcastConfig();
 
   await fetchDevList().catch((err) => {
     errors.add('devListFetch', `Error fetching device list: ${err.toString()}`)
   });
 
   const port = store.getConfig('serialPort');
-  // @ts-ignore
-  const serialBaudRate = parseInt(store.getConfig('serialBaudRate'), 10);
+  const serialBaudRate = parseInt(store.getConfig('serialBaudRate') as string, 10);
   if (!port) {
     errors.add('noSerialPortConfigured', "No SerialPort configured.");
     return;
@@ -73,6 +71,9 @@ export async function begin(): Promise<void> {
   stream.on('error', (err) => {
     errors.add('snInStream', `Serial stream error: ${err.toString()}`);
   });
+
+  store.setConfig('_began', Date.now());
+  broadcastConfig();
 }
 
 wsServer.on('connection', (ws: WebSocket) => {
@@ -99,7 +100,7 @@ wsServer.on('connection', (ws: WebSocket) => {
       case 'get config':
         serialIn.listPorts()
           .then(ports => {
-            store.setConfig("availableSerialPorts", ports);
+            store.setConfig("_availableSerialPorts", ports);
             send(ws, SocketMessageType.config, {
               ...store.getConfigData(),
               _appPath: store.appPath

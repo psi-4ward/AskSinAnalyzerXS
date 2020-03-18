@@ -119,7 +119,7 @@
         return this.$service.data.config;
       },
       availableSerialPorts() {
-        return this.cfg.availableSerialPorts
+        return this.cfg._availableSerialPorts
           .map(port => ({
             value: `${ port.path }`,
             manufacturer: port.manufacturer
@@ -130,8 +130,10 @@
     methods: {
       handleSubmit() {
         const cfg = { ...this.cfg };
-        delete cfg.availableSerialPorts;
-        delete cfg._appPath;
+        Object.keys(cfg)
+          .filter(key => key.startsWith('_'))
+          // @ts-ignore
+          .forEach(key => delete cfg[key]);
         this.$service.send('set config', cfg);
         this.$router.push('/');
       },

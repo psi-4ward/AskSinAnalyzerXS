@@ -13,5 +13,6 @@ export interface Telegram {
   toSerial: string,
   toIsIp: boolean,
   fromIsIp: boolean,
+  dc: number,
   payload: string
 }

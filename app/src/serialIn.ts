@@ -1,10 +1,11 @@
 import SerialPort from 'serialport';
 import Stream from 'stream';
 import SnifferParser from './SnifferParser';
+import DutyCyclePerTelegram from "./DutyCyclePerTelegram";
 
 class SerialIn {
   rawStream: Stream | null;
-  telegramStream: Stream | null;
+  dataStream: Stream | null;
   con: SerialPort | null;
 
   async listPorts() {
@@ -24,8 +25,10 @@ class SerialIn {
         if (err) return reject(err);
         console.log(`Connected to ${port}`);
         this.rawStream = this.con.pipe(new SerialPort.parsers.Readline({delimiter: '\n'}));
-        this.telegramStream = this.rawStream.pipe(new SnifferParser());
-        resolve(this.telegramStream);
+        this.dataStream = this.rawStream
+          .pipe(new SnifferParser())
+          .pipe(new DutyCyclePerTelegram());
+        resolve(this.dataStream);
       });
     });
   }

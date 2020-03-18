@@ -4,6 +4,10 @@
       <div>
         {{ filtered.length }} von {{ value.length }} Telegramme
       </div>
+      <div v-if="dcWarning">
+        <q-icon name="warning" color="red"/>
+        {{ dcWarning }}
+      </div>
     </div>
     <q-markup-table>
       <thead>
@@ -43,6 +47,7 @@
         </td>
         <td class="text-right">Len</td>
         <td class="text-right">Cnt</td>
+        <td class="text-right" title="DutyCycle zum Sendezeitpunkt">DC</td>
         <td class="text-left">
           <q-btn label="Typ" unelevated no-caps :color="filter.types.length ? 'secondary' : 'grey-7'" title="Type Filter">
             <q-menu transition-show="jump-down" transition-hide="jump-up">
@@ -69,6 +74,11 @@
         </td>
         <td class="text-right">{{ v.len }}</td>
         <td class="text-right">{{ v.cnt }}</td>
+        <td class="text-right">
+          <a href="#" @click.prevent="openDcModal(v)">
+            {{ v.dc.toFixed(2) }}%
+          </a>
+        </td>
         <td class="text-left">{{ v.type }}</td>
         <td class="text-left">
           <flag-chip v-for="flag in v.flags" :key="flag" :value="flag"/>
@@ -96,6 +106,15 @@
       </label>
     </div>
 
+    <q-dialog v-model="dcModal">
+      <q-card class="q-card-section q-pt-md" style="width: 800px; max-width: 80vw;">
+        <q-btn icon="close" style="float: right; margin-top: -8px; margin-right: 5px" flat round dense v-close-popup/>
+        <duty-cycle-per-device
+          :telegram="dcTelegram"
+          v-if="dcTelegram"
+        />
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -107,11 +126,12 @@
   import FlagChip from './FlagChip';
   import SelectFilter from './filters/SelectFilter';
   import RssiFilter from './filters/RssiFilter';
+  import DutyCyclePerDevice from './DutyCyclePerDevice';
 
   export default {
     name: 'TelegramList',
     components: {
-      RssiValue, FlagChip, SelectFilter, RssiFilter,
+      RssiValue, FlagChip, SelectFilter, RssiFilter, DutyCyclePerDevice,
     },
 
     props: {
@@ -134,7 +154,9 @@
           toName: [],
           rssi: [],
           types: []
-        }
+        },
+        dcModal: false,
+        dcTelegram: null,
       }
     },
 
@@ -144,19 +166,25 @@
         let result = this.value;
         if (start) result = result.filter(v => v.tstamp >= start);
         if (stop) result = result.filter(v => v.tstamp <= stop);
-        if (this.filter.fromName.length) result = result.filter(v => {
-          return this.filter.fromName.includes(v.fromName)
-            || this.filter.fromName.includes('==Unbekannt==') && v.fromName === '';
-        });
-        if (this.filter.fromToName.length) result = result.filter(v => {
-          return this.filter.fromToName.includes(v.fromName)
-            || this.filter.fromToName.includes(v.toName)
-            || this.filter.fromToName.includes('==Unbekannt==') && (v.fromName === '' || v.toName === '');
-        });
-        if (this.filter.toName.length) result = result.filter(v => {
-          return this.filter.toName.includes(v.toName)
-            || this.filter.toName.includes('==Unbekannt==') && v.toName === '';
-        });
+        if (this.filter.fromName.length) {
+          result = result.filter(v => {
+            return this.filter.fromName.includes(v.fromName)
+              || this.filter.fromName.includes('==Unbekannt==') && v.fromName === '';
+          });
+        }
+        if (this.filter.fromToName.length) {
+          result = result.filter(v => {
+            return this.filter.fromToName.includes(v.fromName)
+              || this.filter.fromToName.includes(v.toName)
+              || this.filter.fromToName.includes('==Unbekannt==') && (v.fromName === '' || v.toName === '');
+          });
+        }
+        if (this.filter.toName.length) {
+          result = result.filter(v => {
+            return this.filter.toName.includes(v.toName)
+              || this.filter.toName.includes('==Unbekannt==') && v.toName === '';
+          });
+        }
         if (this.filter.rssi.length) {
           const ok = this.filter.rssi.includes('ok');
           const warn = this.filter.rssi.includes('warn');
@@ -178,7 +206,15 @@
       },
       types() {
         return [...new Set(this.value.map(v => v.type))].sort()
-      }
+      },
+      dcWarning() {
+        const tmp = this.$service.data.telegrams; // register change handler for vue magic
+        if(this.$service.data.liveData && this.$service.data.config._began > Date.now() - 3600000) {
+          return `Der Analyzer läuft seit ${(new Date(this.$service.data.config._began)).toLocaleTimeString()}, der DutyCycle kann zu gering sein!`;
+        } else {
+          return false;
+        }
+      },
     },
 
     methods: {
@@ -187,6 +223,10 @@
         if (item[what + 'IsIp']) return '#027BE3';
         return 'black';
       },
+      openDcModal(telegram) {
+        this.dcTelegram = telegram;
+        this.dcModal = true;
+      }
     }
   }
 </script>

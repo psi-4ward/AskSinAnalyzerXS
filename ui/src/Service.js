@@ -17,14 +17,15 @@ export default class Service {
       deviceListUrl: null,
       serialPort: null,
       serialBaudRate: 57600,
-      availableSerialPorts: [],
+      _availableSerialPorts: [],
       maxTelegrams: 20000,
       animations: false,
       persistentStorage: {
         enabled: false,
         keepFiles: 0
       },
-      _appPath: null
+      _appPath: null,
+      _began: Date.now()
     },
     beErrors: [],
     feErrors: [],
@@ -169,6 +170,9 @@ export default class Service {
           case 'len':
           case 'rssi':
             cell = parseInt(cell, 10);
+            break;
+          case 'dc':
+            cell = parseFloat(cell);
             break;
           case 'fromIsIp':
           case 'toIsIp':

@@ -6,7 +6,7 @@ import store from "./store";
 import {SocketMessage} from "../interfaces/SocketMessage";
 import errors from "./errors";
 
-const csvFields = ['tstamp', 'date', 'rssi', 'len', 'cnt', 'flags', 'type', 'fromAddr', 'toAddr', 'fromName', 'toName', 'fromSerial', 'toSerial', 'toIsIp', 'fromIsIp', 'payload'];
+const csvFields = ['tstamp', 'date', 'rssi', 'len', 'cnt', 'dc', 'flags', 'type', 'fromAddr', 'toAddr', 'fromName', 'toName', 'fromSerial', 'toSerial', 'toIsIp', 'fromIsIp', 'payload'];
 
 function p(v: string | number) {
   return ('0' + v).slice(-2);

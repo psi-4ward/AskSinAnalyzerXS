@@ -5,11 +5,12 @@ export interface Config {
   isCCU: boolean,
   serialPort: string | null,
   serialBaudRate: number | string,
-  availableSerialPorts: PortInfo[],
+  _availableSerialPorts: PortInfo[],
   maxTelegrams: number,
   animations: boolean,
   persistentStorage: {
     enabled: boolean,
     keepFiles: number
-  }
+  },
+  _began: number | null,
 }
