@@ -141,7 +141,13 @@
             Testing, Ideas and Hardware contribution
           </li>
           <li>
-            HMSteve: Testing
+            <a href="https://github.com/stan23" target="_blank" rel="noopener noreferrer">
+              Stan23:
+            </a>
+            Testing, DutyCycle calculation
+          </li>
+          <li>
+            HMSteve, HM42: Testing
           </li>
         </ul>
       </q-card-section>
