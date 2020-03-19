@@ -57,7 +57,7 @@ Raspberry Pi Images basieren oft auf Debian. Hier wird erläutert wie man den An
 
 1. **Systemd Unit erstellen**
 
-    Da der Analyzer als Systemdienst betrieben werden soll wird ein Systemd Unit File erstellt unter `/etc/systemd/system/analyzer.service` mit folgendem Inhalt
+    Da der Analyzer als Systemdienst betrieben werden soll wird ein Systemd Unit File erstellt unter `/etc/systemd/system/analyzer.service` mit folgendem Inhalt:
     
     ```ini
     [Unit]
@@ -75,6 +75,8 @@ Raspberry Pi Images basieren oft auf Debian. Hier wird erläutert wie man den An
     [Install]
     WantedBy=multi-user.target
     ```
+    
+    Ggf. liegt die ausführbare `asksin-analyzer-xs` Datei auch nur unter `/user/bin`. Dies kann mit `which asksin-analyzer-xs` überprüft werden.
     
     In diesem Unit-File gibt die Env-Vart `PORT` den Port für den Analyzer an. Dieser muss aufgrund von Sicherheitsbestimmungen über 1024 sein (privileged ports). Das Argument `-d` gibt den Speicherort der persistenten Daten an, dieser kann natürlich nach belieben angepasst werden. Wichtig ist nur, dass der Benutzer `analyzer` hier Lese- und Schreibrechte hat.
 
