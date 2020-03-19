@@ -38,7 +38,7 @@ export async function begin(): Promise<void> {
   errors.clear();
 
   await fetchDevList().catch((err) => {
-    errors.add('devListFetch', `Error fetching device list: ${err.toString()}`)
+    errors.add('devListFetch', `Error fetching device list: ${err.toString()}`);
   });
 
   const port = store.getConfig('serialPort');
@@ -52,7 +52,7 @@ export async function begin(): Promise<void> {
   try {
     if (serialIn.con) serialIn.con.off('close', serialCloseHandler);
     stream = await serialIn.open(port, serialBaudRate);
-  } catch(e) {
+  } catch (e) {
     errors.add('serialOpen', `Could not open serial port: ${e.toString()}`);
     return;
   }
@@ -61,7 +61,7 @@ export async function begin(): Promise<void> {
     broadcast(data.type, data.payload);
   });
 
-  if(store.getConfig('persistentStorage').enabled) {
+  if (store.getConfig('persistentStorage').enabled) {
     persistentStorage.enable(stream); // does not reject
   } else {
     persistentStorage.disable();
@@ -81,7 +81,7 @@ wsServer.on('connection', (ws: WebSocket) => {
   broadcastConfig();
 
   // Propagate errors
-  send(ws,SocketMessageType.error, errors.getErrors());
+  send(ws, SocketMessageType.error, errors.getErrors());
 
   ws.on('message', async (data: string) => {
     let type, payload, uuid: string;

@@ -1,4 +1,5 @@
 import {get as httpGet, IncomingMessage} from "http";
+import {URL} from 'url';
 import {Device, DeviceList} from "../interfaces/Device";
 import store from "./store";
 
@@ -54,15 +55,8 @@ export async function fetchDevList() {
     ? `http://${deviceListUrl}:8181/a.exe?ret=dom.GetObject(ID_SYSTEM_VARIABLES).Get(%22AskSinAnalyzerDevList%22).Value()`
     : deviceListUrl;
 
-  const authMatch = deviceListUrl.match(/(?:https?:\/\/)?([^:]+:[^@]+)@/);
-  let auth: string|null = null;
-  if(authMatch) {
-    auth = authMatch[1];
-    deviceListUrl = deviceListUrl.replace(auth+'@', '');
-  }
-
   return new Promise((resolve, reject) => {
-    httpGet(url, {auth}, (res: IncomingMessage) => {
+    httpGet(new URL(url), (res: IncomingMessage) => {
       if(res.statusCode !== 200) {
         return reject(`${res.statusCode} ${res.statusMessage}`);
       }
@@ -85,7 +79,7 @@ export async function fetchDevList() {
         }
         exp.devices = deviceList.devices;
         exp.createdAt = deviceList.created_at * 1000;
-        console.log('Fetched Device List from', deviceListUrl);
+        console.log('Fetched Device List from', deviceListUrl.replace(/(?:https?:\/\/)?([^:]+:[^@]+)@/, ''));
         resolve(exp);
       });
     }).on('error', e => reject(e));

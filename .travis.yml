@@ -31,7 +31,9 @@ jobs:
             cd builds/asksin-analyzer-xs-*-node ;
             npm set //registry.npmjs.org/:_authToken $NPM_API_TOKEN ;
             npm publish ;
-            cd ../.. ;
+            cd ..
+            rm -rf asksin-analyzer-xs-*-node
+            cd .. ;
           fi
 
     - os: linux
