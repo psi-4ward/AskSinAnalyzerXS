@@ -68,6 +68,8 @@ Server started on port 8081
 
 Die WebUI kann über den Browser auf [http://localhost:8081](http://localhost:8081) aufgerufen werden.
 
+**Achtung:** Will man _wirklich_ ein npm-install als `root` durchführen ist der Parameter `--unsafe` nötig.
+
 * Der develop-build des master-Branch ist **nicht** als npm-Paket verfügbar, kann aber trotzdem direkt installiert werden:
   ```bash
   npm i -g https://github.com/psi-4ward/AskSinAnalyzerXS/releases/download/0.0.0/asksin-analyzer-xs-0.0.0-node.tar.gz
