@@ -41,29 +41,29 @@
           <div class="text-bold">Flags</div>
           <div class="q-mb-md">
             <span class="flag-chip"><flag-chip value="WKUP"/></span>
-            <span class="flag-desc">Receiver shall stay awake for short time.</span>
+            <span class="flag-desc">Der Empfänger soll noch kurze Zeit wach bleiben.</span>
             <br/>
             <span class="flag-chip"><flag-chip value="WKMEUP"/></span>
-            <span class="flag-desc">Sender indicates that it is still awake for short time.</span>
+            <span class="flag-desc">Der Sender wird noch kurze Zeit wach bleiben.</span>
             <br/>
             <span class="flag-chip"><flag-chip value="BCAST"/></span>
-            <span class="flag-desc">Telegram is a broadcast to all.</span>
+            <span class="flag-desc">Das Telegramm ist ein Broadcast an alle.</span>
             <br/>
             <span class="flag-chip"><flag-chip value="BURST"/></span>
-            <span class="flag-desc">Telegram has been sent with a burst.</span>
+            <span class="flag-desc">Das Telegramm wurde mit einem Burst gesendet.</span>
             <br/>
             <span class="flag-chip"><flag-chip value="BIDI"/></span>
-            <span class="flag-desc">Telegram must be acknowledged by the receiver for bidirectional communication.</span>
+            <span class="flag-desc">Das Telegramm muss vom Empfänger bestätigt werden (bidirektionale Kommunikation).</span>
             <br/>
             <span class="flag-chip"><flag-chip value="RPTED"/></span>
-            <span class="flag-desc">Telegram has already been repeated by a repeater.</span>
+            <span class="flag-desc">Das Telegramm wurde bereits von einem Repeater wiederholt.</span>
             <br/>
             <span class="flag-chip"><flag-chip value="RPTEN"/></span>
-            <span class="flag-desc">Telegram is allowed to be repeated by a repeater.</span>
+            <span class="flag-desc">Das Telegramm darf von einem Repeater wiederholt werden.</span>
           </div>
           <div class="text-bold">DutyCycle</div>
-          <div class="q-mb-md">Jedes einzelne Gerät darf 36 Sekunden einer Stunde (also 1%) den Funk belegen. 
-            Der DutyCycle gibt den verbrauchten Anteil der erlaubten Sendezeit in Prozent an.
+          <div class="q-mb-md">Der DutyCycle gibt die verbrauchte Sendezeit in Prozent an.
+            Jedes Gerät (für sich) darf 1% einer Stunde den Funk belegen.
             <br>
             <q-icon name="warning"/>
             Der Analyzer muss demnach mindestens eine Stunde laufen um korrekte DC-Werte zu errechnen.
