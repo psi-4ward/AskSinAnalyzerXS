@@ -62,8 +62,8 @@
             <span class="flag-desc">Telegram is allowed to be repeated by a repeater.</span>
           </div>
           <div class="text-bold">DutyCycle</div>
-          <div class="q-mb-md">Der DutyCycle gibt die verbrauchte Sendezeit in Prozent an.
-            Jedes Gerät (für sich) darf 1% einer Stunde den Funk belegen.
+          <div class="q-mb-md">Jedes einzelne Gerät darf 36 Sekunden einer Stunde (also 1%) den Funk belegen. 
+            Der DutyCycle gibt den verbrauchten Anteil der erlaubten Sendezeit in Prozent an.
             <br>
             <q-icon name="warning"/>
             Der Analyzer muss demnach mindestens eine Stunde laufen um korrekte DC-Werte zu errechnen.
