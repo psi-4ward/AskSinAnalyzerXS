@@ -50,7 +50,7 @@
       },
       dcWarning() {
         const telegrams = this.$service.data.telegrams;
-        return telegrams[telegrams.length - 1].tstamp - this.telegram.tstamp < 60 * 60 * 1000;
+        return this.telegram.tstamp - telegrams[0].tstamp < 60 * 60 * 1000;
       }
     },
 
