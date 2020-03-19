@@ -36,7 +36,14 @@
           if (t.fromAddr != this.telegram.fromAddr || t.tstamp > this.telegram.tstamp) continue;
           if (t.tstamp < lastTstamp) break;
           if (!data[to]) data[to] = 0;
-          data[to] += (t.len + 1) * 0.81 / 360;
+          let sendTime = 0;
+          if (t.flags.includes('BURST')) {
+            // 360 ms burst instead of 4 bytes preamble
+            sendTime = 360 + (t.len + 7) * 0.81;
+          } else {
+            sendTime = (t.len + 11) * 0.81;
+          }
+          data[to] += sendTime / 360;
         }
         Object.keys(data).forEach(k => data[k] = Math.round(data[k] * 100) / 100);
         return Object.entries(data).map(([name, y]) => ({ name, y }));

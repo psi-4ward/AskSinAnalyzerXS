@@ -20,9 +20,16 @@ export default class DutyCyclePerTelegram extends Transform {
       }
       let data = dcs.get(telegram.fromAddr);
       // Calc DC and update value
-      // len + 1 * 0.81 => transmission time in ms
+      // (len + 11) * 0.81 => transmission time in ms
       // 1% airtime allowed => 36sec * 1000ms/sec is 100% DC
-      const dc = (telegram.len + 1) * 0.81 / 360;
+      let sendTime = 0;
+      if(telegram.flags.includes('BURST')) {
+        // 360 ms burst instead of 4 bytes preamble
+        sendTime = 360 + (telegram.len + 7) * 0.81;
+      } else {
+        sendTime = (telegram.len + 11) * 0.81;
+      }
+      const dc = sendTime / 360;
       data.val += dc;
       // Store tstamp and DC for this sender
       data.counts.push([telegram.tstamp, dc]);
