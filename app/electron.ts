@@ -3,6 +3,7 @@ import store from "./src/store";
 import {init} from './src/init';
 import * as path from "path";
 
+store.config.recentHistoryMins = 0;
 store.init(app.getPath('userData'));
 
 function createWindow(url: string) {
