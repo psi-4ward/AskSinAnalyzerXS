@@ -134,7 +134,8 @@ wsServer.on('connection', (ws: WebSocket) => {
             store.setConfig("_availableSerialPorts", ports);
             send(ws, SocketMessageType.config, {
               ...store.getConfigData(),
-              _appPath: store.appPath
+              _appPath: store.appPath,
+              _mem: process.memoryUsage()
             }, uuid);
           });
         break;

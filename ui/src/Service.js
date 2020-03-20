@@ -26,7 +26,11 @@ export default class Service {
         keepFiles: 0
       },
       _appPath: null,
-      _began: Date.now()
+      _began: Date.now(),
+      _mem: {
+        heapUsed: 0,
+        rss: 0
+      }
     },
     beErrors: [],
     feErrors: [],

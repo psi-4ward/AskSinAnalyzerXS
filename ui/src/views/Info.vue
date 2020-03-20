@@ -21,10 +21,17 @@
       <div class="col-12 col-md-6">
         <q-card flat>
           <q-card-section>
-            <strong>Version: </strong>
-            {{ $root.version }}
-            <br/>
-            <small>Commit: {{ $root.COMMIT_HASH }}</small>
+            <p>
+              <strong>Version: </strong>
+              {{ $root.version }}
+              <br/>
+              <small>Commit: {{ $root.COMMIT_HASH }}</small>
+            </p>
+            <p v-if="$root.data.config._mem">
+              <strong>Memory RSS:</strong> {{ $root.data.config._mem.rss | filesize }}
+              <br/>
+              <strong>Memory Heap:</strong> {{ $root.data.config._mem.heapUsed | filesize }}
+            </p>
           </q-card-section>
         </q-card>
       </div>
@@ -160,7 +167,12 @@
 
   export default {
     name: 'InfoView',
-    components: { FlagChip }
+    components: { FlagChip },
+
+    beforeMount() {
+      this.$service.send('get config');
+    },
+
   }
 </script>
 
