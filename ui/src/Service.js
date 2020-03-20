@@ -19,6 +19,7 @@ export default class Service {
       serialBaudRate: 57600,
       _availableSerialPorts: [],
       maxTelegrams: 20000,
+      recentHistoryMins: 70,
       animations: false,
       persistentStorage: {
         enabled: false,
@@ -81,9 +82,17 @@ export default class Service {
               if (!this.data.liveData) return;
               this.addTelegram(payload);
               break;
+            case 'telegrams':
+              if (!this.data.liveData) return;
+              payload.forEach(telegram => this.addTelegram(telegram));
+              break;
             case 'rssiNoise':
               if (!this.data.liveData) return;
               this.addRssiNoise(...payload);
+              break;
+            case 'rssiNoises':
+              if (!this.data.liveData) return;
+              payload.forEach(rssiNoise => this.addRssiNoise(...rssiNoise));
               break;
             case 'error':
               this.data.beErrors = payload;

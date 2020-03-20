@@ -7,6 +7,10 @@ import store from './store';
 import {fetchDevList} from "./deviceList";
 import persistentStorage from './persistentStorage';
 import errors from "./errors";
+import {Telegram} from "../interfaces/Telegram";
+
+const resetHistory: Telegram[] = [];
+const rssiNoiseHistory: number[][] = [];
 
 export function send(ws: WebSocket, type: SocketMessageType, payload: any = null, uuid: string = null) {
   ws.send(JSON.stringify({type: type.toString(), payload, uuid}));
@@ -58,7 +62,26 @@ export async function begin(): Promise<void> {
   }
 
   stream.on('data', (data: SocketMessage<any>) => {
+    // Broadcast to new data to all socket clients
     broadcast(data.type, data.payload);
+
+    // Store in-memory history data
+    if(store.getConfig('recentHistoryMins') > 0) {
+      if (data.type === SocketMessageType.telegram) {
+        resetHistory.push(data.payload);
+        const lastTestamp = Date.now() - store.getConfig('recentHistoryMins') * 60 * 1000;
+        while (resetHistory[0].tstamp < lastTestamp) {
+          resetHistory.shift();
+        }
+      }
+      if (data.type === SocketMessageType.rssiNoise) {
+        rssiNoiseHistory.push(data.payload);
+        const lastTestamp = Date.now() - store.getConfig('recentHistoryMins') * 60 * 1000;
+        while (rssiNoiseHistory[0][0] < lastTestamp) {
+          rssiNoiseHistory.shift();
+        }
+      }
+    }
   });
 
   if (store.getConfig('persistentStorage').enabled) {
@@ -79,6 +102,10 @@ export async function begin(): Promise<void> {
 wsServer.on('connection', (ws: WebSocket) => {
   // Propagate config
   broadcastConfig();
+
+  // Send histories
+  send(ws, SocketMessageType.telegrams, resetHistory);
+  send(ws, SocketMessageType.rssiNoises, rssiNoiseHistory);
 
   // Propagate errors
   send(ws, SocketMessageType.error, errors.getErrors());
@@ -109,6 +136,10 @@ wsServer.on('connection', (ws: WebSocket) => {
         break;
       case 'set config':
         store.setConfigData(payload);
+        if(payload.recentHistoryMins === 0) {
+          resetHistory.splice(0, resetHistory.length);
+          rssiNoiseHistory.splice(0, rssiNoiseHistory.length);
+        }
         begin();
         break;
       case 'delete error':

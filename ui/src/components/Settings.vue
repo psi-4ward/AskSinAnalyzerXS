@@ -3,7 +3,7 @@
     <div class="col-12 col-md-6">
       <q-card>
         <q-card-section class="q-gutter-md">
-          <h2>Einstellungen</h2>
+          <h2 class="q-mt-none">Einstellungen</h2>
           <q-select
             v-model="cfg.serialPort"
             :options="availableSerialPorts"
@@ -70,12 +70,11 @@
     <div class="col-12 col-md-6">
       <q-card>
         <q-card-section class="q-gutter-md">
-          <h2>Persistente Datenspeicherung</h2>
+          <h2 class="q-mt-none">Persistente Datenspeicherung</h2>
           <div>
             <p>
               Einstellungen für die persistente Speicherung der empfangen Telegramme auf der Festplatte.
-            </p>
-            <p>
+              <br/>
               Pro Tag wird eine CSV-Datei im Format yyyy-mm-dd.csv angelegt.
             </p>
           </div>
@@ -92,6 +91,22 @@
             label="Max.-Dateien"
             hint="Maximale Anzahl an CSV Dateien die vorgehalten werden. Ältere werden gelöscht."
           />
+          <h2 class="q-mt-lg">Recent History</h2>
+          <div>
+            <p>
+              Es werden die Telegramme der letzten x Minuten im Server vorgehalten und beim Öffnen
+              der WebUI sofort angezeigt.
+            </p>
+            <q-input
+              v-model="cfg.recentHistoryMins"
+              outlined
+              filled
+              type="number"
+              min="0"
+              label="Minuten"
+              hint="0 Minuten deaktiviert die in-memory Speicherung."
+            />
+          </div>
         </q-card-section>
       </q-card>
     </div>

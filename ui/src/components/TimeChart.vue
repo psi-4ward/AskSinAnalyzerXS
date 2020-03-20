@@ -114,12 +114,9 @@
       clearTimeout(this.updateInterval);
     },
 
-    data() {
-      return {};
-    },
-
     methods: {
       updateData() {
+        // TODO: Optimize !
         let m = new Map();
         this.data.forEach(t => {
           const tstamp = Math.round(t.tstamp / 1000) * 1000;

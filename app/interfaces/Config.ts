@@ -7,6 +7,7 @@ export interface Config {
   serialBaudRate: number | string,
   _availableSerialPorts: PortInfo[],
   maxTelegrams: number,
+  recentHistoryMins: number,
   animations: boolean,
   persistentStorage: {
     enabled: boolean,

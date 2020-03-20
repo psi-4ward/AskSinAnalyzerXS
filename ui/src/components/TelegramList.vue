@@ -209,8 +209,10 @@
       },
       dcWarning() {
         const tmp = this.$service.data.telegrams; // register change handler for vue magic
-        if(this.$service.data.liveData && this.$service.data.config._began > Date.now() - 3600000) {
-          return `Der Analyzer läuft seit ${(new Date(this.$service.data.config._began)).toLocaleTimeString()}, der DutyCycle kann zu gering sein!`;
+        if(!tmp[0]) return false;
+        const firstTstamp = tmp[0].tstamp;
+        if(firstTstamp > Date.now() - 3600000) {
+          return `Das erste Telegram wurde ${(new Date(firstTstamp)).toLocaleTimeString()} empfangen, der DutyCycle kann zu gering sein!`;
         } else {
           return false;
         }
