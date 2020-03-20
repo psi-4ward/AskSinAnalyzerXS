@@ -4,7 +4,7 @@ class Errors extends EventEmitter {
   errors = new Map<string, string>();
 
   add(key: string, e: Error | String) {
-    console.error(e.toString());
+    console.error(e);
     this.errors.set(key, e.toString());
     this.emit('change');
   }

@@ -16,7 +16,7 @@ async function listen(): Promise<number> {
 }
 
 httpServer.on('error', e => {
-  console.error('ERROR:', e.message);
+  console.error(e);
   process.exit(1);
 });
 

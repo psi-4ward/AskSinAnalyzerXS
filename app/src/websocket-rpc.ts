@@ -43,6 +43,7 @@ export async function begin(): Promise<void> {
 
   await fetchDevList().catch((err) => {
     errors.add('devListFetch', `Error fetching device list: ${err.toString()}`);
+    console.error(err);
   });
 
   const port = store.getConfig('serialPort');
@@ -58,6 +59,7 @@ export async function begin(): Promise<void> {
     stream = await serialIn.open(port, serialBaudRate);
   } catch (e) {
     errors.add('serialOpen', `Could not open serial port: ${e.toString()}`);
+    console.error(e);
     return;
   }
 
@@ -93,6 +95,7 @@ export async function begin(): Promise<void> {
   serialIn.con.on('close', serialCloseHandler);
   stream.on('error', (err) => {
     errors.add('snInStream', `Serial stream error: ${err.toString()}`);
+    console.error(err);
   });
 
   store.setConfig('_began', Date.now());
@@ -116,6 +119,7 @@ wsServer.on('connection', (ws: WebSocket) => {
       ({type, payload, uuid} = JSON.parse(data));
     } catch (e) {
       console.error('Could not parse WebSocket message:', data);
+      console.log(e);
       return;
     }
     // RPC

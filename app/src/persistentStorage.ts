@@ -70,6 +70,7 @@ class PersistentStorage {
         }
       } catch (err) {
         errors.add('pstoreOpen', `Storage open error: ${err.toString()}`);
+        console.error(err);
       }
       resolve();
     });
@@ -93,6 +94,7 @@ class PersistentStorage {
       })));
     } catch (e) {
       errors.add('pstore', `Could not fetch file list: ${e.toString()}`);
+      console.error(e);
       return [];
     }
   }
