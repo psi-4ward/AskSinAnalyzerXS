@@ -76,7 +76,7 @@
         <td class="text-right">{{ v.cnt }}</td>
         <td class="text-right">
           <a href="#" @click.prevent="openDcModal(v)">
-            {{ v.dc.toFixed(2) }}%
+            {{ v.dc.toFixed(1) }}%
           </a>
         </td>
         <td class="text-left">{{ v.type }}</td>

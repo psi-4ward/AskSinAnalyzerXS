@@ -107,6 +107,7 @@
 
       async importCSV() {
         this.importCsvLoading = true;
+        this.$service.clear();
         this.selected.forEach(async ({ name }) => {
           const csvData = await this.$service.req('get csv-content', name);
           await this.$service.loadCsvData(csvData);

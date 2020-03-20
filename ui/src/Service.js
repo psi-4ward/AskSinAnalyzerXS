@@ -145,11 +145,14 @@ export default class Service {
     this.data.devices.splice(0, this.data.devices.length, ...devices);
   }
 
-  async loadCsvData(data) {
-    this.data.liveData = false;
+  clear() {
     this.data.devices = [];
     this.data.telegrams = [];
     this.rssiLog = [];
+  }
+
+  async loadCsvData(data) {
+    this.data.liveData = false;
     const lines = data.split(/\n\r?/);
     const header = lines.shift().split(';');
     lines.forEach(line => {
@@ -184,9 +187,7 @@ export default class Service {
   }
 
   enableLiveData() {
-    this.data.devices = [];
-    this.data.telegrams = [];
-    this.rssiLog = [];
+    this.clear();
     this.data.liveData = true;
   }
 
