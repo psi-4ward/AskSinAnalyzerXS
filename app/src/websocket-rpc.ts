@@ -9,7 +9,7 @@ import persistentStorage from './persistentStorage';
 import errors from "./errors";
 import {Telegram} from "../interfaces/Telegram";
 
-const resetHistory: Telegram[] = [];
+const recentHistory: Telegram[] = [];
 const rssiNoiseHistory: number[][] = [];
 
 export function send(ws: WebSocket, type: SocketMessageType, payload: any = null, uuid: string = null) {
@@ -70,10 +70,10 @@ export async function begin(): Promise<void> {
     // Store in-memory history data
     if(store.getConfig('recentHistoryMins') > 0) {
       if (data.type === SocketMessageType.telegram) {
-        resetHistory.push(data.payload);
+        recentHistory.push(data.payload);
         const lastTestamp = Date.now() - store.getConfig('recentHistoryMins') * 60 * 1000;
-        while (resetHistory[0].tstamp < lastTestamp) {
-          resetHistory.shift();
+        while (recentHistory[0].tstamp < lastTestamp) {
+          recentHistory.shift();
         }
       }
       if (data.type === SocketMessageType.rssiNoise) {
@@ -107,7 +107,7 @@ wsServer.on('connection', (ws: WebSocket) => {
   broadcastConfig();
 
   // Send histories
-  send(ws, SocketMessageType.telegrams, resetHistory);
+  send(ws, SocketMessageType.telegrams, recentHistory);
   send(ws, SocketMessageType.rssiNoises, rssiNoiseHistory);
 
   // Propagate errors
@@ -142,10 +142,14 @@ wsServer.on('connection', (ws: WebSocket) => {
       case 'set config':
         store.setConfigData(payload);
         if(payload.recentHistoryMins === 0) {
-          resetHistory.splice(0, resetHistory.length);
+          recentHistory.splice(0, recentHistory.length);
           rssiNoiseHistory.splice(0, rssiNoiseHistory.length);
         }
         begin();
+        break;
+      case 'get recentHistory':
+        send(ws, SocketMessageType.telegrams, recentHistory, uuid);
+        send(ws, SocketMessageType.rssiNoises, rssiNoiseHistory, uuid);
         break;
       case 'delete error':
         errors.delete(payload);

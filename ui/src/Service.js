@@ -201,6 +201,7 @@ export default class Service {
 
   enableLiveData() {
     this.clear();
+    this.send('get recentHistory');
     this.data.liveData = true;
   }
 
