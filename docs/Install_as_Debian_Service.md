@@ -63,7 +63,7 @@ Raspberry Pi Images basieren oft auf Debian. Hier wird erläutert wie man den An
     [Unit]
     Description=Analyzer for radio telegrams in a HomeMatic environment
     Documentation=https://github.com/psi-4ward/AskSinAnalyzerXS
-    After=network.target
+    After=network-online.target
     
     [Service]
     Environment="PORT=8088"
