@@ -39,7 +39,7 @@ export default class DutyCyclePerTelegram extends Transform {
         data.val -= data.counts[0][1];
         data.counts.shift();
       }
-      obj.payload.dc = Math.round(data.val * 100) / 100;
+      obj.payload.dc = Math.round(data.val * 10) / 10;
       // console.log('DC', telegram.fromName, data.val);
     }
     this.push(obj);
