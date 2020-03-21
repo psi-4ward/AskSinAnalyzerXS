@@ -36,7 +36,7 @@ Der Aufbau folgt der [allgemeingültige Verdrahtung des Pro Mini mit dem CC1101 
 
 Alternativ funktioniert auch der [nanoCUL CC1101](https://www.nanocul.de/) mit [angepasstem GPIO Mapping](https://homematic-forum.de/forum/viewtopic.php?f=76&t=56395&start=10#p562580).
 
-![AskSinAnalyzerXS-Settings](https://raw.githubusercontent.com/psi-4ward/AskSinAnalyzerXS/master/docs/AskSinAnalyzerXS-Settings.png)
+![AskSinAnalyzerXS-DutyCycle](https://raw.githubusercontent.com/psi-4ward/AskSinAnalyzerXS/master/docs/AskSinAnalyzerXS-DutyCycle.png)
 
 
 ## Installation
