@@ -17,6 +17,7 @@ Der AskSin Analyzer XS ist eine alternative Implementierung des [AskSinAnalyzer]
 * Darstellen der RSSI-Noise
 * Langzeitsaufzeichnung der Telegramme
 * Auflösen von Device-Namen über eine CCU oder FHEM
+* [RedMatic support](https://github.com/psi-4ward/AskSinAnalyzerXS/blob/master/docs/NodeRED.md)
 
 ![AskSinAnalyzerXS-TelegramList](https://raw.githubusercontent.com/psi-4ward/AskSinAnalyzerXS/master/docs/AskSinAnalyzerXS-TelegramList.png)
 
