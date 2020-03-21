@@ -34,7 +34,7 @@ if (!process.env.PORT) {
 (async function f() {
   if (opts.listPorts) {
     await serialIn.listPorts();
-    return;
+    process.exit(0);
   }
 
   opts.data && store.init(opts.data);
