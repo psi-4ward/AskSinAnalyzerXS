@@ -25,6 +25,15 @@ export default class Service {
         enabled: false,
         keepFiles: 0
       },
+      rssiNoiseTrigger: {
+        enabled: false,
+        value: -80,
+        timeWindow: 5,
+        action: 'httpPost',
+        actionOpts: {
+          url: ''
+        }
+      },
       _appPath: null,
       _began: Date.now(),
       _mem: {
@@ -102,7 +111,7 @@ export default class Service {
               this.data.beErrors = payload;
               break;
             case 'config':
-              this.data.config = payload;
+              this.data.config = {...this.data.config, ...payload};
               break;
           }
         });

@@ -16,6 +16,15 @@ class Store {
       enabled: false,
       keepFiles: 180
     },
+    rssiNoiseTrigger: {
+      enabled: false,
+      value: -80,
+      timeWindow: 5,
+      action: 'httpPost',
+      actionOpts: {
+        url: ''
+      }
+    },
     _began: null
   };
 

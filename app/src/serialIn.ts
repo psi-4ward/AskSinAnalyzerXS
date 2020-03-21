@@ -2,6 +2,7 @@ import SerialPort from 'serialport';
 import Stream from 'stream';
 import SnifferParser from './SnifferParser';
 import DutyCyclePerTelegram from "./DutyCyclePerTelegram";
+import Trigger from "./Trigger";
 
 class SerialIn {
   rawStream: Stream | null;
@@ -27,7 +28,8 @@ class SerialIn {
         this.rawStream = this.con.pipe(new SerialPort.parsers.Readline({delimiter: '\n'}));
         this.dataStream = this.rawStream
           .pipe(new SnifferParser())
-          .pipe(new DutyCyclePerTelegram());
+          .pipe(new DutyCyclePerTelegram())
+          .pipe(new Trigger());
         resolve(this.dataStream);
       });
     });

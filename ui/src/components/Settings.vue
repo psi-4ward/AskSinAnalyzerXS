@@ -27,7 +27,7 @@
             </template>
           </q-select>
           <q-input
-            v-model="cfg.serialBaudRate"
+            v-model.number="cfg.serialBaudRate"
             outlined
             filled
             type="number"
@@ -47,7 +47,7 @@
             :hint="cfg.isCCU ? 'IP oder Hostname der CCU' : 'URL der Device-List'"
           />
           <q-input
-            v-model="cfg.maxTelegrams"
+            v-model.number="cfg.maxTelegrams"
             outlined
             filled
             type="number"
@@ -83,7 +83,7 @@
             label="Persistente Datenspeicherung verwenden"
           />
           <q-input
-            v-model="cfg.persistentStorage.keepFiles"
+            v-model.number="cfg.persistentStorage.keepFiles"
             outlined
             filled
             type="number"
@@ -91,6 +91,7 @@
             label="Max.-Dateien"
             hint="Maximale Anzahl an CSV Dateien die vorgehalten werden. Ältere werden gelöscht."
           />
+
           <h2 class="q-mt-lg">Recent History</h2>
           <div>
             <p>
@@ -98,7 +99,7 @@
               der WebUI sofort angezeigt.
             </p>
             <q-input
-              v-model="cfg.recentHistoryMins"
+              v-model.number="cfg.recentHistoryMins"
               outlined
               filled
               type="number"
@@ -107,6 +108,9 @@
               hint="0 Minuten deaktiviert die in-memory Speicherung."
             />
           </div>
+
+          <h2 class="q-mt-lg">Alert-Trigger</h2>
+          <trigger/>
         </q-card-section>
       </q-card>
     </div>
@@ -121,9 +125,10 @@
 </template>
 
 <script>
-
+  import Trigger from './Trigger';
   export default {
     name: 'Settings',
+    components: { Trigger },
 
     beforeMount() {
       this.$service.send('get config');

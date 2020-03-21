@@ -13,5 +13,14 @@ export interface Config {
     enabled: boolean,
     keepFiles: number
   },
+  rssiNoiseTrigger: {
+    enabled: boolean,
+    value: number,
+    timeWindow: number,
+    action: 'httpGet' | 'httpPost',
+    actionOpts: {
+      url: string
+    }
+  },
   _began: number | null,
 }
