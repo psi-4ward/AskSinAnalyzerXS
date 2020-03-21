@@ -43,7 +43,7 @@ if (!process.env.PORT) {
   opts.ccu && store.setConfig('isCCU', opts.ccu);
   opts.url && store.setConfig('deviceListUrl', opts.url);
 
-  await init();
+  await init(true);
 })();
 
 // graceful shutdown

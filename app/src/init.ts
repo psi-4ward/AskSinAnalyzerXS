@@ -20,12 +20,17 @@ httpServer.on('error', e => {
   process.exit(1);
 });
 
-export async function init(): Promise<number> {
-  const uartPorts = await serialIn.listPorts();
+export async function init(forcePortOpening: boolean = false): Promise<number> {
   const storedPort = store.getConfig('serialPort');
-  store.setConfig("_availableSerialPorts", uartPorts);
-  if(storedPort && uartPorts.some((p) => p.path === storedPort)){
+  if(forcePortOpening) {
     begin();
+  } else {
+    const uartPorts = await serialIn.listPorts();
+    store.setConfig("_availableSerialPorts", uartPorts);
+    // auto-begin if storedPort is in the liste of available ports
+    if (storedPort && uartPorts.some((p) => p.path === storedPort)) {
+      begin();
+    }
   }
   return listen();
 }
