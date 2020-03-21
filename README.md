@@ -115,7 +115,9 @@ Im AskSinAnalyzerXS ist bei Verwendung vom FHEM die Option `Device-List Backend 
 
 ## Debugging / Fehlersuche
 
-1. Der Analyzer gibt Debug-Informationen auf der Kommandozeile aus. Windows-User müssen den `asksin-analyzer-xs-...-win.zip` Build laden und beim Start den Parameter `--enable-logging` anhängen.
+1. Der Analyzer gibt Debug-Informationen auf der Kommandozeile aus. 
+
+    Windows-User müssen den `asksin-analyzer-xs-...-win.zip` Build laden und beim Start den Parameter `--enable-logging` anhängen.
 
 2. Die Anwendung besitzt _DevTools_ die über das Menü `View -> Toggle Developer Tools` aufgerufen werden können.
 
