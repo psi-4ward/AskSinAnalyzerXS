@@ -22,6 +22,8 @@ Der AskSin Analyzer XS ist eine alternative Implementierung des [AskSinAnalyzer]
 
 ![AskSinAnalyzerXS-TelegramList](https://raw.githubusercontent.com/psi-4ward/AskSinAnalyzerXS/master/docs/AskSinAnalyzerXS-TelegramList.png)
 
+![AskSinAnalyzerXS-DutyCycle](https://raw.githubusercontent.com/psi-4ward/AskSinAnalyzerXS/master/docs/AskSinAnalyzerXS-DutyCycle.png)
+
 ## AskSinSniffer328P Hardware
 
 Die Daten des AskSinSniffer328P werden über einen UART Schnittstelle an den AskSinAnalyzerXS übertragen und dort ausgewertet und visualisiert.
@@ -37,8 +39,9 @@ Der Aufbau folgt der [allgemeingültige Verdrahtung des Pro Mini mit dem CC1101 
 
 Alternativ funktioniert auch der [nanoCUL CC1101](https://www.nanocul.de/) mit [angepasstem GPIO Mapping](https://homematic-forum.de/forum/viewtopic.php?f=76&t=56395&start=10#p562580).
 
-![AskSinAnalyzerXS-DutyCycle](https://raw.githubusercontent.com/psi-4ward/AskSinAnalyzerXS/master/docs/AskSinAnalyzerXS-DutyCycle.png)
+Zudem kann ein kleines Display verbaut werden was den RSSI-Noise Pegel darstellt.
 
+![NanoCul with OLED Display](./docs/NanoCul_with_display.jpg)
 
 ## Installation
 

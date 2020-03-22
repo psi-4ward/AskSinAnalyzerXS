@@ -20,6 +20,7 @@ um den Payload als leserlichen Text zu setzen und anschließend eine E-Mail zu v
 Der AskSin Analyzer XS exposed einen WebSocket der über NodeRED konsumiert werden kann.
 Hier kommt die `websocket in` Node zum Einsatz. In der Node-Konfigruation wird als Typ `Verbinden mit` gewählt 
 und die URL entsprechend dem Server gesetzt auf dem der Analyzer läuft. Z.B. `ws://mein-server:8081`.
+**Wichtig**: Unter Senden/Empfangen wird `gesamte Nachricht` eingestellt, damit die Daten als _Object_ und nicht als _String_ interpretiert werden.
 
 Es werden nun alle Nachrichtenobjekte des Analyzers in den Flow injiziert. Interessant dürften hier vor allem `type=rssiNoise`
 und `type=telegram` sein. Der `payload` besteht aus den Nutzdaten des jeweiligen Typs. Zeitstempel (telegram.tstamp bzw rssiNoise[0])

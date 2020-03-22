@@ -24,7 +24,7 @@
         dense
         type="number"
       />
-      <div>dB ist, dann</div>
+      <div>dBm ist, dann</div>
       <br/>
       <q-select
         filled
