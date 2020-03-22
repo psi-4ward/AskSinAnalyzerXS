@@ -18,7 +18,7 @@ class Store {
     },
     rssiNoiseTrigger: {
       enabled: false,
-      value: -80,
+      value: -100,
       timeWindow: 5,
       action: 'httpPost',
       actionOpts: {
