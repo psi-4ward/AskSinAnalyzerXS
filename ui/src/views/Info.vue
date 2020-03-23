@@ -24,9 +24,14 @@
             <p>
               <strong>Version: </strong>
               {{ $root.version }}
+              <span v-if="updateVersion" class="text-bold q-pl-lg">
+                <q-icon name="warning" color="red"/>
+                Update verfügbar auf {{ updateVersion }}
+              </span>
               <br/>
               <small>Commit: {{ $root.COMMIT_HASH }}</small>
             </p>
+
             <p v-if="$root.data.config._mem">
               <strong>Memory RSS:</strong> {{ $root.data.config._mem.rss | filesize }}
               <br/>
@@ -143,7 +148,7 @@
           </li>
           <li>
             <a href="https://github.com/der-pw" target="_blank" rel="noopener noreferrer">
-             Patrick Wulfert:
+              Patrick Wulfert:
             </a>
             Testing, Ideas and Hardware contribution
           </li>
@@ -169,9 +174,41 @@
     name: 'InfoView',
     components: { FlagChip },
 
+    data() {
+      return {
+        updateVersion: false
+      }
+    },
+
     beforeMount() {
       this.$service.send('get config');
     },
+
+    async mounted() {
+      try {
+        if (this.$root.COMMIT_HASH === 'master') {
+          // nothing in devel mode
+        } else if (this.$root.version === '0.0.0') {
+          const res = await fetch('https://api.github.com/repos/psi-4ward/AskSinAnalyzerXS/commits/master');
+          const latestCommit = (await res.json()).sha;
+          if(!latestCommit.startsWith(this.$root.COMMIT_HASH)) {
+            this.updateVersion = latestCommit.slice(0,7);
+          }
+        } else {
+          const res = await fetch('https://api.github.com/repos/psi-4ward/AskSinAnalyzerXS/releases/latest');
+          const latestVersion = (await res.json()).tag_name;
+          const currentVersion = this.$root.version;
+          const [aU, aL] = latestVersion.split('.');
+          const [bU, bL] = currentVersion.split('.');
+          if (aU > bU || aU === bU && aL > bL) {
+            this.updateVersion = latestVersion;
+          }
+        }
+      }
+      catch (e) {
+        console.warn(e);
+      }
+    }
 
   }
 </script>

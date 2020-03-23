@@ -220,13 +220,4 @@ export default class Service {
     this.data.liveData = true;
   }
 
-  isUpdateAvailable() {
-    return false;
-    const { latestVersion, currentVersion } = this.data.espConfig;
-    if (!latestVersion || !currentVersion) return false;
-    const [aU, aL] = latestVersion.split('.');
-    const [bU, bL] = currentVersion.split('.');
-    return aU > bU || aU === bU && aL > bL;
-  }
-
 }
