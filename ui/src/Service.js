@@ -111,7 +111,7 @@ export default class Service {
               this.data.beErrors = payload;
               break;
             case 'config':
-              this.data.config = {...this.data.config, ...payload};
+              this.data.config = { ...this.data.config, ...payload };
               break;
           }
         });
@@ -148,14 +148,19 @@ export default class Service {
     }
   }
 
-  addTelegram(telegram, cap= true) {
+  addTelegram(telegram, liveData = true) {
     this.data.telegrams.push(telegram);
 
     // Cap collection
-    if (cap && this.data.telegrams.length > this.maxTelegrams) {
-      this.data.telegrams.splice(0, this.data.telegrams.length - this.maxTelegrams);
+    if (liveData) {
+      if (this.data.telegrams.length > this.maxTelegrams) {
+        this.data.telegrams.splice(0, this.data.telegrams.length - this.maxTelegrams);
+      }
+      this.generateDeviceList();
     }
+  }
 
+  generateDeviceList() {
     // Generate unique devices list
     let devices = new Set();
     this.data.telegrams.forEach(({ fromName, toName }) => {
@@ -183,7 +188,7 @@ export default class Service {
       const res = {};
       cells.forEach((cell, i) => {
         const fld = header[i];
-        if(fld === 'date') return; // not needed, tstamp is used
+        if (fld === 'date') return; // not needed, tstamp is used
         switch (fld) {
           case 'flags':
             cell = cell.split(',');
@@ -206,6 +211,7 @@ export default class Service {
       });
       this.addTelegram(res, false);
     });
+    this.generateDeviceList();
   }
 
   enableLiveData() {
