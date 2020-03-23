@@ -13,6 +13,7 @@
   "dependencies": {
     "@quasar/extras": "^1.6.0",
     "core-js": "^3.6.4",
+    "file-saver": "^2.0.2",
     "highcharts": "^7.1.3",
     "quasar": "^1.9.10",
     "vue": "^2.6.11",

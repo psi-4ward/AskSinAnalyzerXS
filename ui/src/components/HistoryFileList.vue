@@ -43,6 +43,11 @@
           icon="play_circle_outline"
         />
       </template>
+      <template v-slot:body-cell-btns="props">
+        <q-td :props="props" style="width: 65px">
+          <q-btn color="primary" icon="save_alt" dense title="download" @click="downloadCsv(props.row.name)" />
+        </q-td>
+      </template>
     </q-table>
     <p class="q-mt-md">
       <q-icon name="info" class="text-primary"/>
@@ -53,6 +58,8 @@
 </template>
 
 <script>
+  import { saveAs } from 'file-saver';
+
   function formatBytes(bytes, decimals = 2) {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -89,6 +96,10 @@
             field: row => row.size,
             format: formatBytes,
           },
+          {
+            name: 'btns',
+            align: 'right',
+          }
         ],
         files: []
       };
@@ -132,6 +143,11 @@
       enableLiveData() {
         this.$service.enableLiveData();
         this.$router.push('/list');
+      },
+
+      async downloadCsv(name) {
+        const csvData = await this.$service.req('get csv-content', name);
+        saveAs(new Blob([csvData], { type: "text/csv;charset=utf-8" }), name);
       }
     }
   }
