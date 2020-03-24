@@ -50,7 +50,8 @@ export default class Service {
   };
   rssiLog = [];
   ws = null;
-  rpc = new Map();
+  rpcResponseMap = new Map();
+  devicesSet = new Set();
 
   async openWebsocket() {
     return new Promise((resolve, reject) => {
@@ -84,10 +85,10 @@ export default class Service {
         // console.log('WS-Msg:', data);
         if (!Array.isArray(data)) data = [data];
         data.forEach(({ type, payload, uuid }) => {
-          if (uuid && this.rpc.has(uuid)) {
-            const { resolve, reject } = this.rpc.get(uuid);
+          if (uuid && this.rpcResponseMap.has(uuid)) {
+            const { resolve, reject } = this.rpcResponseMap.get(uuid);
             resolve(payload);
-            this.rpc.delete(uuid);
+            this.rpcResponseMap.delete(uuid);
             return;
           }
           switch (type) {
@@ -126,7 +127,7 @@ export default class Service {
   async req(type, payload = null) {
     const uuid = createUuid();
     const promise = new Promise((resolve, reject) => {
-      this.rpc.set(uuid, { resolve, reject });
+      this.rpcResponseMap.set(uuid, { resolve, reject });
     });
     this.ws.send(JSON.stringify({ type, payload, uuid }));
     return promise
@@ -153,23 +154,38 @@ export default class Service {
 
     // Cap collection
     if (liveData) {
-      if (this.data.telegrams.length > this.maxTelegrams) {
+      if (this.data.telegrams.length > this.maxTelegrams - 200) {
         this.data.telegrams.splice(0, this.data.telegrams.length - this.maxTelegrams);
+        this.generateDeviceList();
+      } else {
+        this.generateDeviceList(telegram);
       }
-      this.generateDeviceList();
     }
   }
 
-  generateDeviceList() {
+  generateDeviceList(telegram = null) {
     // Generate unique devices list
-    let devices = new Set();
-    this.data.telegrams.forEach(({ fromName, toName }) => {
-      if (fromName && !devices.has(fromName)) devices.add(fromName);
-      if (toName && !devices.has(toName)) devices.add(toName);
+    let telegrams = [telegram];
+    if(telegram === null) {
+      this.devicesSet = new Set(['==Unbekannt==']);
+      telegrams = this.data.telegrams;
+    }
+    let newDeviceAdded = false;
+    telegrams.forEach(({ fromName, toName }) => {
+      if (fromName && !this.devicesSet.has(fromName)) {
+        this.devicesSet.add(fromName);
+        newDeviceAdded = true;
+      }
+      if (toName && !this.devicesSet.has(toName)) {
+        this.devicesSet.add(toName);
+        newDeviceAdded = true;
+      }
     });
-    devices = [...devices].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
-    devices.unshift('==Unbekannt==');
-    this.data.devices.splice(0, this.data.devices.length, ...devices);
+    if(newDeviceAdded) {
+      const devices = Array.from(this.devicesSet);
+      devices.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+      this.data.devices.splice(0, devices.length, ...devices);
+    }
   }
 
   clear() {
