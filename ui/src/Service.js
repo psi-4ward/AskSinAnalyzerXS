@@ -152,19 +152,19 @@ export default class Service {
   addTelegram(telegram, liveData = true) {
     this.data.telegrams.push(telegram);
 
-    // Cap collection
     if (liveData) {
+      // Cap collection
       if (this.data.telegrams.length > this.maxTelegrams - 200) {
         this.data.telegrams.splice(0, this.data.telegrams.length - this.maxTelegrams);
-        this.generateDeviceList();
+        this.generateDeviceList(); // Regenerate deviceList
       } else {
-        this.generateDeviceList(telegram);
+        this.generateDeviceList(telegram); // Add possible new devices
       }
     }
   }
 
+  // Generate unique devices list
   generateDeviceList(telegram = null) {
-    // Generate unique devices list
     let telegrams = [telegram];
     if(telegram === null) {
       this.devicesSet = new Set(['==Unbekannt==']);

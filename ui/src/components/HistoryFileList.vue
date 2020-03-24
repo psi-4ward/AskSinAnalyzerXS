@@ -12,6 +12,7 @@
       :filter="filter"
       row-key="name"
       :binary-state-sort="true"
+      @row-click="rowClick"
     >
       <template v-slot:top>
         <q-btn color="primary"
@@ -45,7 +46,7 @@
       </template>
       <template v-slot:body-cell-btns="props">
         <q-td :props="props" style="width: 65px">
-          <q-btn color="primary" icon="save_alt" dense title="download" @click="downloadCsv(props.row.name)" />
+          <q-btn color="primary" icon="save_alt" dense title="download" @click="downloadCsv(props.row.name)"/>
         </q-td>
       </template>
     </q-table>
@@ -109,6 +110,15 @@
     },
 
     methods: {
+      rowClick(ev, row) {
+        if (ev.target.tagName !== 'TD') return;
+        const i = this.selected.indexOf(row);
+        if (i > -1) {
+          this.selected.splice(i, 1);
+        } else {
+          this.selected.push(row);
+        }
+      },
       async loadFiles() {
         this.loading = true;
         this.files = (await this.$service.req('get csv-files'));
@@ -128,11 +138,11 @@
 
       async deleteFiles() {
         this.deleteLoading = true;
-        if(!confirm('Die Dateien werden gelöscht!')) {
+        if (!confirm('Die Dateien werden gelöscht!')) {
           this.deleteLoading = false;
           return;
         }
-        this.selected.forEach(async ({name}) => {
+        this.selected.forEach(async ({ name }) => {
           await this.$service.req('delete csv-file', name);
         });
         await this.loadFiles();
