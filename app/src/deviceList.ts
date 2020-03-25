@@ -66,11 +66,13 @@ export async function fetchDevList() {
         body += data;
       });
       res.on("end", () => {
-        const bodyJson = body.match(/<ret>(.+?)<\/ret>/);
-        if (!bodyJson) {
-          return reject('Invalid XML');
+        if(isCCU) {
+          const bodyJson = body.match(/<ret>(.+?)<\/ret>/);
+          if (!bodyJson) {
+            return reject('Invalid XML');
+          }
+          body = unescapeHTML(bodyJson[1]);
         }
-        body = unescapeHTML(bodyJson[1]);
         let deviceList = null;
         try {
           deviceList = JSON.parse(body) as DeviceListResponse;
