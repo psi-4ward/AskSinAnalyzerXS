@@ -2,10 +2,10 @@ import {parse} from 'url';
 import {IncomingMessage, request} from "http";
 
 export function exec(action: string, opts: any) {
-  const {protocol, auth, hostname, path} = parse(opts.url);
+  const {protocol, auth, host, port, path} = parse(opts.url);
   return new Promise((resolve, reject) => {
     request({
-        protocol, auth, hostname, path,
+        protocol, auth, host, port, path,
         method: (action === 'httpPost') ? 'POST' : 'GET'
       },
       (res: IncomingMessage) => {
