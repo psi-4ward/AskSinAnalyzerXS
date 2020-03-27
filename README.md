@@ -15,7 +15,7 @@ Der AskSin Analyzer XS ist eine alternative Implementierung des [AskSinAnalyzer]
 **Features**:
 * Dekodieren von Homematic Telegrammen
 * Berechnung des DutyCycle pro Device (und Empfänger)
-* Darstellen der RSSI-Noise (Störsender)
+* Darstellen der RSSI-Noise (Störsender); Alert-Trigger wenn ein Schwellwert überstiegen wird
 * Langzeitsaufzeichnungen
 * Auflösen von Device-Namen über eine CCU oder FHEM
 * [RedMatic support](https://github.com/psi-4ward/AskSinAnalyzerXS/blob/master/docs/NodeRED.md)
