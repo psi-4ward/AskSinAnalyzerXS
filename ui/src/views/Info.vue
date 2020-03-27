@@ -168,6 +168,7 @@
 </template>
 
 <script>
+  import semverCompare from 'semver-compare';
   import FlagChip from '../components/FlagChip';
 
   export default {
@@ -198,9 +199,7 @@
           const res = await fetch('https://api.github.com/repos/psi-4ward/AskSinAnalyzerXS/releases/latest');
           const latestVersion = (await res.json()).tag_name;
           const currentVersion = this.$root.version;
-          const [aU, aL] = latestVersion.split('.');
-          const [bU, bL] = currentVersion.split('.');
-          if (aU > bU || aU === bU && aL > bL) {
+          if (semverCompare(latestVersion, currentVersion)) {
             this.updateVersion = latestVersion;
           }
         }
