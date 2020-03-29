@@ -20,9 +20,9 @@ class Store {
       enabled: false,
       value: -100,
       timeWindow: 30,
-      action: 'httpPost',
+      action: 'httpGet',
       actionOpts: {
-        url: ''
+        url: 'http://raspberrymatic:8181/a.exe?r=dom.GetObject("AskSinAnalyzerAlarm").State(true)'
       }
     },
     _began: null
