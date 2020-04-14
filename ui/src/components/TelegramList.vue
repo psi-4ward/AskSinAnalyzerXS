@@ -169,6 +169,7 @@
         if (this.filter.fromName.length) {
           result = result.filter(v => {
             return this.filter.fromName.includes(v.fromName)
+              || this.filter.fromAddr.includes(v.fromName)
               || this.filter.fromName.includes('==Unbekannt==') && v.fromName === '';
           });
         }
@@ -176,12 +177,15 @@
           result = result.filter(v => {
             return this.filter.fromToName.includes(v.fromName)
               || this.filter.fromToName.includes(v.toName)
+              || this.filter.fromToName.includes(v.fromAddr)
+              || this.filter.fromToName.includes(v.toAddr)
               || this.filter.fromToName.includes('==Unbekannt==') && (v.fromName === '' || v.toName === '');
           });
         }
         if (this.filter.toName.length) {
           result = result.filter(v => {
             return this.filter.toName.includes(v.toName)
+              || this.filter.toName.includes(v.toAddr)
               || this.filter.toName.includes('==Unbekannt==') && v.toName === '';
           });
         }

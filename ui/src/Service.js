@@ -171,13 +171,19 @@ export default class Service {
       telegrams = this.data.telegrams;
     }
     let newDeviceAdded = false;
-    telegrams.forEach(({ fromName, toName }) => {
+    telegrams.forEach(({ fromName, toName, toAddr, fromAddr }) => {
       if (fromName && !this.devicesSet.has(fromName)) {
         this.devicesSet.add(fromName);
+        newDeviceAdded = true;
+      } else if (!this.devicesSet.has(fromAddr)) {
+        this.devicesSet.add(fromAddr);
         newDeviceAdded = true;
       }
       if (toName && !this.devicesSet.has(toName)) {
         this.devicesSet.add(toName);
+        newDeviceAdded = true;
+      } else if (!this.devicesSet.has(toAddr)) {
+        this.devicesSet.add(toAddr);
         newDeviceAdded = true;
       }
     });
