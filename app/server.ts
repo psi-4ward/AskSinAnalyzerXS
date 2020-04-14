@@ -13,15 +13,16 @@ if (existsSync(resolve(__dirname, './package.json'))) {
   ({version} = require('../package.json'));
 }
 
+// No default values here to not overwrite store-defaults
 commander
   .description(`AskSin Analyzer XS v${version}\nhttps://github.com/psi-4ward/AskSinAnalyzerXS`)
   .version(version, '-v, --version', 'output the current version')
   .option('-l, --list-ports', 'List available serial ports')
   .option('-p, --serial-port <serialPort>', 'SerialPort')
-  .option('-b, --baud <baudRate>', 'BaudRate of SerialPort', '57600')
+  .option('-b, --baud <baudRate>', 'BaudRate of SerialPort')
   .option('-u, --url <deviceListUrl>', 'Host or IP of the CCU or URL to fetch the device-list')
   .option('-c, --ccu <bool>', 'Fetch the device-list from a CCU',
-      (arg: string) => !(arg === 'false' || arg === 'no' || arg === '0'), true)
+      (arg: string) => !(arg === 'false' || arg === 'no' || arg === '0'))
   .option('-d, --data <string>', 'Directory to store persistent data')
   .parse(process.argv);
 

@@ -169,7 +169,7 @@
         if (this.filter.fromName.length) {
           result = result.filter(v => {
             return this.filter.fromName.includes(v.fromName)
-              || this.filter.fromAddr.includes(v.fromName)
+              || this.filter.fromName.includes(v.fromAddr)
               || this.filter.fromName.includes('==Unbekannt==') && v.fromName === '';
           });
         }

@@ -175,21 +175,21 @@ export default class Service {
       if (fromName && !this.devicesSet.has(fromName)) {
         this.devicesSet.add(fromName);
         newDeviceAdded = true;
-      } else if (!this.devicesSet.has(fromAddr)) {
+      } else if (!fromName && !this.devicesSet.has(fromAddr)) {
         this.devicesSet.add(fromAddr);
         newDeviceAdded = true;
       }
       if (toName && !this.devicesSet.has(toName)) {
         this.devicesSet.add(toName);
         newDeviceAdded = true;
-      } else if (!this.devicesSet.has(toAddr)) {
+      } else if (!toName && !this.devicesSet.has(toAddr)) {
         this.devicesSet.add(toAddr);
         newDeviceAdded = true;
       }
     });
     if(newDeviceAdded) {
       const devices = Array.from(this.devicesSet);
-      devices.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+      devices.sort((a, b) => a.toString().toLowerCase().localeCompare(b.toString().toLowerCase()));
       this.data.devices.splice(0, devices.length, ...devices);
     }
   }
