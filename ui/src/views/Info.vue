@@ -159,6 +159,14 @@
             Testing, DutyCycle calculation
           </li>
           <li>
+            <a href="https://github.com/TomMajor" target="_blank" rel="noopener noreferrer">
+              Tom Major:
+            </a>
+            <a href="https://github.com/TomMajor/SmartHome/tree/master/PCB/AskSin-Analyzer-XS" target="_blank" rel="noopener noreferrer">
+              AskSin Analyzer XS Board
+            </a>
+          </li>
+          <li>
             HMSteve, HM42: Testing
           </li>
         </ul>
