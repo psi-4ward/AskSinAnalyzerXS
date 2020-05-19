@@ -6,5 +6,6 @@ export interface Device {
 
 export interface DeviceList {
   createdAt: number | null;
+  sanitizedUrl: string | null;
   devices: Device[]
 }

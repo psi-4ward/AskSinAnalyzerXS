@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import {get as httpGet, IncomingMessage} from "http";
 import {URL} from 'url';
 import {Device, DeviceList} from "../interfaces/Device";
@@ -39,25 +41,18 @@ function unescapeHTML(str: string): string {
   });
 }
 
-const exp: DeviceList = {
+const deviceList: DeviceList = {
   createdAt: null,
+  sanitizedUrl: null,
   devices: [],
 };
 
-export async function fetchDevList() {
-
-  let deviceListUrl = store.getConfig('deviceListUrl');
+function _fetch(url: string) {
   const isCCU = store.getConfig('isCCU');
-
-  if (!deviceListUrl) return;
-
-  let url = isCCU
-    ? `http://${deviceListUrl}:8181/a.exe?ret=dom.GetObject(ID_SYSTEM_VARIABLES).Get(%22AskSinAnalyzerDevList%22).Value()`
-    : deviceListUrl;
 
   return new Promise((resolve, reject) => {
     httpGet(new URL(url), (res: IncomingMessage) => {
-      if(res.statusCode !== 200) {
+      if (res.statusCode !== 200) {
         return reject(`${res.statusCode} ${res.statusMessage}`);
       }
       res.setEncoding(isCCU ? "latin1" : 'utf-8');
@@ -66,28 +61,60 @@ export async function fetchDevList() {
         body += data;
       });
       res.on("end", () => {
-        if(isCCU) {
+        if (isCCU) {
           const bodyJson = body.match(/<ret>(.+?)<\/ret>/);
           if (!bodyJson) {
             return reject('Invalid XML');
           }
           body = unescapeHTML(bodyJson[1]);
         }
-        let deviceList = null;
+        let deviceListRes = null;
         try {
-          deviceList = JSON.parse(body) as DeviceListResponse;
+          deviceListRes = JSON.parse(body) as DeviceListResponse;
         } catch (e) {
           return reject(e)
         }
-        exp.devices = deviceList.devices;
-        exp.createdAt = deviceList.created_at * 1000;
-        console.log('Fetched Device List from', deviceListUrl.replace(/(?:https?:\/\/)?([^:]+:[^@]+)@/, ''));
-        resolve(exp);
+        const sanitizedUrl = url.replace(/(?:https?:\/\/)?([^:]+:[^@]+)@/, '');
+        deviceList.devices = deviceListRes.devices;
+        deviceList.createdAt = deviceListRes.created_at * 1000;
+        deviceList.sanitizedUrl = sanitizedUrl;
+        console.log('Fetched Device List from', sanitizedUrl);
+        resolve(deviceList);
       });
     }).on('error', e => reject(e));
   });
-
 }
 
-export default exp;
+export async function fetchDevList() {
+  const deviceListUrl = store.getConfig('deviceListUrl');
+  const isCCU = store.getConfig('isCCU');
+  const appPath = store.appPath;
+
+  if (!deviceListUrl) return;
+
+  let url = isCCU
+    ? `http://${deviceListUrl}:8181/a.exe?ret=dom.GetObject(ID_SYSTEM_VARIABLES).Get(%22AskSinAnalyzerDevList%22).Value()`
+    : deviceListUrl;
+
+  const file = path.resolve(appPath, 'deviceList.json');
+
+  try {
+    console.log('fetch', url);
+     await _fetch(url);
+     fs.writeFileSync(file, JSON.stringify(deviceList), 'utf-8');
+  } catch(err) {
+    try {
+      Object.assign(deviceList, JSON.parse(fs.readFileSync(file, 'utf-8')));
+      const err = new Error('Using cached version, created at ' + (new Date(deviceList.createdAt)).toLocaleString() + ' from ' + deviceList.sanitizedUrl);
+      // @ts-ignore
+      err.code = 12;
+      throw err;
+    } catch (err2) {
+      if(err2.code !== 12) throw err;
+      else throw err2;
+    }
+  }
+}
+
+export default deviceList;
 
