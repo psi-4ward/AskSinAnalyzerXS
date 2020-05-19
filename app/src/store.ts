@@ -25,7 +25,8 @@ class Store {
         url: 'http://raspberrymatic:8181/a.exe?r=dom.GetObject("AskSinAnalyzerAlarm").State(true)'
       }
     },
-    _began: null
+    _began: null,
+    dropUnkownDevices: false,
   };
 
   appPath: string = path.resolve(__dirname, '..');

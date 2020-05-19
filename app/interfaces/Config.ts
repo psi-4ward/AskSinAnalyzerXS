@@ -23,4 +23,5 @@ export interface Config {
     }
   },
   _began: number | null,
+  dropUnkownDevices: boolean,
 }

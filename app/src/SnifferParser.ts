@@ -2,6 +2,7 @@ import {Transform, TransformOptions} from 'stream';
 import devList from './deviceList';
 import {Device} from "../interfaces/Device";
 import {Telegram} from "../interfaces/Telegram";
+import store from "./store";
 
 const strPosBeginnings = {
   rssi: 1,
@@ -80,6 +81,10 @@ export default class SnifferParser extends Transform {
     const toAddr = parseInt(line.substr(17, 6), 16);
     const fromDev = getDevice(fromAddr);
     const toDev = getDevice(toAddr);
+
+    if(store.getConfig('dropUnkownDevices') && !fromDev && !toDev) {
+      return callback();
+    }
 
     const telegram: Telegram = {
       tstamp: Date.now(),

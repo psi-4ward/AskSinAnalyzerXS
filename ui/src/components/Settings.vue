@@ -64,6 +64,15 @@
               Animationen benötigen zusätzliche Rechenleistung.
             </div>
           </div>
+          <q-toggle
+            v-model="cfg.dropUnkownDevices"
+            label="Nur bekannte Geräte anzeigen"
+          />
+          <div class="q-field__bottom" style="margin-top: 0; padding-top: 0">
+            <div class="q-field__messages">
+              Es werden nur Telegramme verarbeitet, wenn der Sender oder Empfänger durch die Device-Liste zugeordnet werden kann.
+            </div>
+          </div>
         </q-card-section>
       </q-card>
     </div>

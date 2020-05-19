@@ -47,6 +47,7 @@ export default class Service {
     latestVersion: null,
     devlistCreated: null,
     liveData: true,
+    dropUnkownDevices: false,
   };
   rssiLog = [];
   ws = null;
