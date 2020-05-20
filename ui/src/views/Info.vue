@@ -47,8 +47,29 @@
     <q-card flat>
       <q-card-section>
         <div class="q-mb-md">
+          <div class="text-bold">Timeline-Graph</div>
+          <div class="q-mb-md">
+            <ul>
+              <li>Die blauen Balken zeigen die Anzahl der empfangenen Telegramme pro Zeiteinheit an.</li>
+              <li>Die rote Linie visualisiert die Amplitude des Hintergrundrauschens auf der Homematic Funkfrequenz.</li>
+            </ul>
+          </div>
+          <div class="text-bold">Telegramme</div>
+          <div class="q-mb-md">
+            <ul>
+              <li><strong>Len:</strong> Länge des Telegramms in Bytes ohne das Längen-Byte selbst.</li>
+              <li><strong>Cnt:</strong> Jedes neue Telegramm bekommt eine eigene Nummer, die aufsteigend bis 255 gezählt wird und dann wieder von vorn beginnt.
+                Das dient der Sicherheit, damit eine Aktion nicht mehrmals getriggert wird, falls der Sender das selbe Telegramm mehrfach aussendet, weil es bspw. die ACK-Quittung des Peers nicht erhalten hat, dieser aber trotzdem schon korrekt den Schaltbefehl ausführte.
+              </li>
+              <li>
+                Erläuterung des Sendeverhaltens von Frank Graß:
+                <a href="https://www.youtube.com/watch?v=uAyzimU60jw" target="_blank" rel="noopener noreferrer">Youtube-Video</a>, <a href="https://www.homematic-inside.de/media/download/meetup_2018/sendeverhalten" target="_blank" rel="noreferrer noopener">PDF-Slides</a>
+              </li>
+            </ul>
+          </div>
           <div class="text-bold">Device-Serial ist rot</div>
-          <div class="q-mb-md">Es wird die Adresse des Telegrams angezeigt da die Seriennummer nicht über die CCU aufgelöst werden konnte. Der Sender ist nicht an die CCU angelernt. Können gar keine Seriennummern ermittelt werden ist die CCU-IP sowie die Systemvariablen zu prüfen.
+          <div class="q-mb-md">
+            Es wird die Adresse des Telegrams angezeigt da die Seriennummer nicht über die CCU aufgelöst werden konnte. Der Sender ist nicht an die CCU angelernt. Können gar keine Seriennummern ermittelt werden ist die CCU-IP sowie die Systemvariablen zu prüfen.
           </div>
           <div class="text-bold">Flags</div>
           <div class="q-mb-md">
@@ -74,7 +95,8 @@
             <span class="flag-desc">Das Telegramm darf von einem Repeater wiederholt werden.</span>
           </div>
           <div class="text-bold">DutyCycle</div>
-          <div class="q-mb-md">Jedes einzelne Gerät darf 36 Sekunden einer Stunde (also 1%) den Funk belegen.
+          <div class="q-mb-md">
+            Jedes einzelne Gerät darf 36 Sekunden einer Stunde (also 1%) den Funk belegen.
             Der DutyCycle gibt den verbrauchten Anteil der erlaubten Sendezeit in Prozent an.
             <br>
             <q-icon name="warning"/>
