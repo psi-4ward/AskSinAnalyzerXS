@@ -99,7 +99,6 @@ export async function fetchDevList() {
   const file = path.resolve(appPath, 'deviceList.json');
 
   try {
-    console.log('fetch', url);
      await _fetch(url);
      fs.writeFileSync(file, JSON.stringify(deviceList), 'utf-8');
   } catch(err) {

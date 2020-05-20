@@ -14,7 +14,7 @@ function createWindow(url: string) {
     webPreferences: {
       nodeIntegration: false
     },
-    icon: path.join(__dirname, 'logo.jpg')
+    icon: path.join(__dirname, '..', 'logo.jpg')
   });
   win.loadURL(url);
 }

@@ -26,7 +26,7 @@
     "files": [
       "dist/electron.js",
       "dist/**/*",
-      "app/logo.jpg"
+      "logo.jpg"
     ],
     "extraResources": [
       {
@@ -61,20 +61,20 @@
     "url": "https://github.com/psi-4ward/AskSinAnalyzerXS"
   },
   "dependencies": {
-    "commander": "^5.0.0",
+    "commander": "^5.1.0",
     "express": "^4.17.1",
-    "serialport": "^8.0.7",
-    "ws": "^7.2.3"
+    "serialport": "^9.0.0",
+    "ws": "^7.3.0"
   },
   "devDependencies": {
-    "@types/express": "^4.17.3",
-    "@types/node": "^12.12.30",
-    "@types/serialport": "^8.0.0",
-    "@types/ws": "^7.2.2",
-    "concurrently": "^5.1.0",
-    "electron": "^7.1.12",
-    "electron-builder": "^22.4.1",
-    "electron-rebuild": "^1.10.1",
-    "typescript": "^3.8.3"
+    "@types/express": "^4.17.6",
+    "@types/node": "^12.12.41",
+    "@types/serialport": "^8.0.1",
+    "@types/ws": "^7.2.4",
+    "concurrently": "^5.2.0",
+    "electron": "^9.0.0",
+    "electron-builder": "^22.6.1",
+    "electron-rebuild": "^1.11.0",
+    "typescript": "^3.9.3"
   }
 }
