@@ -43,8 +43,8 @@
             outlined
             filled
             type="string"
-            :label="cfg.isCCU ? 'CCU Adresse' : 'Device-List URL'"
-            :hint="cfg.isCCU ? 'IP oder Hostname der CCU' : 'URL der Device-List'"
+            :label="cfg.isCCU ? 'CCU Adresse' : 'Device-List URL oder Datei'"
+            :hint="cfg.isCCU ? 'IP oder Hostname der CCU' : 'URL oder JSON-Datei der Device-List'"
           />
           <q-input
             v-model.number="cfg.maxTelegrams"

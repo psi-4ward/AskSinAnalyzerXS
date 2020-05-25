@@ -47,6 +47,14 @@ const deviceList: DeviceList = {
   devices: [],
 };
 
+function _setDeviceListDate(url: string, data: DeviceListResponse) {
+  const sanitizedUrl = url.replace(/(?:https?:\/\/)?([^:]+:[^@]+)@/, '');
+  deviceList.devices = data.devices;
+  deviceList.createdAt = data.created_at * 1000;
+  deviceList.sanitizedUrl = sanitizedUrl;
+  console.log('Fetched Device List from', sanitizedUrl);
+}
+
 function _fetch(url: string) {
   const isCCU = store.getConfig('isCCU');
 
@@ -74,11 +82,7 @@ function _fetch(url: string) {
         } catch (e) {
           return reject(e)
         }
-        const sanitizedUrl = url.replace(/(?:https?:\/\/)?([^:]+:[^@]+)@/, '');
-        deviceList.devices = deviceListRes.devices;
-        deviceList.createdAt = deviceListRes.created_at * 1000;
-        deviceList.sanitizedUrl = sanitizedUrl;
-        console.log('Fetched Device List from', sanitizedUrl);
+        _setDeviceListDate(url, deviceListRes);
         resolve(deviceList);
       });
     }).on('error', e => reject(e));
@@ -99,9 +103,15 @@ export async function fetchDevList() {
   const file = path.resolve(appPath, 'deviceList.json');
 
   try {
-     await _fetch(url);
+     if(url.startsWith('http')) {
+       await _fetch(url);
+     } else {
+       console.log('Read device-list from file', url);
+       _setDeviceListDate(url, JSON.parse(fs.readFileSync(url, 'utf-8')));
+     }
      fs.writeFileSync(file, JSON.stringify(deviceList), 'utf-8');
   } catch(err) {
+    console.error(err);
     try {
       Object.assign(deviceList, JSON.parse(fs.readFileSync(file, 'utf-8')));
       const err = new Error('Using cached version, created at ' + (new Date(deviceList.createdAt)).toLocaleString() + ' from ' + deviceList.sanitizedUrl);
