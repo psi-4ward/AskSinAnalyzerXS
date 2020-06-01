@@ -125,5 +125,13 @@ export async function fetchDevList() {
   }
 }
 
-export default deviceList;
+// Refetch deviceList every hour
+setTimeout(async () => {
+  try {
+    await fetchDevList()
+  } catch (e) {
+  }
+}, 60*60*1000);
 
+
+export default deviceList;

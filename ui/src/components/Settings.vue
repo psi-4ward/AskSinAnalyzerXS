@@ -126,7 +126,7 @@
 
     <div class="col-12">
       <div class="q-mt-sm">
-        <q-btn label="speichern und verbinden" type="submit" color="primary" icon="save"/>
+        <q-btn label="speichern und initialisieren" type="submit" color="primary" icon="save"/>
         <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm"/>
       </div>
     </div>
