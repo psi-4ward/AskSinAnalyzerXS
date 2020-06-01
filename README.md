@@ -29,17 +29,19 @@ Der AskSin Analyzer XS ist eine alternative Implementierung des [AskSinAnalyzer]
 Die Daten des AskSinSniffer328P werden über einen UART Schnittstelle an den AskSinAnalyzerXS übertragen und dort ausgewertet und visualisiert.
 
 * Sniffer
-  * Arduino Pro Mini 8Mhz 3.3V
+  * Arduino Pro Mini 8Mhz 3.3V oder Arduino-Nano
   * CC1101 Funkmodul
 * UART Schnittstelle
-  * USB-UART Adapter (FTDI, CP2102, etc)   
+  * USB-UART Adapter (FTDI, CP2102, etc), bei Arduino-Nano on-board
   * Alternativ kann der Arduino auch [direkt an die UART GPIOs eines RaspberryPi](https://homematic-forum.de/forum/viewtopic.php?f=76&t=56395&start=70#p569429), Tinkerboard etc angeschlossen werden.
 
 Der Aufbau folgt der [allgemeingültige Verdrahtung des Pro Mini mit dem CC1101 Funkmodul](https://asksinpp.de/Grundlagen/01_hardware.html#verdrahtung). Der Config-Taster findet keine Verwendung und die Status-LED ist optional. 
 
 Alternativ funktioniert auch der [nanoCUL CC1101](https://www.nanocul.de/) mit [angepasstem GPIO Mapping](https://homematic-forum.de/forum/viewtopic.php?f=76&t=56395&start=10#p562580). Siehe [Flash-Anleitung NANO CUL 868MHz Stick für Windows](https://homematic-forum.de/forum/viewtopic.php?f=76&t=56395&sid=d766ef0ef66df7a52864774cf45f8bad&start=220#p581363).
 
-Zudem kann ein kleines Display verbaut werden was den RSSI-Noise Pegel darstellt.
+Siehe auch: [AskSin Analyzer XS Board](https://github.com/TomMajor/SmartHome/tree/master/PCB/AskSin-Analyzer-XS) von Tom Major.
+
+Optional kann ein kleines Display verbaut werden was den RSSI-Noise Pegel darstellt.
 
 ![NanoCul with OLED Display](./docs/NanoCul_with_display.jpg)
 
