@@ -52,7 +52,7 @@ Optional kann ein kleines Display verbaut werden was den RSSI-Noise Pegel darste
 
 ### AVR Sketch
 
-Auf dem ATmega328P wird der [AskSinSniffer328P-Sketch](https://github.com/jp112sdl/AskSinAnalyzer/tree/master/AskSinSniffer328P) geflasht. Das Vorgehen ist auf [asksinpp.de](https://asksinpp.de/Grundlagen/) erläutert.
+Auf dem ATmega328P wird der [AskSinSniffer328P-Sketch](https://github.com/psi-4ward/AskSinAnalyzer-Sniffer) geflasht. Das Vorgehen ist auf [asksinpp.de](https://asksinpp.de/Grundlagen/) erläutert.
 
 :point_up: **Achtung:** Die AskSinPP-Library 4.1.2 enthält noch nicht alle nötigen Funktionen für den Sniffer. Es ist der aktuelle [Master](https://github.com/pa-pa/AskSinPP/archive/master.zip) zu verwenden.
 
