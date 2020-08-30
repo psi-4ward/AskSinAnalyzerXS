@@ -40,7 +40,7 @@ Raspberry Pi Images basieren oft auf Debian. Hier wird erläutert wie man den An
     Der Benutzer muss das UART-Device öffnen können. Je nach Anschlussvariante `/dev/ttyUSB0`, `/dev/ttyS1` oder ähnlich.
     
     ```bash
-    ls -l /dev/ttypUSB0
+    ls -l /dev/ttyUSB0
     crw-rw---- 1 root dialout 4, 65 Mär 14 10:43 /dev/ttyUSB0
     ```
     
