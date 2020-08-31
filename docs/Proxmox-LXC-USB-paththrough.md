@@ -23,12 +23,16 @@
    crw-rw-rw- 1 root uucp 188, 0 31. Aug 19:54 /dev/ttyUSB0
    crwxrwxrwx 1 root root      7 31. Aug 19:54 /dev/ttyUSB_AskSinAnalyzer -> ttyUSB0
    ```
-   Wichtig ist hier die ID von `188`.
+   In der ersten Zeile zeigt sich (in diesem Fall) das FTDI-Gerät, welches in /dev/ttyUSB0 gehängt wird und in der zweiten Zeile das "Symlinkgerät" welches auf "ttyUSB0" zeigt.
+   Die oben angebene UDEV-Rule verhintert also, dass wenn das Gerät einmal in "ttyUSB1" gehängt wird, dass es nicht auffindbar ist, da es in der LXC Config nur mit dem Symlink angesprochen wird.
+   
+   Wichtig zudem ist hier noch die ID von `188`.
 
 4. Anpassung der LXC Config (zB: `/etc/pve/nodes/proxmox/lxc/<id>.conf`)
    ```text
    lxc.cgroup.devices.allow: c 188:* rwm
    lxc.mount.entry: /dev/ttyUSB_AskSinAnalyzer dev/ttyUSB0 none bind,optional,create=file
    ```
+   Hier wird zum einen das Gerät mit der Major ID 188 für den Container erlaubt und zu anderen das Gerät welches wir unter den Symlink "/dev/ttyUSB_AskSinAnalyzer" eingehängt haben im Containter unter "dev/ttyUSB0" (ohne voranstehendes "/") verfügbar gemacht.
    Im Container sollte nun `/dev/ttyUSB0` vorhanden sein welcher im Analyzer verwendet werden kann.
 
