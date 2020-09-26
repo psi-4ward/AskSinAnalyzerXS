@@ -62,6 +62,8 @@ export default class SnifferParser extends Transform {
   }
 
   _transform(line: string, encoding: string, callback: Function) {
+    // trim potential whitespace including \r
+    line = line.trim();
     // Messages have to start with ":"
     if (!line.startsWith(':') || !line.endsWith(';')) {
       console.log('I:', line);
