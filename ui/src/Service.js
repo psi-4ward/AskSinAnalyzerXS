@@ -58,7 +58,7 @@ export default class Service {
     return new Promise((resolve, reject) => {
       // TODO: reconnect
       let resolved = false;
-      this.ws = new WebSocket(`ws://${ document.location.host }/ws`);
+      this.ws = new WebSocket(`${document.location.protocol === 'https:' ? 'wss' : 'ws'}://${ document.location.host }/ws`);
 
       this.ws.onopen = () => {
         this.data.beErrors = [];
