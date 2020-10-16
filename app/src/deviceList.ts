@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import {get as httpGet, IncomingMessage} from "http";
-import {URL} from 'url';
+import got from 'got';
 import {Device, DeviceList} from "../interfaces/Device";
 import store from "./store";
 
@@ -55,46 +54,36 @@ function _setDeviceListDate(url: string, data: DeviceListResponse) {
   console.log('Fetched Device List from', sanitizedUrl);
 }
 
-function _fetch(url: string) {
+async function _fetch(url: string) {
   const isCCU = store.getConfig('isCCU');
 
-  return new Promise((resolve, reject) => {
-    httpGet(new URL(url), (res: IncomingMessage) => {
-      if (res.statusCode !== 200) {
-        return reject(`${res.statusCode} ${res.statusMessage}`);
-      }
-      res.setEncoding(isCCU ? "latin1" : 'utf-8');
-      let body = "";
-      res.on("data", data => {
-        body += data;
-      });
-      res.on("end", () => {
-        if (isCCU) {
-          const bodyJson = body.match(/<ret>(.+?)<\/ret>/);
-          if (!bodyJson) {
-            return reject('Invalid XML');
-          }
-          body = unescapeHTML(bodyJson[1]);
-        }
-        let deviceListRes = null;
-        try {
-          deviceListRes = JSON.parse(body) as DeviceListResponse;
-        } catch (e) {
-          return reject(e)
-        }
-        _setDeviceListDate(url, deviceListRes);
-        resolve(deviceList);
-      });
-    }).on('error', e => reject(e));
-  });
+  let body = await got(url, {
+    encoding: isCCU ? "latin1" : 'utf-8'
+  }).text();
+
+  if (isCCU) {
+    const bodyJson = body.match(/<ret>(.+?)<\/ret>/);
+    if (!bodyJson) {
+      throw new Error('Invalid XML');
+    }
+    body = unescapeHTML(bodyJson[1]);
+  }
+  let deviceListRes = null;
+  deviceListRes = JSON.parse(body) as DeviceListResponse;
+  _setDeviceListDate(url, deviceListRes);
+  return deviceList;
 }
 
 export async function fetchDevList() {
-  const deviceListUrl = store.getConfig('deviceListUrl');
+  let deviceListUrl = store.getConfig('deviceListUrl');
   const isCCU = store.getConfig('isCCU');
   const appPath = store.appPath;
 
   if (!deviceListUrl) return;
+
+  if(isCCU && deviceListUrl.startsWith('http')) {
+    deviceListUrl = deviceListUrl.replace(/^https?:\/\//,'');
+  }
 
   let url = isCCU
     ? `http://${deviceListUrl}:8181/a.exe?ret=dom.GetObject(ID_SYSTEM_VARIABLES).Get(%22AskSinAnalyzerDevList%22).Value()`
