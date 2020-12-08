@@ -30,7 +30,6 @@ class PersistentStorage {
       const d = new Date(data.payload.tstamp);
       data.payload.date = `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${(p(d.getHours()))}:${p(d.getMinutes())}:${p(d.getSeconds())}.${('00' + d.getMilliseconds()).slice(-3)}`;
       const res = csvFields.map(fld => data.payload[fld]);
-      console.log(data.payload.raw)
       this.writeLn(res.join(';'));
     });
   }
