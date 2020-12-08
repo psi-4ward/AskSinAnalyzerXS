@@ -89,12 +89,12 @@ export default class SnifferParser extends Transform {
     }
 
     const type = getType(parseInt(line.substr(9, 2), 16));
-    let flags = [];
+    let flags: string[] = [];
     // Only parse HM-Flags. We've not enough knowlege to understand HM-IP Flags Byte
     if(type !== 'HMIP_TYPE') {
       flags = getFlags(parseInt(line.substr(7, 2), 16));
     }
-    
+
     const telegram: Telegram = {
       tstamp: Date.now(),
       rssi: -1 * parseInt(line.substr(1, 2), 16),
