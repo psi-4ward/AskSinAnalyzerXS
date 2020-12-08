@@ -14,5 +14,6 @@ export interface Telegram {
   toIsIp: boolean,
   fromIsIp: boolean,
   dc: number,
-  payload: string
+  payload: string,
+  raw: string
 }

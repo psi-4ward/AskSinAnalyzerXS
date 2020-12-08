@@ -112,6 +112,7 @@ export default class SnifferParser extends Transform {
       fromIsIp: fromDev && fromDev.serial && fromDev.serial.length === 14 || fromDev && fromDev.serial === 'HmIP-RF',
       dc: 0,
       payload: line.substring(23, line.length - 1),
+      raw: line,
     };
 
     this.push({
