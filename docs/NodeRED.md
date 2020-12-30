@@ -25,6 +25,7 @@ und die URL entsprechend dem Server gesetzt auf dem der Analyzer läuft. Z.B. `w
 Es werden nun alle Nachrichtenobjekte des Analyzers in den Flow injiziert. Interessant dürften hier vor allem `type=rssiNoise`
 und `type=telegram` sein. Der `payload` besteht aus den Nutzdaten des jeweiligen Typs. Zeitstempel (telegram.tstamp bzw rssiNoise[0])
 sind JavaScript-like in Millisekunden.
+WebSocket Port der Windows Anwendung: 62004
 
 Damit kann NodeRED anhand von Telegrammen, DutyCycle oder RSSI-Noise weitere Aktionen auszuführen.
 
