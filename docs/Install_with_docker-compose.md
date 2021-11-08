@@ -3,7 +3,8 @@
 Im gewünschten Zielpfad einfach eine ```docker-compose.yml``` anlegen.  
 Folgenden Inhalt einfügen, ggf. muss der Port angepasst werden, falls unter diesem Port bereits ein Dienst läuft und das USB-Device sollte gemäß dem verwendeten Gerät ausgewählt werden.
 
-```version: '3.2'
+```
+version: '3.2'
 services:
   asksinanalyzer:
     container_name: asksinanalyzer
@@ -22,4 +23,4 @@ services:
 ```
 
 Danach ```docker-compose pull``` und ```docker-compose up -d```  
-Die Konfigurationsdaten und persistent gespeicherten Daten werden und dem angegebenen Pfad (hier der Unterordner "./data") abgelegt.
+Die Konfigurationsdaten und persistent gespeicherten Daten werden unter dem angegebenen Pfad (hier der Unterordner "./data") abgelegt.
