@@ -14,7 +14,9 @@ class Store {
     animations: false,
     persistentStorage: {
       enabled: false,
-      keepFiles: 180
+      keepFiles: 180,
+      flushInterval: 5,
+      maxBufferSize: 500000
     },
     rssiNoiseTrigger: {
       enabled: false,

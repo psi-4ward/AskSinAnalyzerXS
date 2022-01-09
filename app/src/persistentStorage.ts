@@ -16,10 +16,19 @@ class PersistentStorage {
   fd: number | null = null;
   enabled: boolean;
   nextDayTstamp: number | null;
+  flushIntervalClk: number | null;
+  buffer: string = '';
 
   async enable(stream: Stream) {
     this.enabled = true;
+    this.flushIntervalClk && clearInterval(this.flushIntervalClk);
     await this.openFD();
+
+    const { flushInterval } = store.getConfig('persistentStorage');
+    if(flushInterval) {
+      console.log('Persist storage every ' + flushInterval + ' seconds.');
+      setInterval(() => this.write(null), flushInterval * 1000);
+    }
 
     stream.on('data', async (data: SocketMessage<any>) => {
       if (!this.enabled) return;
@@ -36,6 +45,7 @@ class PersistentStorage {
 
   async disable() {
     this.enabled = false;
+    this.flushIntervalClk && clearInterval(this.flushIntervalClk);
     await this.closeFD();
   }
 
@@ -45,13 +55,34 @@ class PersistentStorage {
   }
 
   writeLn(data: string) {
-    fs.write(this.fd, data + "\n", (err) => {
-      if (!err) return;
+    if(store.getConfig('persistentStorage').flushInterval) {
+      this.buffer += data + "\n";
+      if(this.buffer.length > store.getConfig('persistentStorage').maxBufferSize) {
+        this.write(null);
+      }
+    } else {
+      this.write(data + "\n")
+    }
+  }
+
+  private async write(data: string = null) {
+    try {
+      // use buffer when data === null
+      if(data === null) {
+        data = this.buffer;
+        // do nothing for empty buffers
+        if(!data.length) {
+          return;
+        }
+      }
+      this.buffer = '';
+      await promisify(fs.write)(this.fd, data);
+    } catch (err) {
       console.error(err);
       console.error('Persistent storage stopped.');
-      errors.add('pstoreWrite', `Storage write error: ${err.toString()}`);
-      this.disable();
-    });
+      errors.add('pstoreWrite', `Storage write error: ${ err.toString() }`);
+      await this.disable();
+    }
   }
 
   async openFD() {

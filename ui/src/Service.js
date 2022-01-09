@@ -23,7 +23,9 @@ export default class Service {
       animations: false,
       persistentStorage: {
         enabled: false,
-        keepFiles: 0
+        keepFiles: 0,
+        flushInterval: 0,
+        maxBufferSize: 500000
       },
       rssiNoiseTrigger: {
         enabled: false,

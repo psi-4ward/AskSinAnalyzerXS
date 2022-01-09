@@ -11,7 +11,9 @@ export interface Config {
   animations: boolean,
   persistentStorage: {
     enabled: boolean,
-    keepFiles: number
+    keepFiles: number,
+    flushInterval: number,
+    maxBufferSize: number
   },
   rssiNoiseTrigger: {
     enabled: boolean,

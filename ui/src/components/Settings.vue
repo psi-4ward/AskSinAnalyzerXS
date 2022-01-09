@@ -100,6 +100,24 @@
             label="Max.-Dateien"
             hint="Maximale Anzahl an CSV Dateien die vorgehalten werden. Ältere werden gelöscht."
           />
+          <q-input
+            v-model.number="cfg.persistentStorage.flushInterval"
+            outlined
+            filled
+            type="number"
+            min="0"
+            label="Flush-Interval"
+            hint="Zeit in Sekunden zwischen zwei Schreibvorgängen. 0 persistiert jedes Telegram sofort."
+          />
+          <q-input
+            v-model.number="cfg.persistentStorage.maxBufferSize"
+            outlined
+            filled
+            type="number"
+            min="0"
+            label="Max. Buffer-Size"
+            hint="Maximale Größe des Schreib-Buffers in Bytes. Wird dieser überschritt findet eine Persistierung statt, ansonsten, erst nach Ablauf des Flush-Interval."
+          />
 
           <h2 class="q-mt-lg">Recent History</h2>
           <div>
