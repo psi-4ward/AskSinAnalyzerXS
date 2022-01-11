@@ -156,7 +156,7 @@ jobs:
           push: true
           tags: |
             psitrax/asksinanalyzer:${{ steps.vars.outputs.tag }}
-            ghcr.io/psi-4ward/AskSinAnalyzerXS:${{ steps.vars.outputs.tag }}
+            ghcr.io/psi-4ward/asksin-analyzer-xs:${{ steps.vars.outputs.tag }}
 
 
   publish_release:
