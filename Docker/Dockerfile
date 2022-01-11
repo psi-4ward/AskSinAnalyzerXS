@@ -14,7 +14,7 @@ RUN ls -l /tmp/src/app
 RUN mkdir /data && \
     chown node /data && \
     apk add --no-cache udev && \
-    apk add --no-cache --virtual build-deps python make g++ linux-headers && \
+    apk add --no-cache --virtual build-deps python3 make g++ linux-headers && \
     if [ -n "$DOCKER_TAG" ] ; then cd /tmp/src/app && npm version --allow-same-version $DOCKER_TAG ; fi && \
     cd /tmp/src/app && npm ci && npm run tsc && \
     cd /tmp/src/ui && npm ci && npm run build && \
