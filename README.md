@@ -4,7 +4,7 @@
 [![github downloads](https://img.shields.io/github/downloads/psi-4ward/asksinanalyzerxs/total.svg?color=%23a7a71f&label=github%20downloads)](https://somsubhra.com/github-release-stats/?username=psi-4ward&repository=AskSinAnalyzerXS) 
 [![npm downloads](https://img.shields.io/npm/dt/asksin-analyzer-xs?color=%23a7a71f&label=npm%20downloads&)](https://www.npmjs.com/package/asksin-analyzer-xs)
 [![Docker Pulls](https://img.shields.io/docker/pulls/psitrax/asksinanalyzer.svg?color=%23a7a71f&label=docker%20pulls)](https://hub.docker.com/r/psitrax/asksinanalyzer/)
-[![build](https://api.travis-ci.org/psi-4ward/AskSinAnalyzerXS.svg?branch=master)](https://travis-ci.org/github/psi-4ward/AskSinAnalyzerXS/)
+[![Build and Publish](https://github.com/psi-4ward/AskSinAnalyzerXS/actions/workflows/build_publish.yml/badge.svg)](https://github.com/psi-4ward/AskSinAnalyzerXS/actions)
 
 Funktelegramm-Dekodierer für den Einsatz in HomeMatic Umgebungen.
 
@@ -48,7 +48,7 @@ Optional kann ein kleines Display verbaut werden was den RSSI-Noise Pegel darste
 ## Installation
 
 * [Latest release](https://github.com/psi-4ward/AskSinAnalyzerXS/releases/latest)
-* [Develop release](https://github.com/psi-4ward/AskSinAnalyzerXS/releases/tag/0.0.0) 0.0.0
+* [Develop release](https://github.com/psi-4ward/AskSinAnalyzerXS/releases/tag/v0.0.0) v0.0.0
 
 ### AVR Sketch
 
