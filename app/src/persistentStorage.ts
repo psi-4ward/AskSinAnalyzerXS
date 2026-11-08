@@ -91,7 +91,7 @@ class PersistentStorage {
     this.nextDayTstamp = d.setHours(24, 0, 0, 0);
     const file = path.resolve(store.appPath, this.getCurrentFilename());
     console.log('Opening', file, 'for persistent storage.');
-    return new Promise(async (resolve) => {
+    return new Promise<void>(async (resolve) => {
       try {
         const exists = await promisify(fs.exists)(file);
         this.fd = await promisify(fs.open)(file, 'a');

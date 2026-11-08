@@ -3,7 +3,7 @@ import {IncomingMessage, request} from "http";
 
 export function exec(action: string, opts: any) {
   const {protocol, auth, hostname, port, path} = parse(opts.url);
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     request({
         protocol, auth, hostname, port, path,
         method: (action === 'httpPost') ? 'POST' : 'GET'
