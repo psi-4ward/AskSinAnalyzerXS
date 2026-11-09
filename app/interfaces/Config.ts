@@ -1,4 +1,6 @@
-import {PortInfo} from "serialport";
+import { SerialPort } from "serialport";
+
+type PortInfo = Awaited<ReturnType<typeof SerialPort.list>>[number];
 
 export interface Config {
   deviceListUrl: string | null,
